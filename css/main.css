@@ -1,0 +1,373 @@
+/* Base Variables moved to css/vars.css */
+/* Modern Design Utilities defined in css/vars.css */
+
+/* Glassmorphism */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+/* ClickUp Ambient Glow */
+.ambient-glow {
+  position: absolute;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, var(--glow-color-1) 0%, rgba(0, 0, 0, 0) 70%);
+  filter: blur(120px);
+  opacity: 0.35;
+  z-index: -1;
+  pointer-events: none;
+  animation: premiumAmbient 15s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+
+@media (max-width: 768px) {
+  .ambient-glow {
+    width: 300px;
+    height: 300px;
+    filter: blur(60px);
+    opacity: 0.2;
+  }
+}
+
+.ambient-glow.blue {
+  background: radial-gradient(circle, var(--glow-color-2) 0%, rgba(0, 0, 0, 0) 70%);
+  animation-duration: 20s;
+  animation-delay: -5s;
+}
+
+.ambient-glow.pink {
+  background: radial-gradient(circle, var(--glow-color-3) 0%, rgba(0, 0, 0, 0) 70%);
+  animation-duration: 18s;
+  animation-delay: -10s;
+}
+
+
+@keyframes floatGlow {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  100% {
+    transform: translate(50px, 50px) scale(1.1);
+  }
+}
+
+.glass-heavy {
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Neon Glows */
+.glow-text {
+  text-shadow: 0 0 10px var(--gold-glow), 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+.glow-box {
+  box-shadow: 0 0 15px var(--gold-glow), inset 0 0 10px rgba(212, 175, 55, 0.1);
+}
+
+/* 3D Transforms */
+.hover-3d {
+  transition: transform var(--transition), box-shadow var(--transition);
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.hover-3d:hover {
+  transform: translateY(-8px) rotateX(2deg);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6);
+}
+
+/* Premium Gradient Text */
+.text-gradient-gold {
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Transitions restored to original for smoothness */
+
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  /* Prevent horizontal scroll */
+  font-family: 'Cairo', sans-serif;
+  color: var(--text);
+  background: var(--bg-color);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+}
+
+/* Light Mode Specifics */
+body.light-mode {
+  color: var(--light-text);
+}
+
+
+/* Focus styles for accessibility */
+*:focus {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* container */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Preloader Enhanced */
+#preloader {
+  position: fixed;
+  inset: 0;
+  background: #0a0a0a;
+  /* Deep dark background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
+}
+
+#preloader.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.preloader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 300px;
+  padding: 2rem;
+}
+
+.preloader-logo {
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.logo-animate {
+  animation: logoBreath 2s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.3));
+}
+
+@keyframes logoBreath {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: scale(1.05);
+    opacity: 1;
+    filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.6));
+  }
+}
+
+.progress-wrapper {
+  width: 100%;
+  position: relative;
+}
+
+.progress-bar-bg {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.progress-bar-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-light));
+  border-radius: 4px;
+  position: relative;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+.progress-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transform: translateX(-100%);
+  animation: shimmer 1s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.loading-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Cairo', sans-serif;
+}
+
+.percentage {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--gold);
+  font-variant-numeric: tabular-nums;
+  /* Prevents jumping */
+}
+
+.loading-message {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.5px;
+}
+
+/* Slow Network Warning */
+.slow-network-msg {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #ff9800;
+  /* Warning/Orange color */
+  font-size: 0.9rem;
+  background: rgba(255, 152, 0, 0.1);
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 152, 0, 0.2);
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.5s ease;
+  animation: pulseWarning 2s infinite;
+}
+
+.slow-network-msg.hidden {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  display: none;
+  /* Hide completely to avoid taking space initially */
+}
+
+/* Show it with flex when active (handled by JS toggling hidden class, 
+   but we need to override display:none from .hidden if we just remove the class) 
+   Actually, it's safer to just toggle the class 'visible' or remove 'hidden' */
+
+@keyframes pulseWarning {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.2);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 152, 0, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 152, 0, 0);
+  }
+}
+
+/* Sections & reveals */
+.section {
+  padding: 56px 0;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all .7s ease-out;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.materials-prices {
+  padding-top: 0 !important;
+}
+
+.section h3 {
+  color: var(--gold);
+  font-size: 1.8rem;
+  margin-bottom: 18px;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 8px;
+}
+
+.gold-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, rgba(212, 175, 55, 0.15), var(--gold), rgba(212, 175, 55, 0.15));
+  background-size: 200% 100%;
+  animation: goldLine 6s linear infinite;
+  border-radius: 2px;
+}
+
+@keyframes goldLine {
+  0% {
+    background-position: 200%;
+  }
+
+  100% {
+    background-position: -200%;
+  }
+}
+
+/* reveal helpers */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all .8s ease-out;
+  position: relative;
+  will-change: transform, opacity;
+}
+
+.reveal.active,
+.section.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* image reveals from sides */
+.reveal.left {
+  transform: translateX(-60px);
+}
+
+.reveal.right {
+  transform: translateX(60px);
+}
+
+.reveal.left.active,
+.reveal.right.active {
+  transform: translateX(0);
+  opacity: 1;
+}

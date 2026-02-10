@@ -1,0 +1,84 @@
+:root {
+    /* Premium Color Palette (HSL for flexibility) */
+    --hue-gold: 46;
+    --sat-gold: 65%;
+    --lig-gold: 52%;
+
+    --gold: hsl(var(--hue-gold), var(--sat-gold), var(--lig-gold));
+    --gold-dark: hsl(var(--hue-gold), 70%, 40%);
+    --gold-light: hsl(var(--hue-gold), 70%, 80%);
+    --gold-glow: hsla(var(--hue-gold), 100%, 50%, 0.5);
+
+    --black: #050505;
+    --white: #ffffff;
+
+    /* Dark Mode Surfaces */
+    --bg-dark: #0a0a0a;
+    --bg-darker: #000000;
+    --surface-dark: #121212;
+
+    /* Light Mode Surfaces */
+    --light-bg: #f8f9fa;
+    --light-text: #1a1a1a;
+    --light-card: #ffffff;
+    --light-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    /* Soft shadow for light mode */
+
+    /* Shared Colors */
+    --muted: #888888;
+    --text: #f0f0f0;
+    --accent: #25D366;
+
+    /* Glassmorphism */
+    --glass-bg: rgba(20, 20, 20, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-highlight: rgba(255, 255, 255, 0.05);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    --blur-amt: 12px;
+
+    /* Layout */
+    --max-width: 1240px;
+    --radius: 16px;
+    --radius-sm: 8px;
+    --radius-lg: 24px;
+
+    /* Animation */
+    --transition: 400ms cubic-bezier(0.25, 0.8, 0.25, 1);
+    --bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    /* ClickUp Inspired */
+    --glow-color-1: rgba(123, 97, 255, 0.5);
+    /* Violet */
+    --glow-color-2: rgba(41, 121, 255, 0.5);
+    /* Blue */
+    --glow-color-3: rgba(255, 0, 128, 0.4);
+    /* Pink */
+    --glass-frosted: rgba(255, 255, 255, 0.03);
+    --glass-border-subtle: rgba(255, 255, 255, 0.06);
+
+    /* Dynamic Backgrounds */
+    --bg-color: linear-gradient(180deg, #0b0b0b, #0f0f0f);
+    --card-bg: #111111;
+    /* Dark mode card background */
+
+    /* Hero Modernization Colors */
+    --hero-bg-accent-1: #3b82f6;
+    /* Blue */
+    --hero-bg-accent-2: #8b5cf6;
+    /* Violet */
+    --hero-bg-accent-3: #ec4899;
+    /* Pink */
+    --glass-blur-deep: 25px;
+    --font-heading: 'Inter', 'Outfit', 'Segoe UI Variable Display', system-ui, sans-serif;
+}
+
+/* Light Mode Variables Override */
+body.light-mode {
+    --text: var(--light-text);
+    --card-bg: var(--light-card);
+    --muted: #666666;
+    --bg-color: linear-gradient(180deg, var(--light-bg), #e9ecef);
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(0, 0, 0, 0.1);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+}

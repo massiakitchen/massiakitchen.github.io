@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سياسة الخصوصية | الماسية للمطابخ</title>
+    <link rel="stylesheet" href="css/vars.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <meta name="copyright" content="شركة الماسية للمطابخ - جميع الحقوق محفوظة">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #1e293b 0%, #334155 50%, #d4af37 100%);
+            --glass-bg: rgba(15, 23, 42, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --accent-gold: #d4af37;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #020617;
+            /* Deep Navy Black */
+            color: #f8fafc;
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Animated Background Blobs */
+        .blobs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            filter: blur(100px);
+            opacity: 0.4;
+        }
+
+        .blob {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            animation: move 20s infinite alternate;
+        }
+
+        .blob-1 {
+            background: #0f172a;
+            top: -100px;
+            left: -100px;
+            animation-duration: 25s;
+        }
+
+        .blob-2 {
+            background: #1e293b;
+            bottom: -100px;
+            right: -100px;
+            animation-duration: 35s;
+        }
+
+        .blob-3 {
+            background: #d4af37;
+            top: 40%;
+            left: 30%;
+            opacity: 0.15;
+            animation-duration: 30s;
+        }
+
+        @keyframes move {
+            from {
+                transform: translate(0, 0) scale(1);
+            }
+
+            to {
+                transform: translate(100px, 100px) scale(1.2);
+            }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 80px auto;
+            padding: 60px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 1;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f8fafc 0%, #d4af37 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin-bottom: 50px;
+            letter-spacing: -1px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: var(--accent-gold);
+            margin-top: 45px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        h2::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.3), transparent);
+        }
+
+        p,
+        li {
+            font-size: 1.15rem;
+            color: rgba(248, 250, 252, 0.85);
+            margin-bottom: 1.5rem;
+        }
+
+        strong {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        ul {
+            list-style: none;
+            padding-right: 20px;
+        }
+
+        ul li {
+            position: relative;
+            margin-bottom: 12px;
+        }
+
+        ul li::before {
+            content: '✦';
+            position: absolute;
+            right: -25px;
+            color: var(--accent-gold);
+            font-size: 0.8rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 50px;
+            padding: 15px 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 100px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            text-align: center;
+            width: fit-content;
+            align-self: center;
+            display: flex;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .back-link:hover {
+            background: var(--primary-gradient);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+            border-color: transparent;
+        }
+
+        footer {
+            padding: 60px 0;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            margin-top: 100px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #d4af37;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+                padding: 30px;
+                border-radius: 25px;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>سياسة الخصوصية</h1>
+        <p>نحن في <strong>الماسية للمطابخ</strong> نعتز بثقتكم ونلتزم بحماية خصوصية بياناتكم الشخصية. توضح هذه السياسة
+            كيفية جمعنا واستخدامنا لبياناتكم.</p>
+
+        <h2>ما هي البيانات التي نجمعها؟</h2>
+        <ul>
+            <li>الاسم الكامل.</li>
+            <li>رقم الهاتف.</li>
+            <li>المدينة أو العنوان.</li>
+            <li>الصور المرفقة لتوضيح المساحات أو التصميمات المطلوبة.</li>
+        </ul>
+
+        <h2>لماذا نجمع هذه البيانات؟</h2>
+        <p>نستخدم البيانات التي نجمعها للأغراض التالية:</p>
+        <ul>
+            <li>التواصل معكم للرد على استفساراتكم.</li>
+            <li>تقديم عروض أسعار دقيقة بناءً على المساحات والصور المرسلة.</li>
+            <li>تحديد مواعيد المعاينة والرفع المساحي.</li>
+            <li>إعلامكم بأحدث العروض والخدمات لدينا.</li>
+        </ul>
+
+        <h2>أمن البيانات</h2>
+        <p>نحن نتخذ كافة التدابير التقنية والتنظيمية اللازمة لضمان حماية بياناتكم من الوصول غير المصرح به أو الكشف عنها.
+            نحن لا نقوم ببيع أو مشاركة بياناتكم مع أي أطراف ثالثة لأغراض تسويقية.</p>
+
+        <h2>حقوقكم</h2>
+        <p>يحق لكم في أي وقت طلب تعديل أو حذف بياناتكم من سجلاتنا من خلال التواصل معنا عبر وسائل الاتصال المتاحة على
+            الموقع.</p>
+
+        <h2>التواصل معنا</h2>
+        <p>إذا كان لديكم أي أسئلة حول سياسة الخصوصية الخاصة بنا، يمكنكم التواصل معنا عبر السبل التالية:</p>
+        <ul
+            style="border-right: 2px solid #d4af37; background: rgba(212, 175, 55, 0.05); padding: 15px 30px; border-radius: 0 10px 10px 0;">
+            <li>Email: massiakitchen@gmail.com</li>
+            <li>WhatsApp: +201092497811</li>
+        </ul>
+
+        <a href="index.html" class="back-link">العودة للرئيسية</a>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <span class="footer-logo">الماسية للمطابخ</span>
+        <p>© <span id="year"></span> جميع الحقوق محفوظة.</p>
+        <p style="font-size: 0.9rem; margin-top: 5px; opacity: 0.6;">تم التطوير بواسطة <a
+                href="https://www.linkedin.com/in/shafiksalah" target="_blank"
+                style="color: #d4af37; text-decoration: none;">Shafik Salah</a></p>
+        <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Analytics (GA4) - Replace G-XXXXXXXXXX with your actual ID -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    <script src="dist/bundle.js"></script>
+    <script>
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+    </script>
+</body>
+
+</html>

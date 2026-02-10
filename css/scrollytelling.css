@@ -1,0 +1,494 @@
+/* Scrollytelling Section Styles */
+.scrolly-section {
+    position: relative;
+    height: 105vh;
+    /* Extremely tight to ensure no dead space */
+    background: transparent;
+    /* Use the body's fixed background for perfect sync */
+    /* Sync with Materials section */
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.scrolly-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Parallax Background */
+.parallax-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.p-item {
+    position: absolute;
+    width: 300px;
+    height: 200px;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    opacity: 1;
+    filter: blur(0px);
+    transform: rotate(0deg);
+    /* Straight by default */
+    will-change: transform, opacity;
+}
+
+.p-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Standardized Horizontal Distribution */
+.p-1 {
+    top: 12%;
+    left: 5%;
+    width: 300px;
+    height: 200px;
+}
+
+.p-2 {
+    top: 15%;
+    right: 5%;
+    width: 300px;
+    height: 200px;
+}
+
+.p-3 {
+    top: 45%;
+    left: 3%;
+    width: 300px;
+    height: 200px;
+}
+
+.p-4 {
+    top: 40%;
+    right: 3%;
+    width: 300px;
+    height: 200px;
+}
+
+.p-5 {
+    bottom: 15%;
+    left: 8%;
+    width: 300px;
+    height: 200px;
+}
+
+.p-6 {
+    bottom: 12%;
+    right: 8%;
+    width: 300px;
+    height: 200px;
+}
+
+.p-7 {
+    top: 5%;
+    left: 35%;
+    width: 300px;
+    height: 200px;
+}
+
+.p-8 {
+    top: 8%;
+    right: 35%;
+    width: 300px;
+    height: 200px;
+}
+
+.p-9 {
+    bottom: 8%;
+    left: 40%;
+    width: 300px;
+    height: 200px;
+}
+
+.p-10 {
+    bottom: 5%;
+    right: 40%;
+    width: 300px;
+    height: 200px;
+}
+
+/* Responsive Visibility */
+.p-item {
+    display: none;
+}
+
+/* Large Screens (Show All 10) */
+@media (min-width: 1400px) {
+    .p-item {
+        display: block;
+    }
+}
+
+/* Medium Screens (Show 6) */
+@media (min-width: 768px) and (max-width: 1399px) {
+
+    .p-1,
+    .p-2,
+    .p-3,
+    .p-4,
+    .p-5,
+    .p-6 {
+        display: block;
+    }
+}
+
+/* Small Screens / Tablets (Show 4) */
+@media (min-width: 480px) and (max-width: 767px) {
+
+    .p-1,
+    .p-2,
+    .p-3,
+    .p-4 {
+        display: block;
+    }
+}
+
+/* Mobile (Show 2) */
+@media (max-width: 479px) {
+
+    .p-1,
+    .p-2 {
+        display: block;
+    }
+}
+
+/* Fixed Content */
+.scrolly-content {
+    position: relative;
+    z-index: 10;
+    width: 90%;
+    max-width: 800px;
+    text-align: center;
+}
+
+.scrolly-card {
+    padding: 3rem;
+    border-radius: 32px;
+    background: rgba(10, 10, 10, 0.85);
+    /* Darker and more opaque for better clarity */
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    transition: none;
+    /* Let GSAP handle animation */
+    position: relative;
+}
+
+body.light-mode .scrolly-card {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+}
+
+.card-header-actions {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+}
+
+.hero-theme-toggle {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--gold);
+    transition: all 0.3s ease;
+}
+
+.hero-theme-toggle:hover {
+    background: var(--gold);
+    color: var(--black);
+    transform: rotate(15deg);
+}
+
+.scrolly-card h1 {
+    font-size: 3.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.scrolly-card h2 {
+    font-size: 1.8rem;
+    opacity: 0.9;
+    margin-bottom: 1.2rem;
+}
+
+.scrolly-card p.scrolly-desc-mini {
+    font-size: 1.1rem;
+    color: var(--gold);
+    letter-spacing: 1px;
+    margin-bottom: 1.5rem;
+    opacity: 0.8;
+}
+
+.card-footer-trust {
+    margin: 1.5rem 0 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+body.light-mode .card-footer-trust {
+    border-top-color: rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.6);
+}
+
+body.light-mode .card-footer-trust i {
+    color: var(--gold-dark);
+}
+
+.card-footer-trust span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.scrolly-actions {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+}
+
+/* Animated Border Button (Matching cu-tab-btn exactly) */
+.btn-animate-border {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 40px;
+    color: #fff !important;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-decoration: none;
+    border-radius: 50px;
+    overflow: hidden;
+    z-index: 1;
+    transition: transform 0.3s ease;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+}
+
+.btn-animate-border::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 400%;
+    height: 400%;
+    background: conic-gradient(from 0deg,
+            transparent 0deg,
+            transparent 80deg,
+            var(--gold) 120deg,
+            #ff8c00 180deg,
+            #ffbf00 240deg,
+            transparent 300deg);
+    transform: translate(-50%, -50%);
+    animation: centerSpin 2s linear infinite;
+    z-index: -2;
+    filter: blur(10px);
+    /* Creates a soft light trail */
+}
+
+.btn-animate-border::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: #000 !important;
+    /* Internal mask matching cu-tab-btn active */
+    border-radius: 48px;
+    z-index: -1;
+    transition: background 0.3s ease;
+}
+
+.btn-animate-border:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(212, 175, 55, 0.5);
+}
+
+body.light-mode .btn-animate-border::after {
+    background: var(--gold-dark) !important;
+}
+
+body.light-mode .btn-animate-border {
+    color: #fff !important;
+}
+
+/* Ambient Glows - Updated to Gold Only & Positioned Behind */
+.scrolly-section .ambient-glow {
+    position: absolute;
+    width: 800px;
+    height: 800px;
+    filter: blur(120px);
+    z-index: 0;
+    /* Behind parallax items */
+    opacity: 0;
+    pointer-events: none;
+    background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%);
+}
+
+.scrolly-section .ambient-glow.gold {
+    opacity: 0.25;
+}
+
+.scrolly-section .ambient-glow.top-left {
+    top: -10%;
+    left: -10%;
+}
+
+.scrolly-section .ambient-glow.bottom-right {
+    bottom: -10%;
+    right: -10%;
+}
+
+.scrolly-section .ambient-glow.center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .scrolly-card h1 {
+        font-size: 2.5rem;
+    }
+
+    .scrolly-card h2 {
+        font-size: 1.4rem;
+    }
+
+    .scrolly-actions {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .btn-animate-border {
+        width: 100%;
+    }
+
+    .p-item {
+        width: 220px;
+        height: 150px;
+    }
+
+    .p-5,
+    .p-6 {
+        display: none;
+    }
+}
+
+/* Premium Hero Trust Badges */
+.scrolly-card .trust-badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+}
+
+.scrolly-card .badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.7rem 1.4rem;
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50px;
+    color: var(--text);
+    font-size: 0.85rem;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(20px) scale(0.8);
+    will-change: transform, opacity;
+    /* Iridescent Bubble Effect */
+    box-shadow:
+        inset 0 4px 12px rgba(255, 255, 255, 0.15),
+        inset 0 -4px 12px rgba(212, 175, 55, 0.1),
+        0 8px 20px rgba(0, 0, 0, 0.2);
+    animation: bubbleFloat 4s ease-in-out infinite alternate;
+}
+
+@keyframes bubbleFloat {
+    0% {
+        transform: translateY(0) rotate(-1deg);
+    }
+
+    100% {
+        transform: translateY(-8px) rotate(1deg);
+    }
+}
+
+/* Staggered delay for floating effect */
+.scrolly-card .badge:nth-child(even) {
+    animation-delay: -1.5s;
+}
+
+.scrolly-card .badge:nth-child(3n) {
+    animation-delay: -2.5s;
+}
+
+body.light-mode .scrolly-card .badge {
+    background: rgba(255, 255, 255, 0.4);
+    border-color: rgba(212, 175, 55, 0.3);
+    color: var(--light-text);
+    box-shadow:
+        inset 0 4px 10px rgba(255, 255, 255, 1),
+        0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.scrolly-card .badge i {
+    color: var(--gold);
+    transition: transform 0.3s ease;
+}
+
+.scrolly-card .badge:hover {
+    transform: translateY(-8px) scale(1.15) !important;
+    background: rgba(212, 175, 55, 0.15);
+    border-color: var(--gold);
+    box-shadow:
+        inset 0 4px 15px rgba(255, 255, 255, 0.3),
+        0 15px 35px rgba(212, 175, 55, 0.3);
+    z-index: 20;
+}
+
+.scrolly-card .badge:hover i {
+    transform: scale(1.2);
+}
+
+/* Responsive Badges */
+@media (max-width: 768px) {
+    .scrolly-card .trust-badges {
+        gap: 0.5rem;
+    }
+
+    .scrolly-card .badge {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+}

@@ -1,0 +1,157 @@
+/* Facebook Feed Slider - Premium Redesign */
+.facebook-slider-section {
+    padding: 100px 0;
+    background: radial-gradient(circle at center, rgba(212, 175, 55, 0.05) 0%, var(--bg-deep) 70%);
+    overflow: hidden;
+    position: relative;
+}
+
+.fb-slider-container {
+    position: relative;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    perspective: 2000px;
+}
+
+.fb-slider-wrapper {
+    display: flex;
+    transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    gap: 50px;
+    transform-style: preserve-3d;
+    padding: 20px 0;
+}
+
+.fb-slide {
+    flex: 0 0 calc(100% - 100px);
+    max-width: 500px;
+    min-width: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 30px;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    opacity: 0.4;
+    transform: scale(0.85) rotateY(15deg);
+    filter: grayscale(0.5) blur(2px);
+}
+
+.fb-slide.active {
+    opacity: 1;
+    transform: scale(1.05) rotateY(0deg);
+    filter: grayscale(0) blur(0);
+    border-color: rgba(212, 175, 55, 0.4);
+    box-shadow: 0 30px 80px rgba(212, 175, 55, 0.15), 0 10px 30px rgba(0, 0, 0, 0.6);
+    z-index: 5;
+}
+
+/* Specific sizing for active states overrides the base max-width */
+.fb-slide.active.reel-slide {
+    max-width: 380px;
+}
+
+.fb-slide.active.post-slide {
+    max-width: 520px;
+}
+
+.fb-slide iframe {
+    border-radius: 20px;
+    width: 100%;
+}
+
+/* Premium Navigation */
+.fb-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--gold);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.4s ease;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.fb-nav-btn:hover {
+    background: var(--gold);
+    color: var(--black);
+    transform: translateY(-50%) scale(1.15);
+    border-color: var(--gold);
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+}
+
+.fb-nav-btn.prev {
+    right: -30px;
+}
+
+.fb-nav-btn.next {
+    left: -30px;
+}
+
+.fb-dots {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 50px;
+}
+
+.fb-dot {
+    width: 40px;
+    height: 4px;
+    border-radius: 10px;
+    background: rgba(212, 175, 55, 0.1);
+    cursor: pointer;
+    transition: all 0.4s ease;
+}
+
+.fb-dot.active {
+    background: var(--gold);
+    width: 60px;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+}
+
+@media (max-width: 1450px) {
+    .fb-nav-btn.prev {
+        right: 10px;
+    }
+
+    .fb-nav-btn.next {
+        left: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .fb-slider-wrapper {
+        gap: 20px;
+    }
+
+    .fb-slide {
+        flex: 0 0 100%;
+        transform: scale(0.9) rotateY(0);
+        opacity: 0.6;
+    }
+
+    .fb-slide.active {
+        transform: scale(1);
+    }
+
+    .fb-nav-btn {
+        width: 50px;
+        height: 50px;
+    }
+}
