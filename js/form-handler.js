@@ -7,11 +7,6 @@ import { $, debounce, showNotification, trackEvent } from './main.js';
 // Enhanced contact form handler
 
 // Form validation functions
-function validateEmail(email) {
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return re.test(email);
-}
-
 function validatePhone(phone) {
   if (typeof phone !== 'string') return false;
   const normalized = phone.replace(/[\s-]/g, '');
