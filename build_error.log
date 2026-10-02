@@ -1,0 +1,22 @@
+x Build failed in 316ms
+error during build:
+js/form-handler.js (324:9): Identifier "initFormHandlers" has already been declared
+file: /home/shafik/Downloads/massiakitchen.github.io-main/js/form-handler.js:324:9
+
+322: 
+323: // Update form handlers initialization
+324: function initFormHandlers() {
+              ^
+325:   const contactForm = $('#leadForm');
+326:   if (contactForm) {
+
+    at getRollupError (file:///home/shafik/Downloads/massiakitchen.github.io-main/node_modules/rollup/dist/es/shared/parseAst.js:402:41)
+    at error (file:///home/shafik/Downloads/massiakitchen.github.io-main/node_modules/rollup/dist/es/shared/parseAst.js:398:42)
+    at Module.error (file:///home/shafik/Downloads/massiakitchen.github.io-main/node_modules/rollup/dist/es/shared/node-entry.js:17040:16)
+    at ModuleScope.addDeclaration (file:///home/shafik/Downloads/massiakitchen.github.io-main/node_modules/rollup/dist/es/shared/node-entry.js:5574:21)
+    at ModuleScope.addDeclaration (file:///home/shafik/Downloads/massiakitchen.github.io-main/node_modules/rollup/dist/es/shared/node-entry.js:15049:22)
+    at Identifier.declare (file:///home/shafik/Downloads/massiakitchen.github.io-main/node_modules/rollup/dist/es/shared/node-entry.js:5459:35)
+    at FunctionDeclaration.initialise (file:///home/shafik/Downloads/massiakitchen.github.io-main/node_modules/rollup/dist/es/shared/node-entry.js:6889:18)
+    at FunctionDeclaration.initialise (file:///home/shafik/Downloads/massiakitchen.github.io-main/node_modules/rollup/dist/es/shared/node-entry.js:6907:15)
+    at convertNode (file:///home/shafik/Downloads/massiakitchen.github.io-main/node_modules/rollup/dist/es/shared/node-entry.js:16437:10)
+    at convertNodeList (file:///home/shafik/Downloads/massiakitchen.github.io-main/node_modules/rollup/dist/es/shared/node-entry.js:16447:38)
