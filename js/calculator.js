@@ -337,43 +337,6 @@ function initCalculator() {
     });
   });
 
-  // Sync calculator with user selection from pricing tabs
-  window.syncCalculatorWithSelection = function (material, options) {
-    const materialTypeSelect = document.getElementById('material-type');
-    const materialTypeSelectDim = document.getElementById('material-type-dimensions');
-    const addonCheckboxes = document.querySelectorAll('input[name="addons"]');
-    const safeOptions = Array.isArray(options) ? options : [];
-
-    // Map material name to type key
-    let typeKey = 'economy';
-    const name = (material && material.name ? String(material.name) : '').toLowerCase();
-    if (name.includes('ألومنيوم') || name.includes('الومنيوم')) typeKey = 'standard';
-    if (name.includes('hpl') || name.includes('بولي') || name.includes('بورديوم')) typeKey = 'premium';
-
-    // Update state and select elements
-    appState.calculatorData.material = typeKey;
-    if (materialTypeSelect) materialTypeSelect.value = typeKey;
-    if (materialTypeSelectDim) materialTypeSelectDim.value = typeKey;
-
-    // Update addons
-    appState.calculatorData.addons = [];
-    addonCheckboxes.forEach(cb => {
-      const optionMatch = safeOptions.find(opt => {
-        const optName = (opt && opt.name ? String(opt.name) : '').toLowerCase();
-        const cbValue = (cb.value || '').toLowerCase();
-        return optName !== '' && (optName.includes(cbValue) || cbValue.includes(optName));
-      });
-
-      cb.checked = !!optionMatch;
-      if (cb.checked) {
-        appState.calculatorData.addons.push(cb.value);
-      }
-    });
-
-    // Trigger recalculation (both panels + recommendation)
-    refreshCalculator();
-  };
-
   // Initial calculation (both panels so each tab shows its own total on load)
   refreshCalculator();
 }

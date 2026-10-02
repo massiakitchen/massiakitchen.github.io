@@ -202,19 +202,6 @@ export function formatNumber(number) {
   return new Intl.NumberFormat('ar-EG').format(number);
 }
 
-// Initialize components dynamically
-function initComponent(element) {
-  // Add ripple effect to buttons
-  if (element.classList && (element.classList.contains('btn') || element.classList.contains('btn-primary') || element.classList.contains('btn-ghost'))) {
-    element.addEventListener('click', createRipple);
-  }
-
-  // Initialize reveal elements
-  if (element.classList && element.classList.contains('reveal')) {
-    revealObserver.observe(element);
-  }
-}
-
 // Analytics tracking function
 export function trackEvent(category, action, label) {
   // Google Analytics
@@ -361,28 +348,6 @@ function initHeaderScroll() {
   }, 50);
 
   window.addEventListener('scroll', headerScrollHandler);
-}
-
-// Lazy Loading for Images
-function initLazyLoading() {
-  const lazyImages = $$('img[loading="lazy"]');
-
-  if ('IntersectionObserver' in window) {
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const img = entry.target;
-          img.src = img.dataset.src || img.src;
-          img.classList.remove('skeleton');
-          imageObserver.unobserve(img);
-        }
-      });
-    });
-
-    lazyImages.forEach(img => {
-      imageObserver.observe(img);
-    });
-  }
 }
 
 // WhatsApp FAB behavior
@@ -849,7 +814,7 @@ function filterGallery(filter) {
   if (loadMoreBtn) {
     if (hasHiddenInFilter) {
       loadMoreBtn.innerHTML = `
-        <i data-lucide="plus-circle" class="premium-icon sm" style="margin-left: 0.5rem;"></i>
+        <i data-lucide="plus-circle" class="premium-icon sm" style="margin-inline-end: 0.5rem;"></i>
         عرض المزيد
       `;
       loadMoreBtn.disabled = false;
@@ -862,7 +827,7 @@ function filterGallery(filter) {
       }
     } else {
       loadMoreBtn.innerHTML = `
-        <i data-lucide="check-circle" class="premium-icon sm" style="margin-left: 0.5rem;"></i>
+        <i data-lucide="check-circle" class="premium-icon sm" style="margin-inline-end: 0.5rem;"></i>
         تم عرض كل الأعمال
       `;
       loadMoreBtn.disabled = true;
@@ -877,27 +842,15 @@ function filterGallery(filter) {
   }
 }
 
-// Gallery filters with skeleton loading
+// Gallery filters (immediate filtering with a short CSS transition only)
 function initGallery() {
   const filterBtns = $$('.filter-btn');
   const skeletonGrid = $('#skeletonGrid');
   const galleryGrid = $('#galleryGrid');
 
-  // Load gallery images dynamically
-  function loadGalleryImages() {
-    const galleryItems = $$('.gallery-grid .item');
-
-    // Show skeleton first
-    if (skeletonGrid) skeletonGrid.style.display = 'grid';
-    // Only hide gallery grid if it exists to avoid errors
-    if (galleryGrid) galleryGrid.style.display = 'none';
-
-    // Simulate loading delay
-    setTimeout(() => {
-      if (skeletonGrid) skeletonGrid.style.display = 'none';
-      if (galleryGrid) galleryGrid.style.display = 'grid';
-    }, 1000);
-  }
+  // Show gallery immediately (items are in the DOM with native lazy-loading)
+  if (skeletonGrid) skeletonGrid.style.display = 'none';
+  if (galleryGrid) galleryGrid.style.display = 'grid';
 
   // Event delegation for filter buttons
   document.addEventListener('click', function (e) {
@@ -906,20 +859,12 @@ function initGallery() {
       e.target.classList.add('active');
       const filter = e.target.getAttribute('data-filter');
 
-      // Show skeleton during filtering
-      loadGalleryImages();
-
-      // Actual filtering after a delay
-      setTimeout(() => {
-        filterGallery(filter);
-      }, 500);
+      // Filter immediately; filterGallery animates via CSS transition
+      filterGallery(filter);
 
       trackEvent('gallery', 'filter', filter);
     }
   });
-
-  // Initial load
-  loadGalleryImages();
 }
 
 // Load More Gallery Items Function
@@ -975,7 +920,7 @@ function loadMoreGalleryItems() {
     if (remainingFiltered.length === 0) {
       if (loadMoreBtn) {
         loadMoreBtn.innerHTML = `
-          <i data-lucide="check-circle" class="premium-icon sm" style="margin-left: 0.5rem;"></i>
+          <i data-lucide="check-circle" class="premium-icon sm" style="margin-inline-end: 0.5rem;"></i>
           تم عرض كل الأعمال
         `;
         loadMoreBtn.disabled = true;
@@ -1262,7 +1207,6 @@ function initComponents() {
   initMobileMenu();
   initRevealAnimations();
   initHeaderScroll();
-  initLazyLoading();
   initWhatsAppFAB();
   initButtonAnimations();
   initLightbox();

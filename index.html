@@ -1203,7 +1203,7 @@
         <!-- Load More Button -->
         <div class="load-more-container" id="loadMoreContainer" style="text-align: center; margin-top: 2rem;">
           <button type="button" class="btn btn-primary" id="loadMoreBtn" onclick="loadMoreGalleryItems()">
-            <i data-lucide="plus-circle" class="premium-icon sm" style="margin-left: 0.5rem;"></i>
+            <i data-lucide="plus-circle" class="premium-icon sm" style="margin-inline-end: 0.5rem;"></i>
             عرض المزيد
           </button>
         </div>
@@ -2122,15 +2122,17 @@
 
 
   <!-- GSAP & ScrollTrigger for Scrollytelling -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script defer src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
 
   <!-- Scripts -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script defer src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
   <script>
-    // Initialize Lucide Icons
-    lucide.createIcons();
+    // Initialize Lucide Icons (deferred: lucide loads with defer, so wait for DOMContentLoaded)
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.lucide) lucide.createIcons();
+    });
   </script>
   <!-- Popover Bubble Details Container -->
   <div id="materialBubble" class="material-bubble" role="tooltip">
