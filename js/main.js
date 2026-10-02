@@ -81,6 +81,13 @@ export function throttle(func, limit) {
   };
 }
 
+// Accessibility: honor prefers-reduced-motion
+export function prefersReducedMotion() {
+  return typeof window !== 'undefined'
+    && typeof window.matchMedia === 'function'
+    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
 
 // Show notification function
 export function showNotification(message, type = 'info', duration = 5000) {
@@ -516,36 +523,54 @@ function initReviewsSlider() {
     appState.currentReview = index;
   }
 
-  // Initialize reviews slider
-  if (reviewCards.length > 0) {
-    showReview(0);
+  function stopReviewAutoAdvance() {
+    if (timers.reviewInterval) {
+      clearInterval(timers.reviewInterval);
+      timers.reviewInterval = null;
+    }
+  }
 
-    // Auto-advance reviews every 5 seconds
+  function startReviewAutoAdvance() {
+    // Respect users who prefer reduced motion: no auto-advance.
+    if (prefersReducedMotion()) return;
+    if (reviewCards.length < 2) return;
+    stopReviewAutoAdvance();
     timers.reviewInterval = setInterval(() => {
       const nextReview = (appState.currentReview + 1) % reviewCards.length;
       showReview(nextReview);
     }, 5000);
   }
 
+  // Initialize reviews slider
+  if (reviewCards.length > 0) {
+    showReview(0);
+
+    // Auto-advance reviews every 5 seconds (skipped for prefers-reduced-motion)
+    startReviewAutoAdvance();
+  }
+
+  // Pause auto-advance while the user hovers or focuses the carousel
+  const reviewsSlider = $('.reviews-slider');
+  if (reviewsSlider) {
+    reviewsSlider.addEventListener('mouseenter', stopReviewAutoAdvance);
+    reviewsSlider.addEventListener('mouseleave', startReviewAutoAdvance);
+    reviewsSlider.addEventListener('focusin', stopReviewAutoAdvance);
+    reviewsSlider.addEventListener('focusout', startReviewAutoAdvance);
+  }
+
   // Global Review Controls (Exposed for HTML onclick)
   window.nextReview = () => {
     const nextIdx = (appState.currentReview + 1) % reviewCards.length;
     showReview(nextIdx);
-    clearInterval(timers.reviewInterval);
-    timers.reviewInterval = setInterval(() => {
-      const next = (appState.currentReview + 1) % reviewCards.length;
-      showReview(next);
-    }, 5000);
+    stopReviewAutoAdvance();
+    startReviewAutoAdvance();
   };
 
   window.prevReview = () => {
     const prevIdx = (appState.currentReview - 1 + reviewCards.length) % reviewCards.length;
     showReview(prevIdx);
-    clearInterval(timers.reviewInterval);
-    timers.reviewInterval = setInterval(() => {
-      const next = (appState.currentReview + 1) % reviewCards.length;
-      showReview(next);
-    }, 5000);
+    stopReviewAutoAdvance();
+    startReviewAutoAdvance();
   };
 
   // Event delegation for review indicators
@@ -554,14 +579,11 @@ function initReviewsSlider() {
       const index = parseInt(e.target.getAttribute('data-slide'));
 
       // Reset interval when user manually changes slide
-      clearInterval(timers.reviewInterval);
+      stopReviewAutoAdvance();
       showReview(index);
 
       // Restart auto-advance
-      timers.reviewInterval = setInterval(() => {
-        const nextReview = (appState.currentReview + 1) % reviewCards.length;
-        showReview(nextReview);
-      }, 5000);
+      startReviewAutoAdvance();
     }
   });
 }
@@ -1254,6 +1276,9 @@ function initComponents() {
 }
 
 function initHero3DParallax() {
+  // Skip mouse-driven parallax for users who prefer reduced motion.
+  if (prefersReducedMotion()) return;
+
   const card = document.querySelector('.hero-glass-card');
   const floatingItems = document.querySelectorAll('.floating-item');
 
@@ -1297,6 +1322,35 @@ function initHero3DParallax() {
 
 let currentGalleryData = null;
 let currentImageIndex = 0;
+let lastGalleryFocus = null;
+
+// Keep Tab focus inside an open modal and return focus on close.
+function trapTabKey(modal, e) {
+  const focusable = modal.querySelectorAll(
+    'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+  );
+  const visible = Array.from(focusable).filter(
+    (el) => !el.disabled && el.getClientRects().length > 0
+  );
+  if (visible.length === 0) {
+    e.preventDefault();
+    return;
+  }
+  const first = visible[0];
+  const last = visible[visible.length - 1];
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault();
+    first.focus();
+  }
+}
+
+function focusModalClose(modal, selector) {
+  const closeBtn = modal.querySelector(selector);
+  if (closeBtn) closeBtn.focus();
+}
 
 // Open Gallery Modal
 function openGalleryModal(galleryId, event) {
@@ -1359,6 +1413,10 @@ function openGalleryModal(galleryId, event) {
   modal.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
 
+  // Move focus to the close button and remember where to restore it.
+  lastGalleryFocus = document.activeElement;
+  focusModalClose(modal, '.gallery-close');
+
   // Initialize Lucide icons for new elements
   if (typeof lucide !== 'undefined') {
     lucide.createIcons();
@@ -1382,6 +1440,12 @@ function closeGalleryModal() {
 
   currentGalleryData = null;
   currentImageIndex = 0;
+
+  // Restore focus to the element that opened the modal.
+  if (lastGalleryFocus && document.contains(lastGalleryFocus)) {
+    lastGalleryFocus.focus();
+  }
+  lastGalleryFocus = null;
 
   trackEvent('gallery', 'modal_close', '');
 }
@@ -1539,6 +1603,8 @@ document.addEventListener('keydown', (e) => {
   if (modal && modal.classList.contains('visible')) {
     if (e.key === 'Escape') {
       closeGalleryModal();
+    } else if (e.key === 'Tab') {
+      trapTabKey(modal, e);
     } else if (e.key === 'ArrowLeft') {
       navigateGallery(1); // RTL: left = next
     } else if (e.key === 'ArrowRight') {
@@ -1665,7 +1731,37 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --- 3D Tilt Effect Removed by User Request ---
+
+  // Accessibility fallback: ensure mouse-only cards are keyboard operable
+  // (static markup already carries tabindex/role; this covers dynamic content).
+  enhanceCardAccessibility();
 });
+
+// One delegated keydown listener for gallery + material cards (Enter/Space).
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const card = e.target && e.target.closest
+    ? e.target.closest('.gallery-item[data-gallery-id], .clickable-material')
+    : null;
+  if (!card) return;
+  // Let native controls (links/buttons/inputs inside) handle their own keys.
+  if (e.target !== card) return;
+  e.preventDefault();
+  if (card.classList.contains('clickable-material')) {
+    showMaterialBubble(card);
+  } else if (card.dataset.galleryId) {
+    openGalleryModal(card.dataset.galleryId, e);
+  }
+});
+
+function enhanceCardAccessibility() {
+  document
+    .querySelectorAll('.gallery-item[data-gallery-id], .clickable-material')
+    .forEach((el) => {
+      if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+      if (!el.hasAttribute('role')) el.setAttribute('role', 'button');
+    });
+}
 
 // ==============================
 // Facebook Slider Functionality
@@ -1825,6 +1921,8 @@ function initExitPrevention() {
 /**
  * Premium Modal System
  */
+let lastPremiumFocus = null;
+
 window.showPremiumModal = function (options = {}) {
   const {
     title = 'تنبيه',
@@ -1884,6 +1982,10 @@ window.showPremiumModal = function (options = {}) {
   modal.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
 
+  // Move focus to the close button and remember where to restore it.
+  lastPremiumFocus = document.activeElement;
+  focusModalClose(modal, '.premium-modal-close');
+
   // Re-init lucide
   if (window.lucide) lucide.createIcons();
 };
@@ -1895,7 +1997,24 @@ window.closePremiumModal = function () {
     modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
   }
+  // Restore focus to the element that opened the modal.
+  if (lastPremiumFocus && document.contains(lastPremiumFocus)) {
+    lastPremiumFocus.focus();
+  }
+  lastPremiumFocus = null;
 };
+
+// Keyboard support for the premium modal: Escape closes, Tab stays trapped.
+document.addEventListener('keydown', (e) => {
+  const modal = document.getElementById('premiumModal');
+  if (modal && modal.classList.contains('active')) {
+    if (e.key === 'Escape') {
+      closePremiumModal();
+    } else if (e.key === 'Tab') {
+      trapTabKey(modal, e);
+    }
+  }
+});
 
 /**
  * Gallery Zoom Logic
