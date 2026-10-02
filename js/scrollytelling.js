@@ -5,6 +5,12 @@
  */
 
 function initScrollytelling() {
+    // Respect users who prefer reduced motion: skip smooth scroll + animation.
+    if (typeof window !== 'undefined'
+        && typeof window.matchMedia === 'function'
+        && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        return;
+    }
     // Guard: CDN libraries load as window globals; fail silently if blocked
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
         console.warn('Scrollytelling disabled: GSAP/ScrollTrigger CDN failed to load.');
