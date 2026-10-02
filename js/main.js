@@ -679,11 +679,13 @@ document.addEventListener('DOMContentLoaded', function () {
   const preloader = document.getElementById('preloader');
   const slowNetworkMsg = document.getElementById('slowNetworkMsg');
 
-  // Asset tracking
-  const images = Array.from(document.images);
+  // Asset tracking (above-the-fold only: exclude lazy images)
+  const images = Array.from(document.images).filter(img => img.getAttribute('loading') !== 'lazy');
   const totalAssets = images.length + 1; // +1 for fonts
   let loadedAssets = 0;
   let currentProgress = 0;
+  let finished = false;
+  let hardCapTimer = null;
 
   function updateProgress() {
     loadedAssets++;
@@ -712,6 +714,9 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function finishLoading() {
+    if (finished) return;
+    finished = true;
+    if (hardCapTimer) clearTimeout(hardCapTimer);
     setTimeout(() => {
       if (preloader) {
         preloader.classList.add('hidden');
@@ -720,6 +725,9 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }, 400);
   }
+
+  // Hard cap: always finish within 2500 ms even if assets hang
+  hardCapTimer = setTimeout(finishLoading, 2500);
 
   // Slow Network fallback
   const networkTimer = setTimeout(() => {
