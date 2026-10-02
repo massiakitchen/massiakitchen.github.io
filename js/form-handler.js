@@ -2,22 +2,13 @@
 // Form Handling & Validation (ES module)
 // ==============================
 
-import { $, debounce, showNotification, trackEvent } from './main.js';
+import { $, debounce, showNotification, trackEvent, normalizeEgyptPhone, isValidEgyptPhone } from './main.js';
 
 // Enhanced contact form handler
 
-// Form validation functions
-function validateEmail(email) {
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return re.test(email);
-}
-
+// Local alias kept for readability; single source of truth lives in main.js.
 function validatePhone(phone) {
-  if (typeof phone !== 'string') return false;
-  const normalized = phone.replace(/[\s-]/g, '');
-  // Accept local (01[0125]...) and international (+20...) Egyptian formats.
-  // The auto-formatter below converts local numbers to +20..., so both must pass.
-  return /^(?:\+20|0)1[0125][0-9]{8}$/.test(normalized);
+  return isValidEgyptPhone(phone);
 }
 
 
@@ -83,6 +74,36 @@ function initFileUpload() {
   });
 }
 
+const MAX_UPLOAD_IMAGES = 3;
+const MAX_IMAGE_DIMENSION = 1280;
+
+// Downscale an image file in the browser to max 1280px (longest side),
+// returning a JPEG data URL (quality 0.8) for lightweight storage.
+function downscaleImage(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('تعذر قراءة الصورة'));
+    reader.onload = function (e) {
+      const img = new Image();
+      img.onerror = () => reject(new Error('تعذر قراءة الصورة'));
+      img.onload = function () {
+        let { width, height } = img;
+        const scale = Math.min(1, MAX_IMAGE_DIMENSION / Math.max(width, height));
+        width = Math.round(width * scale);
+        height = Math.round(height * scale);
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', 0.8));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 function handleFileSelect(event) {
   const files = event && event.target ? event.target.files : null;
   if (!files || files.length === 0) return;
@@ -98,25 +119,42 @@ function handleFileSelect(event) {
     container = previewContainer;
   }
 
-  Array.from(files).forEach(file => {
-    if (file.type.startsWith('image/')) {
-      const reader = new FileReader();
+  const remaining = MAX_UPLOAD_IMAGES - uploadedImages.length;
+  if (remaining <= 0) {
+    showNotification(`الحد الأقصى ${MAX_UPLOAD_IMAGES} صور فقط`, 'error');
+    event.target.value = '';
+    return;
+  }
 
-      reader.onload = function (e) {
-        const imageData = {
-          name: file.name,
-          data: e.target.result,
-          type: file.type
-        };
+  const newFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
+  if (newFiles.length === 0) {
+    event.target.value = '';
+    return;
+  }
 
-        uploadedImages.push(imageData);
-        createImagePreview(imageData);
-        updateFileUploadLabel();
+  if (newFiles.length > remaining) {
+    showNotification(`الحد الأقصى ${MAX_UPLOAD_IMAGES} صور فقط — تم إضافة أول ${remaining} صور`, 'info');
+  }
+
+  newFiles.slice(0, remaining).forEach(file => {
+    downscaleImage(file).then(dataUrl => {
+      if (uploadedImages.length >= MAX_UPLOAD_IMAGES) return;
+      const imageData = {
+        name: file.name,
+        data: dataUrl,
+        type: 'image/jpeg'
       };
 
-      reader.readAsDataURL(file);
-    }
+      uploadedImages.push(imageData);
+      createImagePreview(imageData);
+      updateFileUploadLabel();
+    }).catch(err => {
+      console.warn('Could not process image:', file.name, err);
+      showNotification(`تعذر معالجة الصورة: ${file.name}`, 'error');
+    });
   });
+
+  event.target.value = '';
 }
 
 function createImagePreview(imageData) {
@@ -170,21 +208,20 @@ function initFormValidation() {
   const phoneInput = document.getElementById('phone');
 
   if (phoneInput) {
+    // Format only on blur — never rewrite while typing so the caret stays put.
+    phoneInput.addEventListener('blur', function (e) {
+      const normalized = normalizeEgyptPhone(e.target.value.trim());
+      if (normalized) {
+        e.target.value = normalized;
+      }
+      e.target.style.borderColor = e.target.value && !isValidEgyptPhone(e.target.value)
+        ? '#f44336'
+        : '';
+    });
+
     phoneInput.addEventListener('input', function (e) {
-      let value = e.target.value.replace(/\D/g, '');
-
-      if (value.startsWith('0')) {
-        value = '+20' + value.substring(1);
-      }
-
-      if (value.startsWith('20')) {
-        value = '+' + value;
-      }
-
-      e.target.value = value;
-
-      // Real-time validation
-      if (value.length > 0 && !validatePhone(value)) {
+      // Real-time validation hint only; do not modify the value here.
+      if (e.target.value.length > 0 && !isValidEgyptPhone(e.target.value)) {
         e.target.style.borderColor = '#f44336';
       } else {
         e.target.style.borderColor = '';
@@ -322,12 +359,8 @@ async function handleForm(e) {
     const newWindow = window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
     if (newWindow) newWindow.opener = null;
 
-    // If there are images, show instructions
-    if (uploadedImages.length > 0) {
-      setTimeout(() => {
-        showNotification(`تم إرسال النص! يرجى إرسال ${uploadedImages.length} صورة يدويًا على واتساب`, 'info', 8000);
-      }, 1000);
-    }
+    // NOTE: the manual-attach reminder is shown BEFORE submit under the
+    // upload field (WhatsApp links cannot carry images), so no toast here.
 
     // Reset form
     form.reset();

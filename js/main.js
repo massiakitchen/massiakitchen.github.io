@@ -81,6 +81,29 @@ export function throttle(func, limit) {
   };
 }
 
+// Normalize an Egyptian phone number: strip spaces/dashes and unify the
+// country prefix (0... -> +20..., 20... -> +20..., 0020... -> +20...).
+// The local 01XXXXXXXXX form is preserved as-is so both forms stay valid.
+export function normalizeEgyptPhone(phone) {
+  if (typeof phone !== 'string') return '';
+  let value = phone.replace(/[\s-]/g, '');
+  if (/^0020(?=1)/.test(value)) {
+    value = '+20' + value.slice(4);
+  } else if (/^0(?=1)/.test(value)) {
+    value = '+20' + value.slice(1);
+  } else if (/^20(?=1)/.test(value)) {
+    value = '+' + value;
+  }
+  return value;
+}
+
+// Single shared Egyptian mobile validator. Accepts 01XXXXXXXXX and
+// +201XXXXXXXXX (after removing spaces/dashes).
+export function isValidEgyptPhone(phone) {
+  if (typeof phone !== 'string') return false;
+  return /^(?:\+20|0)1[0125][0-9]{8}$/.test(normalizeEgyptPhone(phone));
+}
+
 
 // Show notification function
 export function showNotification(message, type = 'info', duration = 5000) {
@@ -612,7 +635,7 @@ function initBookingSystem() {
       e.preventDefault();
 
       const name = this.querySelector('input[type="text"]')?.value || '';
-      const phone = this.querySelector('input[type="tel"]')?.value || '';
+      let phone = this.querySelector('input[type="tel"]')?.value || '';
       const date = this.querySelector('input[type="date"]')?.value || '';
 
       if (!name || !phone) {
@@ -624,9 +647,8 @@ function initBookingSystem() {
         return;
       }
 
-      // Egyptian Phone Validation
-      const egPhoneRegex = /^(010|011|012|015)[0-9]{8}$/;
-      if (!egPhoneRegex.test(phone.replace(/\s/g, ''))) {
+      // Egyptian Phone Validation (shared: accepts 01XXXXXXXXX and +201XXXXXXXXX)
+      if (!isValidEgyptPhone(phone)) {
         showPremiumModal({
           title: 'رقم خطأ',
           message: 'الرجاء إدخال رقم هاتف مصري صحيح (مثال: 010xxxxxxxx).',
@@ -634,6 +656,8 @@ function initBookingSystem() {
         });
         return;
       }
+
+      phone = normalizeEgyptPhone(phone);
 
       let message = `حجز استشارة مجانية:\nالاسم: ${name}\nالهاتف: ${phone}`;
       if (date) message += `\nالتاريخ المفضل: ${date}`;
@@ -1250,7 +1274,6 @@ function initComponents() {
   initKitchenTabs();
   initHero3DParallax();
   initFacebookSlider();
-  initExitPrevention();
 }
 
 function initHero3DParallax() {
@@ -1784,42 +1807,6 @@ function initFacebookSlider() {
     updateSlider();
     startAutoplay();
   }, 1000);
-}
-
-// Accidental Exit Prevention (Double back to exit)
-function initExitPrevention() {
-  let lastBackPress = 0;
-  const backPressThreshold = 2000; // 2 seconds
-
-  // Push a state to history to intercept the first back gesture
-  if (window.history && window.history.pushState) {
-    window.history.pushState('onSite', null, '');
-
-    window.addEventListener('popstate', function (event) {
-      const now = Date.now();
-
-      if (now - lastBackPress < backPressThreshold) {
-        // Double back pressed within threshold - allow exit
-        window.history.back();
-      } else {
-        // First back press or outside threshold - block and notify
-        window.history.pushState('onSite', null, ''); // Push back to stay on page
-        lastBackPress = now;
-
-        showNotification('اسحب مرة أخرى للخروج من الموقع', 'info');
-
-        // Track the blocked exit attempt
-        trackEvent('engagement', 'exit_blocked', 'back_gesture');
-      }
-    });
-  }
-
-  // Also handle beforeunload for desktop/tab closing consistency
-  window.addEventListener('beforeunload', function (e) {
-    // Note: most modern browsers only show a standard message, not custom ones
-    // but this helps if they have unsaved changes or just to be safe.
-    // However, the user specifically asked for gesture support, so popstate is key.
-  });
 }
 
 /**
