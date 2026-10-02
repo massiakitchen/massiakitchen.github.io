@@ -611,9 +611,9 @@ function initBookingSystem() {
     bookingForm.addEventListener('submit', function (e) {
       e.preventDefault();
 
-      const name = this.querySelector('input[type="text"]').value;
-      const phone = this.querySelector('input[type="tel"]').value;
-      const date = this.querySelector('input[type="date"]').value;
+      const name = this.querySelector('input[type="text"]')?.value || '';
+      const phone = this.querySelector('input[type="tel"]')?.value || '';
+      const date = this.querySelector('input[type="date"]')?.value || '';
 
       if (!name || !phone) {
         showPremiumModal({
@@ -635,7 +635,8 @@ function initBookingSystem() {
         return;
       }
 
-      const message = `حجز استشارة مجانية:\nالاسم: ${name}\nالهاتف: ${phone}\nالتاريخ المفضل: ${date || 'غير محدد'}`;
+      let message = `حجز استشارة مجانية:\nالاسم: ${name}\nالهاتف: ${phone}`;
+      if (date) message += `\nالتاريخ المفضل: ${date}`;
       const whatsappUrl = `https://wa.me/201092497811?text=${encodeURIComponent(message)}`;
 
       window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
@@ -1287,10 +1288,10 @@ function openGalleryModal(galleryId, event) {
   const galleryCard = document.querySelector(`[data-gallery-id="${galleryId}"]`);
   if (!galleryCard) return;
 
-  // Get data from card attributes
-  const title = galleryCard.dataset.title;
-  const description = galleryCard.dataset.description;
-  const price = galleryCard.dataset.price;
+  // Get data from card attributes (fall back to '' so the modal never shows "undefined")
+  const title = galleryCard.dataset.title || '';
+  const description = galleryCard.dataset.description || '';
+  const price = galleryCard.dataset.price || '';
   // Parse images safely with fallback
   let images = [];
   try {

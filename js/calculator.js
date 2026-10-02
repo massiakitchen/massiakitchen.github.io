@@ -70,7 +70,7 @@ function updateCalculator() {
   const totalCost = manufacturingCost + addonsCost + appliancesCost + PRICE_CONFIG.installation;
 
   // Update UI
-  updateCalculatorUI(totalCost, manufacturingCost, materialCost, PRICE_CONFIG.installation, addonsCost);
+  updateCalculatorUI(totalCost, manufacturingCost, materialCost, PRICE_CONFIG.installation, addonsCost, 'area');
 }
 
 function updateCalculatorByDimensions() {
@@ -119,7 +119,7 @@ function updateCalculatorByDimensions() {
   const totalCost = manufacturingCost + addonsCost + appliancesCost + PRICE_CONFIG.installation;
 
   // Update UI
-  updateCalculatorUI(totalCost, manufacturingCost, materialCost, PRICE_CONFIG.installation, addonsCost);
+  updateCalculatorUI(totalCost, manufacturingCost, materialCost, PRICE_CONFIG.installation, addonsCost, 'dimensions');
 }
 
 function setTextSafe(selector, text, title) {
@@ -129,25 +129,24 @@ function setTextSafe(selector, text, title) {
   if (title) el.title = title;
 }
 
-function updateCalculatorUI(total, manufacturing, material, installation, addons = 0) {
+function updateCalculatorUI(total, manufacturing, material, installation, addons = 0, tab = 'area') {
   const safeTotal = Number(total) || 0;
   const safeManufacturing = Number(manufacturing) || 0;
   const safeMaterial = Number(material) || 0;
   const safeInstallation = Number(installation) || 0;
   const safeAddons = Number(addons) || 0;
 
-  // Area tab + dimensions tab panels stay in sync (guard: each panel may be absent)
-  setTextSafe('#estimated-cost', `${formatNumber(safeTotal)} جنيه`);
-  setTextSafe('#estimated-cost-dimensions', `${formatNumber(safeTotal)} جنيه`);
-  setTextSafe('#manufacturing-cost', `${formatNumber(safeManufacturing)} ج`);
-  setTextSafe('#manufacturing-cost-dimensions', `${formatNumber(safeManufacturing)} ج`);
+  // Each tab renders only its own panel (guard: each panel may be absent)
+  const suffix = tab === 'dimensions' ? '-dimensions' : '';
+  setTextSafe(`#estimated-cost${suffix}`, `${formatNumber(safeTotal)} جنيه`);
+  setTextSafe(`#manufacturing-cost${suffix}`, `${formatNumber(safeManufacturing)} ج`);
   // materialCost = 40% of manufacturing — estimate for display only
   const materialNote = '40% من تكلفة التصنيع — رقم تقديري للعرض فقط';
-  setTextSafe('#material-cost', `${formatNumber(safeMaterial)} ج (تقديري)`, materialNote);
-  setTextSafe('#material-cost-dimensions', `${formatNumber(safeMaterial)} ج (تقديري)`, materialNote);
-  setTextSafe('#installation-cost', `${formatNumber(safeInstallation)} ج`);
-  setTextSafe('#installation-cost-dimensions', `${formatNumber(safeInstallation)} ج`);
-  setTextSafe('#addons-cost', `${formatNumber(safeAddons)} ج`);
+  setTextSafe(`#material-cost${suffix}`, `${formatNumber(safeMaterial)} ج (تقديري)`, materialNote);
+  setTextSafe(`#installation-cost${suffix}`, `${formatNumber(safeInstallation)} ج`);
+  if (tab === 'area') {
+    setTextSafe('#addons-cost', `${formatNumber(safeAddons)} ج`);
+  }
 }
 
 function updateRecommendation() {
@@ -367,8 +366,9 @@ function initCalculator() {
     updateRecommendation();
   };
 
-  // Initial calculation
+  // Initial calculation (both panels so each tab shows its own total on load)
   updateCalculator();
+  updateCalculatorByDimensions();
   updateRecommendation();
 }
 
@@ -376,7 +376,10 @@ function initCalculator() {
 function requestDetailedQuote() {
   const data = appState.calculatorData || {};
   const activeTab = $('.calculator-tab.active')?.getAttribute('data-tab') || 'area';
-  const totalCost = $('#estimated-cost')?.textContent || $('#estimated-cost-dimensions')?.textContent || 'غير محدد';
+  // Use the ACTIVE tab's total (fall back to the other panel if absent)
+  const totalCost = activeTab === 'area'
+    ? ($('#estimated-cost')?.textContent || $('#estimated-cost-dimensions')?.textContent || 'غير محدد')
+    : ($('#estimated-cost-dimensions')?.textContent || $('#estimated-cost')?.textContent || 'غير محدد');
 
   // Map material to Arabic
   const materialLabels = {
