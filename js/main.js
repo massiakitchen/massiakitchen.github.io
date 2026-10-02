@@ -1681,6 +1681,29 @@ function initFacebookSlider() {
 
   if (!wrapper || slides.length === 0) return;
 
+  // Click-to-load facades: inject the original iframe (same src/title/attributes) only on click
+  wrapper.querySelectorAll('.fb-facade').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const src = btn.dataset.src;
+      if (!src || btn.dataset.loaded === 'true') return;
+      btn.dataset.loaded = 'true';
+      const iframe = document.createElement('iframe');
+      iframe.title = btn.dataset.title || 'منشور من صفحة الماسية للمطابخ على فيسبوك';
+      iframe.src = src;
+      iframe.width = btn.dataset.width || '500';
+      iframe.height = btn.dataset.height || '600';
+      iframe.setAttribute('style', 'border:none;overflow:hidden');
+      iframe.setAttribute('scrolling', 'no');
+      iframe.setAttribute('frameborder', '0');
+      iframe.setAttribute('allowfullscreen', 'true');
+      iframe.setAttribute('allow', 'autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share');
+      iframe.setAttribute('loading', 'lazy');
+      btn.replaceWith(iframe);
+      updateSlider();
+      setTimeout(updateSlider, 500);
+    }, { once: true });
+  });
+
   let currentIndex = 0;
   const slideCount = slides.length;
 
@@ -1694,21 +1717,40 @@ function initFacebookSlider() {
 
   const dots = document.querySelectorAll('.fb-dot');
 
+  function getFbGap() {
+    const style = getComputedStyle(wrapper);
+    return parseFloat(style.columnGap || style.gap) || 0;
+  }
+
+  function getFbTargetLeft(target) {
+    // Physical layout position of the target slide relative to the wrapper (RTL-safe).
+    if (target.offsetParent === wrapper) return target.offsetLeft;
+    if (target.offsetParent && target.offsetParent === wrapper.offsetParent) {
+      return target.offsetLeft - wrapper.offsetLeft - (wrapper.clientLeft || 0);
+    }
+    // Fallback: accumulate real widths + real computed gap (handles differing reel/post widths).
+    const gap = getFbGap();
+    let left = 0;
+    for (let i = 0; i < currentIndex; i++) {
+      left += slides[i].offsetWidth + gap;
+    }
+    return left;
+  }
+
   function updateSlider() {
     if (slides.length === 0) return;
 
-    const slide = slides[0];
-    const slideWidth = slide.offsetWidth || (container.offsetWidth - 100); // Fallback
-    const gap = 50;
+    const target = slides[currentIndex];
+    if (!target) return;
+    getFbGap(); // read real computed gap (20px mobile / 50px desktop); positions below already include it
+    const targetWidth = target.offsetWidth || (container.offsetWidth - 100); // Fallback
+    const targetLeft = getFbTargetLeft(target);
+    const wrapperLeft = wrapper.offsetLeft || 0;
 
-    const isRTL = getComputedStyle(document.body).direction === 'rtl';
-    const containerWidth = container.offsetWidth;
-    const centerOffset = (containerWidth / 2) - (slideWidth / 2);
-
-    const offset = currentIndex * (slideWidth + gap);
-
-    // Applying offset with centering
-    const finalTranslate = isRTL ? (offset - centerOffset) : -(offset - centerOffset);
+    // Center the target slide in the container using physical coordinates (works in RTL).
+    const containerCenter = container.offsetWidth / 2;
+    const targetCenter = wrapperLeft + targetLeft + targetWidth / 2;
+    const finalTranslate = containerCenter - targetCenter;
     wrapper.style.transform = `translateX(${finalTranslate}px)`;
 
     // Update active class for CSS effects
