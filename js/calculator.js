@@ -153,7 +153,7 @@ function updateRecommendation() {
   const areaEl = document.getElementById('kitchen-area');
   const materialEl = document.getElementById('material-type');
   const area = areaEl ? (parseInt(areaEl.value, 10) || 0) : 0;
-  const material = materialEl ? materialEl.value : 'standard';
+  const material = materialEl ? materialEl.value : (appState.calculatorData && appState.calculatorData.material) || 'standard';
 
   let recommendedMaterial = 'شيت ألومنيوم';
   let reason = 'مثالي للمساحات المتوسطة، يجمع بين المتانة والسعر المعقول';
@@ -175,6 +175,14 @@ function updateRecommendation() {
   if (recommendedEl) recommendedEl.textContent = recommendedMaterial;
   const reasonEl = document.getElementById('recommendation-reason');
   if (reasonEl) reasonEl.textContent = reason;
+}
+
+// Single refresh path: every input change updates BOTH panels + recommendation.
+// Both tabs share appState.calculatorData, so both totals must re-render.
+function refreshCalculator() {
+  updateCalculator();
+  updateCalculatorByDimensions();
+  updateRecommendation();
 }
 
 function initCalculator() {
@@ -222,8 +230,7 @@ function initCalculator() {
       const value = e.target.value;
       appState.calculatorData.area = parseInt(value, 10) || 0;
       areaValue.textContent = `${value} م²`;
-      updateCalculator();
-      updateRecommendation();
+      refreshCalculator();
     });
   }
 
@@ -231,8 +238,9 @@ function initCalculator() {
   if (materialSelect) {
     materialSelect.addEventListener('change', (e) => {
       appState.calculatorData.material = e.target.value;
-      updateCalculator();
-      updateRecommendation();
+      const other = document.getElementById('material-type-dimensions');
+      if (other && other.value !== e.target.value) other.value = e.target.value;
+      refreshCalculator();
     });
   }
 
@@ -241,7 +249,9 @@ function initCalculator() {
   if (materialSelectDimensions) {
     materialSelectDimensions.addEventListener('change', (e) => {
       appState.calculatorData.material = e.target.value;
-      updateCalculatorByDimensions();
+      const other = document.getElementById('material-type');
+      if (other && other.value !== e.target.value) other.value = e.target.value;
+      refreshCalculator();
     });
   }
 
@@ -251,7 +261,7 @@ function initCalculator() {
       const value = e.target.value;
       appState.calculatorData.drawers = parseInt(value, 10) || 0;
       drawersValue.textContent = `${value} قطعة`;
-      updateCalculator();
+      refreshCalculator();
     });
   }
 
@@ -260,11 +270,11 @@ function initCalculator() {
     checkbox.addEventListener('change', (e) => {
       const value = e.target.value;
       if (e.target.checked) {
-        appState.calculatorData.addons.push(value);
+        if (!appState.calculatorData.addons.includes(value)) appState.calculatorData.addons.push(value);
       } else {
         appState.calculatorData.addons = appState.calculatorData.addons.filter(addon => addon !== value);
       }
-      updateCalculator();
+      refreshCalculator();
     });
   });
 
@@ -273,11 +283,11 @@ function initCalculator() {
     checkbox.addEventListener('change', (e) => {
       const value = e.target.value;
       if (e.target.checked) {
-        appState.calculatorData.appliances.push(value);
+        if (!appState.calculatorData.appliances.includes(value)) appState.calculatorData.appliances.push(value);
       } else {
         appState.calculatorData.appliances = appState.calculatorData.appliances.filter(app => app !== value);
       }
-      updateCalculator();
+      refreshCalculator();
     });
   });
 
@@ -285,14 +295,14 @@ function initCalculator() {
   if (lengthInput) {
     lengthInput.addEventListener('input', (e) => {
       appState.calculatorData.length = parseFloat(e.target.value) || 0;
-      updateCalculatorByDimensions();
+      refreshCalculator();
     });
   }
 
   if (widthInput) {
     widthInput.addEventListener('input', (e) => {
       appState.calculatorData.width = parseFloat(e.target.value) || 0;
-      updateCalculatorByDimensions();
+      refreshCalculator();
     });
   }
 
@@ -301,7 +311,7 @@ function initCalculator() {
       const value = e.target.value;
       appState.calculatorData.wallCabinets = parseInt(value, 10) || 0;
       wallCabinetsValue.textContent = `${value} وحدة`;
-      updateCalculatorByDimensions();
+      refreshCalculator();
     });
   }
 
@@ -310,7 +320,7 @@ function initCalculator() {
       const value = e.target.value;
       appState.calculatorData.baseCabinets = parseInt(value, 10) || 0;
       baseCabinetsValue.textContent = `${value} وحدة`;
-      updateCalculatorByDimensions();
+      refreshCalculator();
     });
   }
 
@@ -319,11 +329,11 @@ function initCalculator() {
     checkbox.addEventListener('change', (e) => {
       const value = e.target.value;
       if (e.target.checked) {
-        appState.calculatorData.addons.push(value);
+        if (!appState.calculatorData.addons.includes(value)) appState.calculatorData.addons.push(value);
       } else {
         appState.calculatorData.addons = appState.calculatorData.addons.filter(addon => addon !== value);
       }
-      updateCalculatorByDimensions();
+      refreshCalculator();
     });
   });
 
@@ -360,16 +370,12 @@ function initCalculator() {
       }
     });
 
-    // Trigger recalculation
-    updateCalculator();
-    updateCalculatorByDimensions();
-    updateRecommendation();
+    // Trigger recalculation (both panels + recommendation)
+    refreshCalculator();
   };
 
   // Initial calculation (both panels so each tab shows its own total on load)
-  updateCalculator();
-  updateCalculatorByDimensions();
-  updateRecommendation();
+  refreshCalculator();
 }
 
 // Request detailed quote

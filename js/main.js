@@ -1178,7 +1178,12 @@ function initEnhancedFAQ() {
   }
 }
 
+function escapeRegExp(string) {
+  return String(string).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 function highlightSearchTerm(element, term) {
+  if (!term) return;
   const walker = document.createTreeWalker(
     element,
     NodeFilter.SHOW_TEXT,
@@ -1188,26 +1193,42 @@ function highlightSearchTerm(element, term) {
 
   const nodes = [];
   let node;
+  const lowerTerm = String(term).toLowerCase();
   while (node = walker.nextNode()) {
-    if (node.textContent.toLowerCase().includes(term)) {
+    if (node.textContent.toLowerCase().includes(lowerTerm)) {
       nodes.push(node);
     }
   }
 
   nodes.forEach(textNode => {
-    const span = document.createElement('span');
-    span.className = 'search-highlight';
-    span.style.backgroundColor = 'rgba(212,175,55,0.3)';
-    span.style.padding = '0.1rem 0.2rem';
-    span.style.borderRadius = '3px';
-
     const text = textNode.textContent;
-    const regex = new RegExp(term, 'gi');
-    const newText = text.replace(regex, match => `<span class="search-highlight">${match}</span>`);
+    const regex = new RegExp(escapeRegExp(term), 'gi');
+    const fragment = document.createDocumentFragment();
+    let lastIndex = 0;
+    let match;
+    let found = false;
 
-    const wrapper = document.createElement('span');
-    wrapper.innerHTML = newText;
-    textNode.parentNode.replaceChild(wrapper, textNode);
+    while ((match = regex.exec(text)) !== null) {
+      found = true;
+      if (match.index > lastIndex) {
+        fragment.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
+      }
+      const span = document.createElement('span');
+      span.className = 'search-highlight';
+      span.style.backgroundColor = 'rgba(212,175,55,0.3)';
+      span.style.padding = '0.1rem 0.2rem';
+      span.style.borderRadius = '3px';
+      span.textContent = match[0];
+      fragment.appendChild(span);
+      lastIndex = match.index + match[0].length;
+      if (match[0].length === 0) regex.lastIndex++;
+    }
+
+    if (!found) return;
+    if (lastIndex < text.length) {
+      fragment.appendChild(document.createTextNode(text.slice(lastIndex)));
+    }
+    textNode.parentNode.replaceChild(fragment, textNode);
   });
 }
 

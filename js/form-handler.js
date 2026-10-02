@@ -125,14 +125,25 @@ function createImagePreview(imageData) {
   const preview = document.createElement('div');
   preview.className = 'image-preview';
 
-  preview.innerHTML = `
-    <img src="${imageData.data}" alt="${imageData.name}">
-    <button type="button" class="remove-image" onclick="removeImage('${imageData.name}')">
-      <i data-lucide="x"></i>
-    </button>
-  `;
+  const img = document.createElement('img');
+  img.src = imageData.data;
+  img.alt = imageData.name;
+  preview.appendChild(img);
+
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'remove-image';
+  button.setAttribute('aria-label', 'إزالة الصورة');
+  const icon = document.createElement('i');
+  icon.setAttribute('data-lucide', 'x');
+  button.appendChild(icon);
+  button.addEventListener('click', () => removeImage(imageData.name));
+  preview.appendChild(button);
 
   container.appendChild(preview);
+  if (window.lucide && typeof window.lucide.createIcons === 'function') {
+    window.lucide.createIcons();
+  }
 }
 
 function removeImage(fileName) {
