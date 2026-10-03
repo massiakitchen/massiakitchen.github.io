@@ -1,1 +1,79 @@
-{}
+{
+  "companyName": "الماسية للمطابخ",
+  "brand": {
+    "title": "الماسية للمطابخ والدريسينج",
+    "tagline": "تصميم عصري • جودة عالية • تنفيذ متقن",
+    "logoLight": {
+      "webp": "images/logo-light.webp",
+      "png": "images/logo-light.png",
+      "alt": "شعار الماسية للمطابخ"
+    },
+    "logoDark": {
+      "webp": "images/logo-dark.webp",
+      "png": "images/logo-dark.png",
+      "alt": "شعار الماسية للمطابخ"
+    }
+  },
+  "nav": {
+    "main": [
+      { "label": "الخامات والأسعار", "href": "#materials" },
+      { "label": "احسب التكلفة", "href": "#calculator" },
+      { "label": "لماذا تختارنا", "href": "#why-us" },
+      { "label": "أعمالنا", "href": "#works" },
+      { "label": "فروعنا", "href": "#branches" },
+      { "label": "آراء العملاء", "href": "#reviews" }
+    ],
+    "mobile": [
+      { "label": "الخامات والأسعار", "href": "#materials" },
+      { "label": "حاسبة التكلفة", "href": "#calculator" },
+      { "label": "لماذا تختارنا", "href": "#why-us" },
+      { "label": "أعمالنا", "href": "#works" },
+      { "label": "فروعنا", "href": "#branches" },
+      { "label": "آراء العملاء", "href": "#reviews" },
+      { "label": "تواصل معنا", "href": "#contact" }
+    ]
+  },
+  "contact": {
+    "phoneDisplay": "01092497811",
+    "phoneHref": "tel:+201092497811",
+    "whatsapp": "201092497811",
+    "email": "massiakitchen@gmail.com",
+    "facebook": "https://www.facebook.com/MassiaKitchen",
+    "address": "المنصورة - شارع عبد السلام عارف",
+    "hours": "9 ص - 9 م طوال الأسبوع",
+    "warranty": "ضمان 10 سنوات"
+  },
+  "footer": {
+    "aboutText": "نحو مطبخ أحلامك بجودة لا تضاهى وتصميمات تناسب كل الأذواق. نقدم حلولاً متكاملة من التصميم إلى التركيب بضمان 10 سنوات.",
+    "quickLinksTitle": "روابط سريعة",
+    "quickLinks": [
+      { "label": "الخامات والأسعار", "href": "#materials" },
+      { "label": "حاسبة التكلفة", "href": "#calculator" },
+      { "label": "لماذا تختارنا", "href": "#why-us" },
+      { "label": "أعمالنا", "href": "#works" },
+      { "label": "اتصل بنا", "href": "#contact" }
+    ],
+    "servicesTitle": "خدماتنا",
+    "services": [
+      { "label": "خشب طبيعي", "href": "#materials" },
+      { "label": "دريسينج رووم", "href": "#materials" },
+      { "label": "وحدات الحمام", "href": "#materials" },
+      { "label": "الصيانة", "href": "#why-us" },
+      { "label": "الاستشارات", "href": "#why-us" }
+    ],
+    "contactTitle": "معلومات الاتصال",
+    "copyright": "شركة الماسية للمطابخ. جميع الحقوق محفوظة.",
+    "developerText": "تم التطوير بواسطة",
+    "creditName": "Shafik Salah",
+    "creditHref": "https://www.linkedin.com/in/shafiksalah",
+    "legal": [
+      { "label": "سياسة الخصوصية", "href": "privacy.html" },
+      { "label": "الشروط والأحكام", "href": "terms.html" }
+    ]
+  },
+  "chrome": {
+    "skipLink": { "label": "انتقل إلى المحتوى الرئيسي", "href": "#main" },
+    "themeToggleLabel": "تبديل الوضع",
+    "whatsappLabel": "تواصل عبر واتساب"
+  }
+}
