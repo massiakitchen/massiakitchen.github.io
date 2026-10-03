@@ -16,5 +16,6 @@ export default defineConfig({
   webServer: [
     { command: 'node tests/parity/serve-static.mjs .parity/baseline 4300', url: 'http://127.0.0.1:4300/', reuseExistingServer: true, cwd: root },
     { command: 'node tests/parity/serve-static.mjs .parity/baseline 4301', url: 'http://127.0.0.1:4301/', reuseExistingServer: true, cwd: root },
+    { command: 'npm run build && npm run start', url: 'http://127.0.0.1:3100/', reuseExistingServer: true, timeout: 300_000, cwd: root },
   ],
 });

@@ -2,7 +2,7 @@
 // Service Worker for PWA
 // ==============================
 
-const CACHE_NAME = 'almassia-kitchens-v4.1'; // Bump: navigation network-first, images SWR, resilient precache
+const CACHE_NAME = 'almassia-kitchens-v5-next'; // Bump: navigation network-first, images SWR, resilient precache
 const urlsToCache = [
   '/',
   '/index.html',
@@ -21,6 +21,8 @@ const urlsToCache = [
   '/css/responsive.css',
   '/css/scrollytelling.css',
   '/js/main.js',
+  '/js/entry.js',
+  '/js/actions.js',
   '/js/calculator.js',
   '/js/form-handler.js',
   '/js/scrollytelling.js'
