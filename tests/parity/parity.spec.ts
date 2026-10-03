@@ -3,9 +3,10 @@ import { expect, test } from '@playwright/test';
 import pixelmatch from 'pixelmatch';
 import { PNG } from 'pngjs';
 import { captureAll, preparePage, SCROLL_POINTS, WIDTHS } from './capture';
+import { PORTS } from './ports';
 
-const BASELINE = process.env.BASELINE_URL ?? 'http://127.0.0.1:4300/';
-const CANDIDATE = process.env.CANDIDATE_URL ?? 'http://127.0.0.1:3100/';
+const BASELINE = process.env.BASELINE_URL ?? `http://127.0.0.1:${PORTS.baseline}/`;
+const CANDIDATE = process.env.CANDIDATE_URL ?? `http://127.0.0.1:${PORTS.next}/`;
 const MAX_DIFF_RATIO = 0.005;
 
 for (const width of WIDTHS) {
