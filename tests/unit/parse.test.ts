@@ -1,3 +1,4 @@
+import { load } from 'cheerio';
 import { describe, expect, test } from 'vitest';
 import { legacyDocument } from '@/lib/legacy/parse';
 
@@ -14,7 +15,17 @@ describe('legacyDocument', () => {
     // Script-aware check: the literal string "src/main.js" still appears in a
     // legacy head *comment* (kept verbatim), so match <script> tags, not raw text.
     expect(all).not.toMatch(/<script[^>]*(gsap\.min\.js|lucide\.min\.js|src\/main\.js)/);
-    expect(all).toMatch(/application\/ld\+json/);
+  });
+  test('seo tags moved to layout are stripped from the verbatim head', () => {
+    const $ = load(`<head>${doc.headHtml}</head>`);
+    expect($('title').length).toBe(0);
+    expect($('script[type="application/ld+json"]').length).toBe(0);
+    expect($('meta[property^="og:"]').length).toBe(0);
+    expect($('meta[name^="twitter:"]').length).toBe(0);
+    expect($('link[rel="canonical"]').length).toBe(0);
+    expect($('meta[name="description"]').length).toBe(0);
+    // Everything else (stylesheets, preconnects, icons, inline styles) stays verbatim.
+    expect($('link[rel="stylesheet"]').length).toBeGreaterThan(0);
   });
   test('lightbox top-level onclick converted', () => {
     const lb = doc.blocks.find((b) => b.key === 'lightbox')!;

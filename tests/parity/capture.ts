@@ -40,6 +40,19 @@ export async function captureAll(page: Page, url: string): Promise<Buffer[]> {
   await page.goto(url, { waitUntil: 'load' });
   await page.waitForFunction(() => document.body.classList.contains('loaded'), null, { timeout: 15000 });
   await settle(page, 2500);
+  // Below-the-fold sections use content-visibility: auto (legacy main.css), so they
+  // render as ~800px placeholders until scrolled near, then materialize and grow the
+  // page — a scrollTo(max) computed before that lands above the true position, and
+  // the two pages can land in different places depending on asset timing. Render
+  // them up front instead: visually identical for every captured region (those parts
+  // are near the viewport, hence fully rendered either way), but scrollHeight is
+  // final before the first screenshot, so every scroll fraction lands deterministically.
+  await page.evaluate(() => {
+    document
+      .querySelectorAll('#works, #facebook-slider, #branches, #reviews, #faq, #contact')
+      .forEach((el) => ((el as HTMLElement).style.contentVisibility = 'visible'));
+  });
+  await settle(page);
   const shots: Buffer[] = [];
   for (const point of SCROLL_POINTS) {
     await page.evaluate((p) => {
@@ -47,6 +60,17 @@ export async function captureAll(page: Page, url: string): Promise<Buffer[]> {
       window.scrollTo({ top: Math.round(max * p), behavior: 'instant' as ScrollBehavior });
     }, point);
     await settle(page);
+    // Icon race guard: entry.js converts <i data-lucide> to <svg> asynchronously
+    // after downloading lucide from a CDN, while React hydration walks the same
+    // tree; tail nodes converted before hydration reaches them get reverted to <i>
+    // and stay unconverted (silently). The legacy baseline has the identical race,
+    // so force the intended steady state — everything converted — right before
+    // every screenshot instead of screenshotting a transient.
+    await page.evaluate(() => {
+      const lucide = (window as unknown as { lucide?: { createIcons?: () => void } }).lucide;
+      lucide?.createIcons?.();
+    });
+    await settle(page, 500);
     shots.push(await page.screenshot({ animations: 'disabled', caret: 'hide', mask: [page.locator(MASK)] }));
   }
   return shots;
