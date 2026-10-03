@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://massiakitchen.github.io/sitemap.xml
+Disallow: /admin/
+
+Sitemap: https://massiakitchen.vercel.app/sitemap.xml

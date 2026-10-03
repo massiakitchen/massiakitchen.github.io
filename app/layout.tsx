@@ -1,11 +1,10 @@
 import Script from 'next/script';
-import { createElement, type ReactNode } from 'react';
-import { attrsToProps } from '@/lib/legacy/attrs';
-import { headChildren } from '@/lib/legacy/parse';
+import type { ReactNode } from 'react';
 import { loadSite } from '@/lib/content/load';
 import { settingsSchema } from '@/lib/content/settings';
 import type { Fields as FaqFields } from '@/lib/content/sections/faq';
 import { faqJsonLd, localBusinessJsonLd, serviceJsonLd } from '@/lib/seo/jsonld';
+import { HeadStatic } from '@/components/site/HeadStatic';
 
 // Legacy-identical Open Graph / Twitter literals with no editable settings field yet
 // (settings.seo only carries title/description/keywords/ogImage/url per the Phase 0 plan).
@@ -16,18 +15,8 @@ const OG_DESCRIPTION =
 const OG_SITE_NAME = 'الماسية للمطابخ';
 const OG_IMAGE_ALT = 'الماسية للمطابخ - تصميم وتنفيذ مطابخ';
 
-// The rest of the legacy <head> (meta, links, inline styles, noscript) reproduced verbatim.
-function HeadRemainder() {
-  return (
-    <>
-      {headChildren().map((n, i) => {
-        const props: Record<string, unknown> = { key: i, ...attrsToProps(n.attrs) };
-        if (n.html) props.dangerouslySetInnerHTML = { __html: n.html };
-        return createElement(n.tag, props);
-      })}
-    </>
-  );
-}
+// The rest of the legacy <head> (meta, links, inline styles, noscript),
+// reproduced verbatim as explicit JSX in components/site/HeadStatic.tsx.
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   const site = loadSite();
@@ -68,7 +57,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(faq)) }}
         />
-        <HeadRemainder />
+        <HeadStatic />
       </head>
       <body>
         {children}
