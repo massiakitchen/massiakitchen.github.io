@@ -1,6 +1,2 @@
 node_modules/
 dist/
-.next/
-.parity/
-test-results/
-playwright-report/

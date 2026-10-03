@@ -1,6 +1,0 @@
-User-agent: *
-Allow: /
-
-Disallow: /admin/
-
-Sitemap: https://massiakitchen.vercel.app/sitemap.xml
