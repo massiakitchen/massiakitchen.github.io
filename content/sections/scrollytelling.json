@@ -1,1 +1,246 @@
-{}
+{
+  "welcome": "أهلاً بك في شركة",
+  "title": "الماسية للمطابخ",
+  "badges": [
+    {
+      "icon": "layers",
+      "text": "ألومنيوم"
+    },
+    {
+      "icon": "tree-pine",
+      "text": "خشب"
+    },
+    {
+      "icon": "shirt",
+      "text": "دريسينج"
+    },
+    {
+      "icon": "palette",
+      "text": "ديكور"
+    },
+    {
+      "icon": "bath",
+      "text": "وحدات حمام"
+    },
+    {
+      "icon": "tv",
+      "text": "وحدات شاشة"
+    },
+    {
+      "icon": "layout-grid",
+      "text": "شبابيك"
+    }
+  ],
+  "footTrust": [
+    {
+      "icon": "shield-check",
+      "text": "ضمان 10 سنوات"
+    },
+    {
+      "icon": "award",
+      "text": "خامات أصلية"
+    }
+  ],
+  "cta": {
+    "href": "#materials",
+    "text": "ابدأ الأن"
+  },
+  "parallax": [
+    {
+      "cls": "p-item p-1",
+      "speed": "0.2",
+      "media": {
+        "kind": "picture",
+        "source": {
+          "srcset": "images/Aluminum/massia1-1-600.webp 600w, images/Aluminum/massia1-1.webp 1200w",
+          "sizes": "300px",
+          "type": "image/webp"
+        },
+        "img": {
+          "loading": "eager",
+          "fetchpriority": "high",
+          "decoding": "async",
+          "src": "images/Aluminum/massia1-1-600.jpg",
+          "srcset": "images/Aluminum/massia1-1-600.jpg 600w, images/Aluminum/massia1-1.png 1200w",
+          "sizes": "300px",
+          "alt": "مطبخ ألومنيوم حديث",
+          "width": "800",
+          "height": "600"
+        }
+      }
+    },
+    {
+      "cls": "p-item p-2",
+      "speed": "0.5",
+      "media": {
+        "kind": "img",
+        "img": {
+          "loading": "lazy",
+          "decoding": "async",
+          "src": "images/Aluminum/1-600.webp",
+          "srcset": "images/Aluminum/1-600.webp 600w, images/Aluminum/1.webp 1200w",
+          "sizes": "300px",
+          "alt": "مطبخ ألومنيوم رمادي",
+          "width": "400",
+          "height": "300"
+        }
+      }
+    },
+    {
+      "cls": "p-item p-3",
+      "speed": "0.3",
+      "media": {
+        "kind": "img",
+        "img": {
+          "loading": "lazy",
+          "decoding": "async",
+          "src": "images/Wood/1-600.webp",
+          "srcset": "images/Wood/1-600.webp 600w, images/Wood/1.webp 1200w",
+          "sizes": "300px",
+          "alt": "مطبخ خشب بنمط مودرن",
+          "width": "400",
+          "height": "300"
+        }
+      }
+    },
+    {
+      "cls": "p-item p-4",
+      "speed": "0.8",
+      "media": {
+        "kind": "img",
+        "img": {
+          "loading": "lazy",
+          "decoding": "async",
+          "src": "images/Aluminum/2-600.webp",
+          "srcset": "images/Aluminum/2-600.webp 600w, images/Aluminum/2.webp 1200w",
+          "sizes": "300px",
+          "alt": "مطبخ ألومنيوم أنيق",
+          "width": "400",
+          "height": "300"
+        }
+      }
+    },
+    {
+      "cls": "p-item p-5",
+      "speed": "0.4",
+      "media": {
+        "kind": "img",
+        "img": {
+          "loading": "lazy",
+          "decoding": "async",
+          "src": "images/Wood/2-600.webp",
+          "srcset": "images/Wood/2-600.webp 600w, images/Wood/2.webp 1200w",
+          "sizes": "300px",
+          "alt": "مطبخ خشب أبيض",
+          "width": "400",
+          "height": "300"
+        }
+      }
+    },
+    {
+      "cls": "p-item p-6",
+      "speed": "0.6",
+      "media": {
+        "kind": "img",
+        "img": {
+          "loading": "lazy",
+          "decoding": "async",
+          "src": "images/Aluminum/11-600.webp",
+          "srcset": "images/Aluminum/11-600.webp 600w, images/Aluminum/11.webp 1200w",
+          "sizes": "300px",
+          "alt": "مطبخ ألومنيوم فاخر",
+          "width": "400",
+          "height": "300"
+        }
+      }
+    },
+    {
+      "cls": "p-item p-7",
+      "speed": "0.3",
+      "media": {
+        "kind": "picture",
+        "source": {
+          "srcset": "images/Aluminum/massia1-2-600.webp 600w, images/Aluminum/massia1-2.webp 1200w",
+          "sizes": "300px",
+          "type": "image/webp"
+        },
+        "img": {
+          "loading": "lazy",
+          "decoding": "async",
+          "src": "images/Aluminum/massia1-2-600.jpg",
+          "srcset": "images/Aluminum/massia1-2-600.jpg 600w, images/Aluminum/massia1-2.png 1200w",
+          "sizes": "300px",
+          "alt": "مطبخ ألومنيوم متطور",
+          "width": "400",
+          "height": "300"
+        }
+      }
+    },
+    {
+      "cls": "p-item p-8",
+      "speed": "0.7",
+      "media": {
+        "kind": "picture",
+        "source": {
+          "srcset": "images/Wood/massia1-600.webp 600w, images/Wood/massia1.webp 1200w",
+          "sizes": "300px",
+          "type": "image/webp"
+        },
+        "img": {
+          "loading": "lazy",
+          "decoding": "async",
+          "src": "images/Wood/massia1-600.jpg",
+          "srcset": "images/Wood/massia1-600.jpg 600w, images/Wood/massia1.png 1200w",
+          "sizes": "300px",
+          "alt": "مطبخ خشب فاخر",
+          "width": "400",
+          "height": "300"
+        }
+      }
+    },
+    {
+      "cls": "p-item p-9",
+      "speed": "0.4",
+      "media": {
+        "kind": "picture",
+        "source": {
+          "srcset": "images/Aluminum/massia1-3-600.webp 600w, images/Aluminum/massia1-3.webp 1200w",
+          "sizes": "300px",
+          "type": "image/webp"
+        },
+        "img": {
+          "loading": "lazy",
+          "decoding": "async",
+          "src": "images/Aluminum/massia1-3-600.jpg",
+          "srcset": "images/Aluminum/massia1-3-600.jpg 600w, images/Aluminum/massia1-3.png 1200w",
+          "sizes": "300px",
+          "alt": "تصميم مطبخ حديث",
+          "width": "400",
+          "height": "300"
+        }
+      }
+    },
+    {
+      "cls": "p-item p-10",
+      "speed": "0.5",
+      "media": {
+        "kind": "picture",
+        "source": {
+          "srcset": "images/Wood/massia2-600.webp 600w, images/Wood/massia2.webp 1200w",
+          "sizes": "300px",
+          "type": "image/webp"
+        },
+        "img": {
+          "loading": "lazy",
+          "decoding": "async",
+          "src": "images/Wood/massia2-600.jpg",
+          "srcset": "images/Wood/massia2-600.jpg 600w, images/Wood/massia2.png 1200w",
+          "sizes": "300px",
+          "alt": "مطبخ راقي",
+          "width": "400",
+          "height": "300"
+        }
+      }
+    }
+  ]
+}
