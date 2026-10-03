@@ -3,6 +3,8 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, test } from 'vitest';
 import { attrsToProps } from '@/lib/legacy/attrs';
 import { headChildren } from '@/lib/legacy/parse';
+import { HeadStatic } from '@/components/site/HeadStatic';
+import { normalizeHtml } from './dom-equal';
 
 // Regression guard for the layout head remainder: htmlparser2 types <style> as
 // 'style' (not 'tag'), and a tag-only filter once dropped the critical inline CSS
@@ -36,5 +38,20 @@ describe('head remainder', () => {
     );
     expect(html).toContain('<style>');
     expect(html).toContain('.skip-link');
+  });
+
+  test('HeadStatic renders exactly the legacy head remainder', () => {
+    const legacy = renderToStaticMarkup(
+      createElement(
+        'head',
+        null,
+        headChildren().map((n, i) => {
+          const props: Record<string, unknown> = { key: i, ...attrsToProps(n.attrs) };
+          if (n.html) props.dangerouslySetInnerHTML = { __html: n.html };
+          return createElement(n.tag, props);
+        }),
+      ),
+    );
+    expect(normalizeHtml(renderToStaticMarkup(createElement(HeadStatic)))).toBe(normalizeHtml(legacy));
   });
 });

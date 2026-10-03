@@ -18,9 +18,18 @@ function legacyJsonLd(): Array<Record<string, any>> {
 
 describe('seo json-ld', () => {
   test('generated blocks deep-equal the legacy blocks', () => {
-    const legacy = legacyJsonLd();
-    expect(legacy).toHaveLength(3);
     const settings = settingsSchema.parse(settingsContent);
+    // Production URLs moved to massiakitchen.vercel.app (Task 10) while the
+    // frozen legacy file keeps the old host: compare host-agnostically.
+    const legacy = legacyJsonLd().map((b) =>
+      JSON.parse(
+        JSON.stringify(b).replaceAll(
+          'https://massiakitchen.github.io',
+          settings.seo.url.replace(/\/+$/, ''),
+        ),
+      ),
+    );
+    expect(legacy).toHaveLength(3);
     const faq = faqSchema.parse(faqContent);
     expect(localBusinessJsonLd(settings)).toEqual(legacy.find((b) => b['@type'] === 'LocalBusiness'));
     expect(serviceJsonLd(settings)).toEqual(legacy.find((b) => b['@type'] === 'Service'));
