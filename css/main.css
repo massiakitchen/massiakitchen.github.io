@@ -13,15 +13,14 @@
 /* ClickUp Ambient Glow */
 .ambient-glow {
   position: absolute;
-  width: 800px;
-  height: 800px;
+  width: 500px;
+  height: 500px;
   background: radial-gradient(circle, var(--glow-color-1) 0%, rgba(0, 0, 0, 0) 70%);
-  filter: blur(120px);
+  filter: blur(60px);
   opacity: 0.35;
   z-index: -1;
   pointer-events: none;
-  animation: premiumAmbient 15s ease-in-out infinite alternate;
-  will-change: transform, opacity;
+  animation: none;
 }
 
 @media (max-width: 768px) {
@@ -35,25 +34,10 @@
 
 .ambient-glow.blue {
   background: radial-gradient(circle, var(--glow-color-2) 0%, rgba(0, 0, 0, 0) 70%);
-  animation-duration: 20s;
-  animation-delay: -5s;
 }
 
 .ambient-glow.pink {
   background: radial-gradient(circle, var(--glow-color-3) 0%, rgba(0, 0, 0, 0) 70%);
-  animation-duration: 18s;
-  animation-delay: -10s;
-}
-
-
-@keyframes floatGlow {
-  0% {
-    transform: translate(0, 0) scale(1);
-  }
-
-  100% {
-    transform: translate(50px, 50px) scale(1.1);
-  }
 }
 
 .glass-heavy {
@@ -65,11 +49,11 @@
 
 /* Neon Glows */
 .glow-text {
-  text-shadow: 0 0 10px var(--gold-glow), 0 0 20px rgba(212, 175, 55, 0.3);
+  text-shadow: 0 0 10px var(--gold-glow), 0 0 20px rgba(var(--gold-rgb), 0.3);
 }
 
 .glow-box {
-  box-shadow: 0 0 15px var(--gold-glow), inset 0 0 10px rgba(212, 175, 55, 0.1);
+  box-shadow: 0 0 15px var(--gold-glow), inset 0 0 10px rgba(var(--gold-rgb), 0.1);
 }
 
 /* 3D Transforms */
@@ -94,20 +78,24 @@
 
 /* Transitions restored to original for smoothness */
 
-
 html,
 body {
   margin: 0;
   padding: 0;
   width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
   /* Prevent horizontal scroll */
   font-family: 'Cairo', sans-serif;
   color: var(--text);
   background: var(--bg-color);
-  background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@media (min-width: 1024px) {
+  body {
+    background-attachment: fixed;
+  }
 }
 
 body {
@@ -118,7 +106,6 @@ body {
 body.light-mode {
   color: var(--light-text);
 }
-
 
 /* Focus styles for accessibility */
 *:focus {
@@ -142,7 +129,7 @@ body.light-mode {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  z-index: var(--z-loader);
   transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
 }
 
@@ -169,7 +156,7 @@ body.light-mode {
 
 .logo-animate {
   animation: logoBreath 2s ease-in-out infinite alternate;
-  filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.3));
+  filter: drop-shadow(0 0 15px rgba(var(--gold-rgb), 0.3));
 }
 
 @keyframes logoBreath {
@@ -181,7 +168,7 @@ body.light-mode {
   100% {
     transform: scale(1.05);
     opacity: 1;
-    filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.6));
+    filter: drop-shadow(0 0 25px rgba(var(--gold-rgb), 0.6));
   }
 }
 
@@ -207,7 +194,7 @@ body.light-mode {
   border-radius: 4px;
   position: relative;
   transition: width 0.1s linear;
-  box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+  box-shadow: 0 0 10px rgba(var(--gold-rgb), 0.5);
 }
 
 .progress-bar-fill::after {
@@ -265,7 +252,7 @@ body.light-mode {
   border: 1px solid rgba(255, 152, 0, 0.2);
   opacity: 1;
   transform: translateY(0);
-  transition: all 0.5s ease;
+  transition: opacity 0.5s ease, transform 0.5s ease;
   animation: pulseWarning 2s infinite;
 }
 
@@ -301,7 +288,7 @@ body.light-mode {
   text-align: center;
   opacity: 0;
   transform: translateY(20px);
-  transition: all .7s ease-out;
+  transition: opacity .7s ease-out, transform .7s ease-out;
   overflow-x: hidden;
   width: 100%;
 }
@@ -326,27 +313,17 @@ body.light-mode {
   left: 0;
   width: 100%;
   height: 3px;
-  background: linear-gradient(90deg, rgba(212, 175, 55, 0.15), var(--gold), rgba(212, 175, 55, 0.15));
+  background: linear-gradient(90deg, rgba(var(--gold-rgb), 0.15), var(--gold), rgba(var(--gold-rgb), 0.15));
   background-size: 200% 100%;
   animation: goldLine 6s linear infinite;
   border-radius: 2px;
-}
-
-@keyframes goldLine {
-  0% {
-    background-position: 200%;
-  }
-
-  100% {
-    background-position: -200%;
-  }
 }
 
 /* reveal helpers */
 .reveal {
   opacity: 0;
   transform: translateY(30px);
-  transition: all .8s ease-out;
+  transition: opacity .8s ease-out, transform .8s ease-out;
   position: relative;
   will-change: transform, opacity;
 }
@@ -370,4 +347,25 @@ body.light-mode {
 .reveal.right.active {
   transform: translateX(0);
   opacity: 1;
+}
+
+/* RTL: mirror side-reveal entrance direction */
+[dir="rtl"] .reveal.left {
+  transform: translateX(60px);
+}
+
+[dir="rtl"] .reveal.right {
+  transform: translateX(-60px);
+}
+
+/* Perf: skip rendering below-the-fold sections until scrolled near.
+   Anchor links and IntersectionObserver reveals keep working. */
+#works,
+#facebook-slider,
+#branches,
+#reviews,
+#faq,
+#contact {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px;
 }

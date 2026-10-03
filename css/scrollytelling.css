@@ -213,7 +213,7 @@ body.light-mode .scrolly-card {
     justify-content: center;
     cursor: pointer;
     color: var(--gold);
-    transition: all 0.3s ease;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
 }
 
 .hero-theme-toggle:hover {
@@ -290,7 +290,7 @@ body.light-mode .card-footer-trust i {
     transition: transform 0.3s ease;
     background: transparent !important;
     border: none !important;
-    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+    box-shadow: 0 8px 25px rgba(var(--gold-rgb), 0.4);
 }
 
 .btn-animate-border::before {
@@ -298,8 +298,8 @@ body.light-mode .card-footer-trust i {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 400%;
-    height: 400%;
+    width: 250%;
+    height: 250%;
     background: conic-gradient(from 0deg,
             transparent 0deg,
             transparent 80deg,
@@ -308,7 +308,7 @@ body.light-mode .card-footer-trust i {
             #ffbf00 240deg,
             transparent 300deg);
     transform: translate(-50%, -50%);
-    animation: centerSpin 2s linear infinite;
+    animation: centerSpin 8s linear infinite;
     z-index: -2;
     filter: blur(10px);
     /* Creates a soft light trail */
@@ -327,7 +327,7 @@ body.light-mode .card-footer-trust i {
 
 .btn-animate-border:hover {
     transform: translateY(-3px);
-    box-shadow: 0 12px 35px rgba(212, 175, 55, 0.5);
+    box-shadow: 0 12px 35px rgba(var(--gold-rgb), 0.5);
 }
 
 body.light-mode .btn-animate-border::after {
@@ -341,9 +341,9 @@ body.light-mode .btn-animate-border {
 /* Ambient Glows - Updated to Gold Only & Positioned Behind */
 .scrolly-section .ambient-glow {
     position: absolute;
-    width: 800px;
-    height: 800px;
-    filter: blur(120px);
+    width: 500px;
+    height: 500px;
+    filter: blur(60px);
     z-index: 0;
     /* Behind parallax items */
     opacity: 0;
@@ -429,7 +429,7 @@ body.light-mode .btn-animate-border {
     /* Iridescent Bubble Effect */
     box-shadow:
         inset 0 4px 12px rgba(255, 255, 255, 0.15),
-        inset 0 -4px 12px rgba(212, 175, 55, 0.1),
+        inset 0 -4px 12px rgba(var(--gold-rgb), 0.1),
         0 8px 20px rgba(0, 0, 0, 0.2);
     animation: bubbleFloat 4s ease-in-out infinite alternate;
 }
@@ -455,7 +455,7 @@ body.light-mode .btn-animate-border {
 
 body.light-mode .scrolly-card .badge {
     background: rgba(255, 255, 255, 0.4);
-    border-color: rgba(212, 175, 55, 0.3);
+    border-color: rgba(var(--gold-rgb), 0.3);
     color: var(--light-text);
     box-shadow:
         inset 0 4px 10px rgba(255, 255, 255, 1),
@@ -469,11 +469,11 @@ body.light-mode .scrolly-card .badge {
 
 .scrolly-card .badge:hover {
     transform: translateY(-8px) scale(1.15) !important;
-    background: rgba(212, 175, 55, 0.15);
+    background: rgba(var(--gold-rgb), 0.15);
     border-color: var(--gold);
     box-shadow:
         inset 0 4px 15px rgba(255, 255, 255, 0.3),
-        0 15px 35px rgba(212, 175, 55, 0.3);
+        0 15px 35px rgba(var(--gold-rgb), 0.3);
     z-index: 20;
 }
 

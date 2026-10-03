@@ -1,6 +1,8 @@
 // ==============================
-// Cost Calculator Functions
+// Cost Calculator Functions (ES module)
 // ==============================
+
+import { $, $$, appState, formatNumber, trackEvent } from './main.js';
 
 // Price configurations - تم التحديث حسب متطلباتك
 const PRICE_CONFIG = {
@@ -35,11 +37,12 @@ const PRICE_CONFIG = {
 
 // Cost Calculator Functions - تم التحديث
 function updateCalculator() {
-  const area = appState.calculatorData.area;
-  const material = appState.calculatorData.material;
-  const drawers = appState.calculatorData.drawers;
-  const addons = appState.calculatorData.addons;
-  const appliances = appState.calculatorData.appliances;
+  const data = appState.calculatorData || {};
+  const area = Number(data.area) || 0;
+  const material = PRICE_CONFIG.base[data.material] ? data.material : 'standard';
+  const drawers = Number(data.drawers) || 0;
+  const addons = Array.isArray(data.addons) ? data.addons : [];
+  const appliances = Array.isArray(data.appliances) ? data.appliances : [];
 
   // Calculate base cost
   const baseCost = PRICE_CONFIG.base[material] * area;
@@ -49,7 +52,7 @@ function updateCalculator() {
 
   // Calculate addons cost (تضاف لكل متر)
   const addonsCost = addons.reduce((total, addon) => {
-    return total + (PRICE_CONFIG.addon[addon] * area);
+    return total + ((PRICE_CONFIG.addon[addon] || 0) * area);
   }, 0);
 
   // Calculate appliances cost
@@ -67,18 +70,22 @@ function updateCalculator() {
   const totalCost = manufacturingCost + addonsCost + appliancesCost + PRICE_CONFIG.installation;
 
   // Update UI
-  updateCalculatorUI(totalCost, manufacturingCost, materialCost, PRICE_CONFIG.installation, addonsCost);
+  updateCalculatorUI(totalCost, manufacturingCost, materialCost, PRICE_CONFIG.installation, addonsCost, 'area');
 }
 
 function updateCalculatorByDimensions() {
-  const length = appState.calculatorData.length;
-  const width = appState.calculatorData.width;
-  const material = appState.calculatorData.material;
-  const wallCabinets = appState.calculatorData.wallCabinets;
-  const baseCabinets = appState.calculatorData.baseCabinets;
-  const addons = appState.calculatorData.addons;
+  const data = appState.calculatorData || {};
+  const length = Number(data.length) || 0;
+  const width = Number(data.width) || 0;
+  const material = PRICE_CONFIG.base[data.material] ? data.material : 'standard';
+  const wallCabinets = Number(data.wallCabinets) || 0;
+  const baseCabinets = Number(data.baseCabinets) || 0;
+  const addons = Array.isArray(data.addons) ? data.addons : [];
+  // Unified with the area tab: drawers + appliances count in both tabs
+  const drawers = Number(data.drawers) || 0;
+  const appliances = Array.isArray(data.appliances) ? data.appliances : [];
 
-  // Calculate area
+  // Calculate area (guard NaN)
   const area = length * width;
 
   // Calculate base cost
@@ -89,41 +96,64 @@ function updateCalculatorByDimensions() {
   const baseCabinetsCost = PRICE_CONFIG.cabinet.base * baseCabinets;
   const cabinetsCost = wallCabinetsCost + baseCabinetsCost;
 
+  // Calculate drawers cost (unified with area tab)
+  const drawersCost = PRICE_CONFIG.drawer[material] * drawers;
+
   // Calculate addons cost (تضاف لكل متر)
   const addonsCost = addons.reduce((total, addon) => {
-    return total + (PRICE_CONFIG.addon[addon] * area);
+    return total + ((PRICE_CONFIG.addon[addon] || 0) * area);
+  }, 0);
+
+  // Calculate appliances cost (unified with area tab)
+  const appliancesCost = appliances.reduce((total, appliance) => {
+    return total + (PRICE_CONFIG.appliance[appliance] || 0);
   }, 0);
 
   // Total manufacturing cost
-  const manufacturingCost = baseCost + cabinetsCost;
+  const manufacturingCost = baseCost + cabinetsCost + drawersCost;
 
-  // Material cost (40% of manufacturing)
+  // Material cost (40% of manufacturing — estimate for display only)
   const materialCost = Math.round(manufacturingCost * 0.4);
 
   // Total cost
-  const totalCost = manufacturingCost + addonsCost + PRICE_CONFIG.installation;
+  const totalCost = manufacturingCost + addonsCost + appliancesCost + PRICE_CONFIG.installation;
 
   // Update UI
-  updateCalculatorUI(totalCost, manufacturingCost, materialCost, PRICE_CONFIG.installation, addonsCost);
+  updateCalculatorUI(totalCost, manufacturingCost, materialCost, PRICE_CONFIG.installation, addonsCost, 'dimensions');
 }
 
-function updateCalculatorUI(total, manufacturing, material, installation, addons = 0) {
-  const estimatedCost = $('#estimated-cost');
-  const manufacturingCost = $('#manufacturing-cost');
-  const materialCost = $('#material-cost');
-  const installationCost = $('#installation-cost');
-  const addonsCost = $('#addons-cost');
+function setTextSafe(selector, text, title) {
+  const el = $(selector);
+  if (!el) return;
+  el.textContent = text;
+  if (title) el.title = title;
+}
 
-  if (estimatedCost) estimatedCost.textContent = `${formatNumber(total)} جنيه`;
-  if (manufacturingCost) manufacturingCost.textContent = `${formatNumber(manufacturing)} ج`;
-  if (materialCost) materialCost.textContent = `${formatNumber(material)} ج`;
-  if (installationCost) installationCost.textContent = `${formatNumber(installation)} ج`;
-  if (addonsCost) addonsCost.textContent = `${formatNumber(addons)} ج`;
+function updateCalculatorUI(total, manufacturing, material, installation, addons = 0, tab = 'area') {
+  const safeTotal = Number(total) || 0;
+  const safeManufacturing = Number(manufacturing) || 0;
+  const safeMaterial = Number(material) || 0;
+  const safeInstallation = Number(installation) || 0;
+  const safeAddons = Number(addons) || 0;
+
+  // Each tab renders only its own panel (guard: each panel may be absent)
+  const suffix = tab === 'dimensions' ? '-dimensions' : '';
+  setTextSafe(`#estimated-cost${suffix}`, `${formatNumber(safeTotal)} جنيه`);
+  setTextSafe(`#manufacturing-cost${suffix}`, `${formatNumber(safeManufacturing)} ج`);
+  // materialCost = 40% of manufacturing — estimate for display only
+  const materialNote = '40% من تكلفة التصنيع — رقم تقديري للعرض فقط';
+  setTextSafe(`#material-cost${suffix}`, `${formatNumber(safeMaterial)} ج (تقديري)`, materialNote);
+  setTextSafe(`#installation-cost${suffix}`, `${formatNumber(safeInstallation)} ج`);
+  if (tab === 'area') {
+    setTextSafe('#addons-cost', `${formatNumber(safeAddons)} ج`);
+  }
 }
 
 function updateRecommendation() {
-  const area = parseInt(document.getElementById('kitchen-area').value);
-  const material = document.getElementById('material-type').value;
+  const areaEl = document.getElementById('kitchen-area');
+  const materialEl = document.getElementById('material-type');
+  const area = areaEl ? (parseInt(areaEl.value, 10) || 0) : 0;
+  const material = materialEl ? materialEl.value : (appState.calculatorData && appState.calculatorData.material) || 'standard';
 
   let recommendedMaterial = 'شيت ألومنيوم';
   let reason = 'مثالي للمساحات المتوسطة، يجمع بين المتانة والسعر المعقول';
@@ -141,8 +171,18 @@ function updateRecommendation() {
     reason = 'أعلى مستوى جودة مع مظهر خشب طبيعي فاخر';
   }
 
-  document.getElementById('recommended-material').textContent = recommendedMaterial;
-  document.getElementById('recommendation-reason').textContent = reason;
+  const recommendedEl = document.getElementById('recommended-material');
+  if (recommendedEl) recommendedEl.textContent = recommendedMaterial;
+  const reasonEl = document.getElementById('recommendation-reason');
+  if (reasonEl) reasonEl.textContent = reason;
+}
+
+// Single refresh path: every input change updates BOTH panels + recommendation.
+// Both tabs share appState.calculatorData, so both totals must re-render.
+function refreshCalculator() {
+  updateCalculator();
+  updateCalculatorByDimensions();
+  updateRecommendation();
 }
 
 function initCalculator() {
@@ -177,7 +217,8 @@ function initCalculator() {
 
       // إضافة النشاط للسان المحدد
       e.target.classList.add('active');
-      document.getElementById(`${targetTab}-tab`).classList.add('active');
+      const targetPanel = document.getElementById(`${targetTab}-tab`);
+      if (targetPanel) targetPanel.classList.add('active');
 
       trackEvent('calculator', 'tab_switch', targetTab);
     }
@@ -187,10 +228,9 @@ function initCalculator() {
   if (areaSlider && areaValue) {
     areaSlider.addEventListener('input', (e) => {
       const value = e.target.value;
-      appState.calculatorData.area = parseInt(value);
+      appState.calculatorData.area = parseInt(value, 10) || 0;
       areaValue.textContent = `${value} م²`;
-      updateCalculator();
-      updateRecommendation();
+      refreshCalculator();
     });
   }
 
@@ -198,8 +238,9 @@ function initCalculator() {
   if (materialSelect) {
     materialSelect.addEventListener('change', (e) => {
       appState.calculatorData.material = e.target.value;
-      updateCalculator();
-      updateRecommendation();
+      const other = document.getElementById('material-type-dimensions');
+      if (other && other.value !== e.target.value) other.value = e.target.value;
+      refreshCalculator();
     });
   }
 
@@ -208,7 +249,9 @@ function initCalculator() {
   if (materialSelectDimensions) {
     materialSelectDimensions.addEventListener('change', (e) => {
       appState.calculatorData.material = e.target.value;
-      updateCalculatorByDimensions();
+      const other = document.getElementById('material-type');
+      if (other && other.value !== e.target.value) other.value = e.target.value;
+      refreshCalculator();
     });
   }
 
@@ -216,9 +259,9 @@ function initCalculator() {
   if (drawersSlider && drawersValue) {
     drawersSlider.addEventListener('input', (e) => {
       const value = e.target.value;
-      appState.calculatorData.drawers = parseInt(value);
+      appState.calculatorData.drawers = parseInt(value, 10) || 0;
       drawersValue.textContent = `${value} قطعة`;
-      updateCalculator();
+      refreshCalculator();
     });
   }
 
@@ -227,11 +270,11 @@ function initCalculator() {
     checkbox.addEventListener('change', (e) => {
       const value = e.target.value;
       if (e.target.checked) {
-        appState.calculatorData.addons.push(value);
+        if (!appState.calculatorData.addons.includes(value)) appState.calculatorData.addons.push(value);
       } else {
         appState.calculatorData.addons = appState.calculatorData.addons.filter(addon => addon !== value);
       }
-      updateCalculator();
+      refreshCalculator();
     });
   });
 
@@ -240,44 +283,44 @@ function initCalculator() {
     checkbox.addEventListener('change', (e) => {
       const value = e.target.value;
       if (e.target.checked) {
-        appState.calculatorData.appliances.push(value);
+        if (!appState.calculatorData.appliances.includes(value)) appState.calculatorData.appliances.push(value);
       } else {
         appState.calculatorData.appliances = appState.calculatorData.appliances.filter(app => app !== value);
       }
-      updateCalculator();
+      refreshCalculator();
     });
   });
 
   // Dimension inputs
   if (lengthInput) {
     lengthInput.addEventListener('input', (e) => {
-      appState.calculatorData.length = parseFloat(e.target.value);
-      updateCalculatorByDimensions();
+      appState.calculatorData.length = parseFloat(e.target.value) || 0;
+      refreshCalculator();
     });
   }
 
   if (widthInput) {
     widthInput.addEventListener('input', (e) => {
-      appState.calculatorData.width = parseFloat(e.target.value);
-      updateCalculatorByDimensions();
+      appState.calculatorData.width = parseFloat(e.target.value) || 0;
+      refreshCalculator();
     });
   }
 
   if (wallCabinetsSlider && wallCabinetsValue) {
     wallCabinetsSlider.addEventListener('input', (e) => {
       const value = e.target.value;
-      appState.calculatorData.wallCabinets = parseInt(value);
+      appState.calculatorData.wallCabinets = parseInt(value, 10) || 0;
       wallCabinetsValue.textContent = `${value} وحدة`;
-      updateCalculatorByDimensions();
+      refreshCalculator();
     });
   }
 
   if (baseCabinetsSlider && baseCabinetsValue) {
     baseCabinetsSlider.addEventListener('input', (e) => {
       const value = e.target.value;
-      appState.calculatorData.baseCabinets = parseInt(value);
+      appState.calculatorData.baseCabinets = parseInt(value, 10) || 0;
       baseCabinetsValue.textContent = `${value} وحدة`;
-      updateCalculatorByDimensions();
+      refreshCalculator();
     });
   }
 
@@ -286,62 +329,26 @@ function initCalculator() {
     checkbox.addEventListener('change', (e) => {
       const value = e.target.value;
       if (e.target.checked) {
-        appState.calculatorData.addons.push(value);
+        if (!appState.calculatorData.addons.includes(value)) appState.calculatorData.addons.push(value);
       } else {
         appState.calculatorData.addons = appState.calculatorData.addons.filter(addon => addon !== value);
       }
-      updateCalculatorByDimensions();
+      refreshCalculator();
     });
   });
 
-  // Sync calculator with user selection from pricing tabs
-  window.syncCalculatorWithSelection = function (material, options) {
-    const materialTypeSelect = document.getElementById('material-type');
-    const materialTypeSelectDim = document.getElementById('material-type-dimensions');
-    const addonCheckboxes = document.querySelectorAll('input[name="addons"]');
-
-    // Map material name to type key
-    let typeKey = 'economy';
-    const name = material.name.toLowerCase();
-    if (name.includes('ألومنيوم') || name.includes('الومنيوم')) typeKey = 'standard';
-    if (name.includes('hpl') || name.includes('بولي') || name.includes('بورديوم')) typeKey = 'premium';
-
-    // Update state and select elements
-    appState.calculatorData.material = typeKey;
-    if (materialTypeSelect) materialTypeSelect.value = typeKey;
-    if (materialTypeSelectDim) materialTypeSelectDim.value = typeKey;
-
-    // Update addons
-    appState.calculatorData.addons = [];
-    addonCheckboxes.forEach(cb => {
-      const optionMatch = options.find(opt => {
-        const optName = opt.name.toLowerCase();
-        const cbValue = cb.value.toLowerCase();
-        return optName.includes(cbValue) || cbValue.includes(optName);
-      });
-
-      cb.checked = !!optionMatch;
-      if (cb.checked) {
-        appState.calculatorData.addons.push(cb.value);
-      }
-    });
-
-    // Trigger recalculation
-    updateCalculator();
-    updateCalculatorByDimensions();
-    updateRecommendation();
-  };
-
-  // Initial calculation
-  updateCalculator();
-  updateRecommendation();
+  // Initial calculation (both panels so each tab shows its own total on load)
+  refreshCalculator();
 }
 
 // Request detailed quote
 function requestDetailedQuote() {
-  const data = appState.calculatorData;
+  const data = appState.calculatorData || {};
   const activeTab = $('.calculator-tab.active')?.getAttribute('data-tab') || 'area';
-  const totalCost = $('#estimated-cost')?.textContent || $('#estimated-cost-dimensions')?.textContent || 'غير محدد';
+  // Use the ACTIVE tab's total (fall back to the other panel if absent)
+  const totalCost = activeTab === 'area'
+    ? ($('#estimated-cost')?.textContent || $('#estimated-cost-dimensions')?.textContent || 'غير محدد')
+    : ($('#estimated-cost-dimensions')?.textContent || $('#estimated-cost')?.textContent || 'غير محدد');
 
   // Map material to Arabic
   const materialLabels = {
@@ -364,7 +371,7 @@ function requestDetailedQuote() {
 
   message += `💎 الخامات: ${materialLabels[data.material] || data.material}\n`;
 
-  if (data.addons.length > 0) {
+  if (Array.isArray(data.addons) && data.addons.length > 0) {
     message += `➕ الإضافات: ${data.addons.join('، ')}\n`;
   }
 
@@ -381,6 +388,9 @@ function requestDetailedQuote() {
 
   trackEvent('calculator', 'quote_request', data.material);
 }
+
+// Inline onclick="requestDetailedQuote()" needs a global (ES modules are not global)
+window.requestDetailedQuote = requestDetailedQuote;
 
 // Initialize calculator when DOM is loaded
 document.addEventListener('DOMContentLoaded', function () {

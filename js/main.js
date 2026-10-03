@@ -3,7 +3,7 @@
 // ==============================
 
 // Helper: safe querySelector with error handling
-const $ = (sel, ctx = document) => {
+export const $ = (sel, ctx = document) => {
   try {
     return ctx.querySelector(sel);
   } catch (error) {
@@ -12,7 +12,7 @@ const $ = (sel, ctx = document) => {
   }
 };
 
-const $$ = (sel, ctx = document) => {
+export const $$ = (sel, ctx = document) => {
   try {
     return Array.from(ctx.querySelectorAll(sel));
   } catch (error) {
@@ -29,7 +29,7 @@ const perf = {
 };
 
 // App state management
-const appState = {
+export const appState = {
   soundEnabled: true,
   theme: localStorage.getItem('theme') || 'dark',
   currentReview: 0,
@@ -57,7 +57,7 @@ const timers = {
 };
 
 // Debounce function for performance
-function debounce(func, wait) {
+export function debounce(func, wait) {
   let timeout;
   return function executedFunction(...args) {
     const later = () => {
@@ -70,7 +70,7 @@ function debounce(func, wait) {
 }
 
 // Throttle function for performance
-function throttle(func, limit) {
+export function throttle(func, limit) {
   let inThrottle;
   return function (...args) {
     if (!inThrottle) {
@@ -81,9 +81,39 @@ function throttle(func, limit) {
   };
 }
 
+// Normalize an Egyptian phone number: strip spaces/dashes and unify the
+// country prefix (0... -> +20..., 20... -> +20..., 0020... -> +20...).
+// The local 01XXXXXXXXX form is preserved as-is so both forms stay valid.
+export function normalizeEgyptPhone(phone) {
+  if (typeof phone !== 'string') return '';
+  let value = phone.replace(/[\s-]/g, '');
+  if (/^0020(?=1)/.test(value)) {
+    value = '+20' + value.slice(4);
+  } else if (/^0(?=1)/.test(value)) {
+    value = '+20' + value.slice(1);
+  } else if (/^20(?=1)/.test(value)) {
+    value = '+' + value;
+  }
+  return value;
+}
+
+// Single shared Egyptian mobile validator. Accepts 01XXXXXXXXX and
+// +201XXXXXXXXX (after removing spaces/dashes).
+export function isValidEgyptPhone(phone) {
+  if (typeof phone !== 'string') return false;
+  return /^(?:\+20|0)1[0125][0-9]{8}$/.test(normalizeEgyptPhone(phone));
+}
+
+// Accessibility: honor prefers-reduced-motion
+export function prefersReducedMotion() {
+  return typeof window !== 'undefined'
+    && typeof window.matchMedia === 'function'
+    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
 
 // Show notification function
-function showNotification(message, type = 'info') {
+export function showNotification(message, type = 'info', duration = 5000) {
   // Remove existing notifications
   const existingNotification = $('.notification');
   if (existingNotification) {
@@ -146,12 +176,12 @@ function showNotification(message, type = 'info') {
 
   document.body.appendChild(notification);
 
-  // Auto remove after 5 seconds
+  // Auto remove after `duration` ms (default 5 seconds)
   setTimeout(() => {
     if (notification.parentElement) {
       notification.remove();
     }
-  }, 5000);
+  }, duration);
 }
 
 // Ripple effect for buttons
@@ -175,25 +205,12 @@ function createRipple(event) {
 }
 
 // Format number to Arabic format
-function formatNumber(number) {
+export function formatNumber(number) {
   return new Intl.NumberFormat('ar-EG').format(number);
 }
 
-// Initialize components dynamically
-function initComponent(element) {
-  // Add ripple effect to buttons
-  if (element.classList && (element.classList.contains('btn') || element.classList.contains('btn-primary') || element.classList.contains('btn-ghost'))) {
-    element.addEventListener('click', createRipple);
-  }
-
-  // Initialize reveal elements
-  if (element.classList && element.classList.contains('reveal')) {
-    revealObserver.observe(element);
-  }
-}
-
 // Analytics tracking function
-function trackEvent(category, action, label) {
+export function trackEvent(category, action, label) {
   // Google Analytics
   if (typeof gtag !== 'undefined') {
     gtag('event', action, {
@@ -338,28 +355,6 @@ function initHeaderScroll() {
   }, 50);
 
   window.addEventListener('scroll', headerScrollHandler);
-}
-
-// Lazy Loading for Images
-function initLazyLoading() {
-  const lazyImages = $$('img[loading="lazy"]');
-
-  if ('IntersectionObserver' in window) {
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const img = entry.target;
-          img.src = img.dataset.src || img.src;
-          img.classList.remove('skeleton');
-          imageObserver.unobserve(img);
-        }
-      });
-    });
-
-    lazyImages.forEach(img => {
-      imageObserver.observe(img);
-    });
-  }
 }
 
 // WhatsApp FAB behavior
@@ -516,36 +511,54 @@ function initReviewsSlider() {
     appState.currentReview = index;
   }
 
-  // Initialize reviews slider
-  if (reviewCards.length > 0) {
-    showReview(0);
+  function stopReviewAutoAdvance() {
+    if (timers.reviewInterval) {
+      clearInterval(timers.reviewInterval);
+      timers.reviewInterval = null;
+    }
+  }
 
-    // Auto-advance reviews every 5 seconds
+  function startReviewAutoAdvance() {
+    // Respect users who prefer reduced motion: no auto-advance.
+    if (prefersReducedMotion()) return;
+    if (reviewCards.length < 2) return;
+    stopReviewAutoAdvance();
     timers.reviewInterval = setInterval(() => {
       const nextReview = (appState.currentReview + 1) % reviewCards.length;
       showReview(nextReview);
     }, 5000);
   }
 
+  // Initialize reviews slider
+  if (reviewCards.length > 0) {
+    showReview(0);
+
+    // Auto-advance reviews every 5 seconds (skipped for prefers-reduced-motion)
+    startReviewAutoAdvance();
+  }
+
+  // Pause auto-advance while the user hovers or focuses the carousel
+  const reviewsSlider = $('.reviews-slider');
+  if (reviewsSlider) {
+    reviewsSlider.addEventListener('mouseenter', stopReviewAutoAdvance);
+    reviewsSlider.addEventListener('mouseleave', startReviewAutoAdvance);
+    reviewsSlider.addEventListener('focusin', stopReviewAutoAdvance);
+    reviewsSlider.addEventListener('focusout', startReviewAutoAdvance);
+  }
+
   // Global Review Controls (Exposed for HTML onclick)
   window.nextReview = () => {
     const nextIdx = (appState.currentReview + 1) % reviewCards.length;
     showReview(nextIdx);
-    clearInterval(timers.reviewInterval);
-    timers.reviewInterval = setInterval(() => {
-      const next = (appState.currentReview + 1) % reviewCards.length;
-      showReview(next);
-    }, 5000);
+    stopReviewAutoAdvance();
+    startReviewAutoAdvance();
   };
 
   window.prevReview = () => {
     const prevIdx = (appState.currentReview - 1 + reviewCards.length) % reviewCards.length;
     showReview(prevIdx);
-    clearInterval(timers.reviewInterval);
-    timers.reviewInterval = setInterval(() => {
-      const next = (appState.currentReview + 1) % reviewCards.length;
-      showReview(next);
-    }, 5000);
+    stopReviewAutoAdvance();
+    startReviewAutoAdvance();
   };
 
   // Event delegation for review indicators
@@ -554,14 +567,11 @@ function initReviewsSlider() {
       const index = parseInt(e.target.getAttribute('data-slide'));
 
       // Reset interval when user manually changes slide
-      clearInterval(timers.reviewInterval);
+      stopReviewAutoAdvance();
       showReview(index);
 
       // Restart auto-advance
-      timers.reviewInterval = setInterval(() => {
-        const nextReview = (appState.currentReview + 1) % reviewCards.length;
-        showReview(nextReview);
-      }, 5000);
+      startReviewAutoAdvance();
     }
   });
 }
@@ -611,9 +621,9 @@ function initBookingSystem() {
     bookingForm.addEventListener('submit', function (e) {
       e.preventDefault();
 
-      const name = this.querySelector('input[type="text"]').value;
-      const phone = this.querySelector('input[type="tel"]').value;
-      const date = this.querySelector('input[type="date"]').value;
+      const name = this.querySelector('input[type="text"]')?.value || '';
+      let phone = this.querySelector('input[type="tel"]')?.value || '';
+      const date = this.querySelector('input[type="date"]')?.value || '';
 
       if (!name || !phone) {
         showPremiumModal({
@@ -624,9 +634,8 @@ function initBookingSystem() {
         return;
       }
 
-      // Egyptian Phone Validation
-      const egPhoneRegex = /^(010|011|012|015)[0-9]{8}$/;
-      if (!egPhoneRegex.test(phone.replace(/\s/g, ''))) {
+      // Egyptian Phone Validation (shared: accepts 01XXXXXXXXX and +201XXXXXXXXX)
+      if (!isValidEgyptPhone(phone)) {
         showPremiumModal({
           title: 'رقم خطأ',
           message: 'الرجاء إدخال رقم هاتف مصري صحيح (مثال: 010xxxxxxxx).',
@@ -635,7 +644,10 @@ function initBookingSystem() {
         return;
       }
 
-      const message = `حجز استشارة مجانية:\nالاسم: ${name}\nالهاتف: ${phone}\nالتاريخ المفضل: ${date || 'غير محدد'}`;
+      phone = normalizeEgyptPhone(phone);
+
+      let message = `حجز استشارة مجانية:\nالاسم: ${name}\nالهاتف: ${phone}`;
+      if (date) message += `\nالتاريخ المفضل: ${date}`;
       const whatsappUrl = `https://wa.me/201092497811?text=${encodeURIComponent(message)}`;
 
       window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
@@ -667,15 +679,17 @@ document.addEventListener('DOMContentLoaded', function () {
   const preloader = document.getElementById('preloader');
   const slowNetworkMsg = document.getElementById('slowNetworkMsg');
 
-  // Asset tracking
-  const images = Array.from(document.images);
+  // Asset tracking (above-the-fold only: exclude lazy images)
+  const images = Array.from(document.images).filter(img => img.getAttribute('loading') !== 'lazy');
   const totalAssets = images.length + 1; // +1 for fonts
   let loadedAssets = 0;
   let currentProgress = 0;
+  let finished = false;
+  let hardCapTimer = null;
 
   function updateProgress() {
     loadedAssets++;
-    const targetProgress = Math.round((loadedAssets / totalAssets) * 100);
+    const targetProgress = Math.min(100, Math.round((loadedAssets / totalAssets) * 100));
 
     // Smooth transition for progress bar
     const animateDuration = 500;
@@ -700,6 +714,9 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function finishLoading() {
+    if (finished) return;
+    finished = true;
+    if (hardCapTimer) clearTimeout(hardCapTimer);
     setTimeout(() => {
       if (preloader) {
         preloader.classList.add('hidden');
@@ -708,6 +725,9 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }, 400);
   }
+
+  // Hard cap: always finish within 2500 ms even if assets hang
+  hardCapTimer = setTimeout(finishLoading, 2500);
 
   // Slow Network fallback
   const networkTimer = setTimeout(() => {
@@ -824,7 +844,7 @@ function filterGallery(filter) {
   if (loadMoreBtn) {
     if (hasHiddenInFilter) {
       loadMoreBtn.innerHTML = `
-        <i data-lucide="plus-circle" class="premium-icon sm" style="margin-left: 0.5rem;"></i>
+        <i data-lucide="plus-circle" class="premium-icon sm" style="margin-inline-end: 0.5rem;"></i>
         عرض المزيد
       `;
       loadMoreBtn.disabled = false;
@@ -837,7 +857,7 @@ function filterGallery(filter) {
       }
     } else {
       loadMoreBtn.innerHTML = `
-        <i data-lucide="check-circle" class="premium-icon sm" style="margin-left: 0.5rem;"></i>
+        <i data-lucide="check-circle" class="premium-icon sm" style="margin-inline-end: 0.5rem;"></i>
         تم عرض كل الأعمال
       `;
       loadMoreBtn.disabled = true;
@@ -852,27 +872,15 @@ function filterGallery(filter) {
   }
 }
 
-// Gallery filters with skeleton loading
+// Gallery filters (immediate filtering with a short CSS transition only)
 function initGallery() {
   const filterBtns = $$('.filter-btn');
   const skeletonGrid = $('#skeletonGrid');
   const galleryGrid = $('#galleryGrid');
 
-  // Load gallery images dynamically
-  function loadGalleryImages() {
-    const galleryItems = $$('.gallery-grid .item');
-
-    // Show skeleton first
-    if (skeletonGrid) skeletonGrid.style.display = 'grid';
-    // Only hide gallery grid if it exists to avoid errors
-    if (galleryGrid) galleryGrid.style.display = 'none';
-
-    // Simulate loading delay
-    setTimeout(() => {
-      if (skeletonGrid) skeletonGrid.style.display = 'none';
-      if (galleryGrid) galleryGrid.style.display = 'grid';
-    }, 1000);
-  }
+  // Show gallery immediately (items are in the DOM with native lazy-loading)
+  if (skeletonGrid) skeletonGrid.style.display = 'none';
+  if (galleryGrid) galleryGrid.style.display = 'grid';
 
   // Event delegation for filter buttons
   document.addEventListener('click', function (e) {
@@ -881,20 +889,12 @@ function initGallery() {
       e.target.classList.add('active');
       const filter = e.target.getAttribute('data-filter');
 
-      // Show skeleton during filtering
-      loadGalleryImages();
-
-      // Actual filtering after a delay
-      setTimeout(() => {
-        filterGallery(filter);
-      }, 500);
+      // Filter immediately; filterGallery animates via CSS transition
+      filterGallery(filter);
 
       trackEvent('gallery', 'filter', filter);
     }
   });
-
-  // Initial load
-  loadGalleryImages();
 }
 
 // Load More Gallery Items Function
@@ -950,7 +950,7 @@ function loadMoreGalleryItems() {
     if (remainingFiltered.length === 0) {
       if (loadMoreBtn) {
         loadMoreBtn.innerHTML = `
-          <i data-lucide="check-circle" class="premium-icon sm" style="margin-left: 0.5rem;"></i>
+          <i data-lucide="check-circle" class="premium-icon sm" style="margin-inline-end: 0.5rem;"></i>
           تم عرض كل الأعمال
         `;
         loadMoreBtn.disabled = true;
@@ -1177,7 +1177,12 @@ function initEnhancedFAQ() {
   }
 }
 
+function escapeRegExp(string) {
+  return String(string).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 function highlightSearchTerm(element, term) {
+  if (!term) return;
   const walker = document.createTreeWalker(
     element,
     NodeFilter.SHOW_TEXT,
@@ -1187,26 +1192,42 @@ function highlightSearchTerm(element, term) {
 
   const nodes = [];
   let node;
+  const lowerTerm = String(term).toLowerCase();
   while (node = walker.nextNode()) {
-    if (node.textContent.toLowerCase().includes(term)) {
+    if (node.textContent.toLowerCase().includes(lowerTerm)) {
       nodes.push(node);
     }
   }
 
   nodes.forEach(textNode => {
-    const span = document.createElement('span');
-    span.className = 'search-highlight';
-    span.style.backgroundColor = 'rgba(212,175,55,0.3)';
-    span.style.padding = '0.1rem 0.2rem';
-    span.style.borderRadius = '3px';
-
     const text = textNode.textContent;
-    const regex = new RegExp(term, 'gi');
-    const newText = text.replace(regex, match => `<span class="search-highlight">${match}</span>`);
+    const regex = new RegExp(escapeRegExp(term), 'gi');
+    const fragment = document.createDocumentFragment();
+    let lastIndex = 0;
+    let match;
+    let found = false;
 
-    const wrapper = document.createElement('span');
-    wrapper.innerHTML = newText;
-    textNode.parentNode.replaceChild(wrapper, textNode);
+    while ((match = regex.exec(text)) !== null) {
+      found = true;
+      if (match.index > lastIndex) {
+        fragment.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
+      }
+      const span = document.createElement('span');
+      span.className = 'search-highlight';
+      span.style.backgroundColor = 'rgba(212,175,55,0.3)';
+      span.style.padding = '0.1rem 0.2rem';
+      span.style.borderRadius = '3px';
+      span.textContent = match[0];
+      fragment.appendChild(span);
+      lastIndex = match.index + match[0].length;
+      if (match[0].length === 0) regex.lastIndex++;
+    }
+
+    if (!found) return;
+    if (lastIndex < text.length) {
+      fragment.appendChild(document.createTextNode(text.slice(lastIndex)));
+    }
+    textNode.parentNode.replaceChild(fragment, textNode);
   });
 }
 
@@ -1216,7 +1237,6 @@ function initComponents() {
   initMobileMenu();
   initRevealAnimations();
   initHeaderScroll();
-  initLazyLoading();
   initWhatsAppFAB();
   initButtonAnimations();
   initLightbox();
@@ -1228,10 +1248,12 @@ function initComponents() {
   initKitchenTabs();
   initHero3DParallax();
   initFacebookSlider();
-  initExitPrevention();
 }
 
 function initHero3DParallax() {
+  // Skip mouse-driven parallax for users who prefer reduced motion.
+  if (prefersReducedMotion()) return;
+
   const card = document.querySelector('.hero-glass-card');
   const floatingItems = document.querySelectorAll('.floating-item');
 
@@ -1275,6 +1297,35 @@ function initHero3DParallax() {
 
 let currentGalleryData = null;
 let currentImageIndex = 0;
+let lastGalleryFocus = null;
+
+// Keep Tab focus inside an open modal and return focus on close.
+function trapTabKey(modal, e) {
+  const focusable = modal.querySelectorAll(
+    'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+  );
+  const visible = Array.from(focusable).filter(
+    (el) => !el.disabled && el.getClientRects().length > 0
+  );
+  if (visible.length === 0) {
+    e.preventDefault();
+    return;
+  }
+  const first = visible[0];
+  const last = visible[visible.length - 1];
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault();
+    first.focus();
+  }
+}
+
+function focusModalClose(modal, selector) {
+  const closeBtn = modal.querySelector(selector);
+  if (closeBtn) closeBtn.focus();
+}
 
 // Open Gallery Modal
 function openGalleryModal(galleryId, event) {
@@ -1287,10 +1338,10 @@ function openGalleryModal(galleryId, event) {
   const galleryCard = document.querySelector(`[data-gallery-id="${galleryId}"]`);
   if (!galleryCard) return;
 
-  // Get data from card attributes
-  const title = galleryCard.dataset.title;
-  const description = galleryCard.dataset.description;
-  const price = galleryCard.dataset.price;
+  // Get data from card attributes (fall back to '' so the modal never shows "undefined")
+  const title = galleryCard.dataset.title || '';
+  const description = galleryCard.dataset.description || '';
+  const price = galleryCard.dataset.price || '';
   // Parse images safely with fallback
   let images = [];
   try {
@@ -1337,6 +1388,10 @@ function openGalleryModal(galleryId, event) {
   modal.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
 
+  // Move focus to the close button and remember where to restore it.
+  lastGalleryFocus = document.activeElement;
+  focusModalClose(modal, '.gallery-close');
+
   // Initialize Lucide icons for new elements
   if (typeof lucide !== 'undefined') {
     lucide.createIcons();
@@ -1360,6 +1415,12 @@ function closeGalleryModal() {
 
   currentGalleryData = null;
   currentImageIndex = 0;
+
+  // Restore focus to the element that opened the modal.
+  if (lastGalleryFocus && document.contains(lastGalleryFocus)) {
+    lastGalleryFocus.focus();
+  }
+  lastGalleryFocus = null;
 
   trackEvent('gallery', 'modal_close', '');
 }
@@ -1386,6 +1447,7 @@ function buildGallerySlider() {
       const videoEl = document.createElement('video');
       videoEl.src = src;
       videoEl.controls = true;
+      videoEl.preload = 'metadata';
       videoEl.className = index === 0 ? 'active' : '';
       sliderMain.appendChild(videoEl);
     } else {
@@ -1427,6 +1489,7 @@ function buildGalleryThumbnails() {
       const videoEl = document.createElement('video');
       videoEl.src = src;
       videoEl.muted = true;
+      videoEl.preload = 'none';
       thumbDiv.appendChild(videoEl);
     } else {
       const img = document.createElement('img');
@@ -1515,6 +1578,8 @@ document.addEventListener('keydown', (e) => {
   if (modal && modal.classList.contains('visible')) {
     if (e.key === 'Escape') {
       closeGalleryModal();
+    } else if (e.key === 'Tab') {
+      trapTabKey(modal, e);
     } else if (e.key === 'ArrowLeft') {
       navigateGallery(1); // RTL: left = next
     } else if (e.key === 'ArrowRight') {
@@ -1641,7 +1706,37 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --- 3D Tilt Effect Removed by User Request ---
+
+  // Accessibility fallback: ensure mouse-only cards are keyboard operable
+  // (static markup already carries tabindex/role; this covers dynamic content).
+  enhanceCardAccessibility();
 });
+
+// One delegated keydown listener for gallery + material cards (Enter/Space).
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const card = e.target && e.target.closest
+    ? e.target.closest('.gallery-item[data-gallery-id], .clickable-material')
+    : null;
+  if (!card) return;
+  // Let native controls (links/buttons/inputs inside) handle their own keys.
+  if (e.target !== card) return;
+  e.preventDefault();
+  if (card.classList.contains('clickable-material')) {
+    showMaterialBubble(card);
+  } else if (card.dataset.galleryId) {
+    openGalleryModal(card.dataset.galleryId, e);
+  }
+});
+
+function enhanceCardAccessibility() {
+  document
+    .querySelectorAll('.gallery-item[data-gallery-id], .clickable-material')
+    .forEach((el) => {
+      if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+      if (!el.hasAttribute('role')) el.setAttribute('role', 'button');
+    });
+}
 
 // ==============================
 // Facebook Slider Functionality
@@ -1657,6 +1752,29 @@ function initFacebookSlider() {
 
   if (!wrapper || slides.length === 0) return;
 
+  // Click-to-load facades: inject the original iframe (same src/title/attributes) only on click
+  wrapper.querySelectorAll('.fb-facade').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const src = btn.dataset.src;
+      if (!src || btn.dataset.loaded === 'true') return;
+      btn.dataset.loaded = 'true';
+      const iframe = document.createElement('iframe');
+      iframe.title = btn.dataset.title || 'منشور من صفحة الماسية للمطابخ على فيسبوك';
+      iframe.src = src;
+      iframe.width = btn.dataset.width || '500';
+      iframe.height = btn.dataset.height || '600';
+      iframe.setAttribute('style', 'border:none;overflow:hidden');
+      iframe.setAttribute('scrolling', 'no');
+      iframe.setAttribute('frameborder', '0');
+      iframe.setAttribute('allowfullscreen', 'true');
+      iframe.setAttribute('allow', 'autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share');
+      iframe.setAttribute('loading', 'lazy');
+      btn.replaceWith(iframe);
+      updateSlider();
+      setTimeout(updateSlider, 500);
+    }, { once: true });
+  });
+
   let currentIndex = 0;
   const slideCount = slides.length;
 
@@ -1670,21 +1788,40 @@ function initFacebookSlider() {
 
   const dots = document.querySelectorAll('.fb-dot');
 
+  function getFbGap() {
+    const style = getComputedStyle(wrapper);
+    return parseFloat(style.columnGap || style.gap) || 0;
+  }
+
+  function getFbTargetLeft(target) {
+    // Physical layout position of the target slide relative to the wrapper (RTL-safe).
+    if (target.offsetParent === wrapper) return target.offsetLeft;
+    if (target.offsetParent && target.offsetParent === wrapper.offsetParent) {
+      return target.offsetLeft - wrapper.offsetLeft - (wrapper.clientLeft || 0);
+    }
+    // Fallback: accumulate real widths + real computed gap (handles differing reel/post widths).
+    const gap = getFbGap();
+    let left = 0;
+    for (let i = 0; i < currentIndex; i++) {
+      left += slides[i].offsetWidth + gap;
+    }
+    return left;
+  }
+
   function updateSlider() {
     if (slides.length === 0) return;
 
-    const slide = slides[0];
-    const slideWidth = slide.offsetWidth || (container.offsetWidth - 100); // Fallback
-    const gap = 50;
+    const target = slides[currentIndex];
+    if (!target) return;
+    getFbGap(); // read real computed gap (20px mobile / 50px desktop); positions below already include it
+    const targetWidth = target.offsetWidth || (container.offsetWidth - 100); // Fallback
+    const targetLeft = getFbTargetLeft(target);
+    const wrapperLeft = wrapper.offsetLeft || 0;
 
-    const isRTL = getComputedStyle(document.body).direction === 'rtl';
-    const containerWidth = container.offsetWidth;
-    const centerOffset = (containerWidth / 2) - (slideWidth / 2);
-
-    const offset = currentIndex * (slideWidth + gap);
-
-    // Applying offset with centering
-    const finalTranslate = isRTL ? (offset - centerOffset) : -(offset - centerOffset);
+    // Center the target slide in the container using physical coordinates (works in RTL).
+    const containerCenter = container.offsetWidth / 2;
+    const targetCenter = wrapperLeft + targetLeft + targetWidth / 2;
+    const finalTranslate = containerCenter - targetCenter;
     wrapper.style.transform = `translateX(${finalTranslate}px)`;
 
     // Update active class for CSS effects
@@ -1762,45 +1899,11 @@ function initFacebookSlider() {
   }, 1000);
 }
 
-// Accidental Exit Prevention (Double back to exit)
-function initExitPrevention() {
-  let lastBackPress = 0;
-  const backPressThreshold = 2000; // 2 seconds
-
-  // Push a state to history to intercept the first back gesture
-  if (window.history && window.history.pushState) {
-    window.history.pushState('onSite', null, '');
-
-    window.addEventListener('popstate', function (event) {
-      const now = Date.now();
-
-      if (now - lastBackPress < backPressThreshold) {
-        // Double back pressed within threshold - allow exit
-        window.history.back();
-      } else {
-        // First back press or outside threshold - block and notify
-        window.history.pushState('onSite', null, ''); // Push back to stay on page
-        lastBackPress = now;
-
-        showNotification('اسحب مرة أخرى للخروج من الموقع', 'info');
-
-        // Track the blocked exit attempt
-        trackEvent('engagement', 'exit_blocked', 'back_gesture');
-      }
-    });
-  }
-
-  // Also handle beforeunload for desktop/tab closing consistency
-  window.addEventListener('beforeunload', function (e) {
-    // Note: most modern browsers only show a standard message, not custom ones
-    // but this helps if they have unsaved changes or just to be safe.
-    // However, the user specifically asked for gesture support, so popstate is key.
-  });
-}
-
 /**
  * Premium Modal System
  */
+let lastPremiumFocus = null;
+
 window.showPremiumModal = function (options = {}) {
   const {
     title = 'تنبيه',
@@ -1860,6 +1963,10 @@ window.showPremiumModal = function (options = {}) {
   modal.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
 
+  // Move focus to the close button and remember where to restore it.
+  lastPremiumFocus = document.activeElement;
+  focusModalClose(modal, '.premium-modal-close');
+
   // Re-init lucide
   if (window.lucide) lucide.createIcons();
 };
@@ -1871,7 +1978,24 @@ window.closePremiumModal = function () {
     modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
   }
+  // Restore focus to the element that opened the modal.
+  if (lastPremiumFocus && document.contains(lastPremiumFocus)) {
+    lastPremiumFocus.focus();
+  }
+  lastPremiumFocus = null;
 };
+
+// Keyboard support for the premium modal: Escape closes, Tab stays trapped.
+document.addEventListener('keydown', (e) => {
+  const modal = document.getElementById('premiumModal');
+  if (modal && modal.classList.contains('active')) {
+    if (e.key === 'Escape') {
+      closePremiumModal();
+    } else if (e.key === 'Tab') {
+      trapTabKey(modal, e);
+    }
+  }
+});
 
 /**
  * Gallery Zoom Logic
@@ -1901,3 +2025,11 @@ window.resetGalleryZoom = function () {
     img.style.transform = 'scale(1)';
   });
 };
+
+// Expose inline-handler functions on window.
+// ES modules do not create globals, but index.html calls these via onclick="...".
+window.loadMoreGalleryItems = loadMoreGalleryItems;
+window.openGalleryModal = openGalleryModal;
+window.closeGalleryModal = closeGalleryModal;
+window.navigateGallery = navigateGallery;
+window.showGalleryItem = showGalleryItem;

@@ -2,19 +2,20 @@
 <html lang="ar" dir="rtl">
 
 <head>
+  <script>document.documentElement.classList.add('js');</script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>الماسية للمطابخ والدريسينج | تصميم وتنفيذ مطابخ - أفضل جودة وضمان 10 سنوات</title>
   <meta name="description"
-    content="تصميم وتنفيذ مطابخ الألومنيوم والخشب عالية الجودة - الماسية للمطابخ والدريسينج - ضمان 10 سنوات - تصميم وتنفيذ دريسينج - المنصورة - ديكور - دريسينج - ممتاز - El Mansoura - EL  - أسعار مميزة - خدمة تركيب مجانية - خشب - الومنيوم - وحدات حمام - وحدات شاشة">
+    content="الماسية للمطابخ والدريسينج في المنصورة: تصميم وتنفيذ مطابخ ألومنيوم وخشب ودريسينج ووحدات حمام بضمان 10 سنوات وتركيب مجاني واستشارة مجانية.">
 
   <!-- SEO Meta Tags -->
   <meta name="robots" content="index, follow">
   <meta name="google-site-verification" content="eM8vXK66ttKTFWgZRHTbz94pf1FaCQ_uwD_UauZD3xk">
   <link rel="canonical" href="https://massiakitchen.github.io/">
 
-  <script src="https://t.contentsquare.net/uxa/ac861b4839f2e.js"></script>
+  <script defer src="https://t.contentsquare.net/uxa/ac861b4839f2e.js"></script>
 
   <!-- Google Analytics (GA4) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-VSMD3VS5NK"></script>
@@ -26,17 +27,32 @@
   </script>
 
   <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="preconnect" href="https://www.googletagmanager.com">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet"
     crossorigin="anonymous">
 
-  <!-- Preload important resources -->
-  <link rel="preload" href="images/kitchen1.webp" as="image" fetchpriority="high">
-  <link rel="preload" href="images/logo-light.png" as="image">
-  <link rel="preload" href="images/logo-dark.png" as="image">
-  <link rel="preload" href="images/Aluminum/massia1-1.png" as="image">
+  <!-- Local styles (plain <link> so the page works on static hosting without a Vite build;
+       order matches src/main.js import order to preserve the cascade) -->
+  <link rel="stylesheet" href="./css/vars.css">
+  <link rel="stylesheet" href="./css/animations.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/facebook-feed.css">
+  <link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+  <link rel="stylesheet" href="./css/scrollytelling.css">
+
+  <!-- Preload important resources (only above-the-fold: logos + hero image) -->
+  <link rel="preload" href="images/logo-light.webp" as="image">
+  <link rel="preload" href="images/logo-dark.webp" as="image">
+  <link rel="preload" as="image" type="image/webp" href="images/Aluminum/massia1-1-600.webp" imagesrcset="images/Aluminum/massia1-1-600.webp 600w, images/Aluminum/massia1-1.webp 1200w" imagesizes="300px">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" href="images/icon-192.png">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 
   <!-- PWA -->
   <link rel="manifest" href="manifest.json">
@@ -55,29 +71,25 @@
   <meta property="og:locale" content="ar_EG">
 
   <!-- Open Graph Image -->
-  <meta property="og:image" content="https://massiakitchen.github.io/images/kitchen1.webp">
-  <meta property="og:image:secure_url" content="https://massiakitchen.github.io/images/kitchen1.webp">
+  <meta property="og:image" content="https://massiakitchen.github.io/images/og-1200x630.jpg">
+  <meta property="og:image:secure_url" content="https://massiakitchen.github.io/images/og-1200x630.jpg">
   <meta property="og:image:alt" content="الماسية للمطابخ - تصميم وتنفيذ مطابخ">
-  <!-- (اختياري) لو عملت OG Image بمقاس 1200x630 ضيف دول -->
-  <!-- <meta property="og:image:width" content="1200"> -->
-  <!-- <meta property="og:image:height" content="630"> -->
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="الماسية للمطابخ | تصميم وتنفيذ مطابخ - ضمان 10 سنوات">
   <meta name="twitter:description"
     content="تصميم وتنفيذ مطابخ الألومنيوم والخشب عالية الجودة في مصر - ضمان 10 سنوات - تركيب مجاني - تقسيط ميسر">
-  <meta name="twitter:image" content="https://massiakitchen.github.io/images/Aluminum/massia1-1.png">
-  <!-- اختياري: لو عندك حساب X -->
+  <meta name="twitter:image" content="https://massiakitchen.github.io/images/og-1200x630.jpg">
   <!-- <meta name="twitter:site" content="@massiakitchen"> -->
   <!-- <meta name="twitter:creator" content="@massiakitchen"> -->
 
-  <!-- Bundled Styles -->
-  <link rel="stylesheet" href="dist/bundle.css">
+  <!-- Vite Entry -->
+  <script type="module" src="./src/main.js"></script>
 
   <!-- Structured Data -->
-  <meta name="keywords"
-    content="مطابخ, ألومنيوم, خشب, تصميم مطابخ, مطابخ مودرن, مطابخ كلاسيك, دريسينج روم, وحدات حمام, المنصورة, مصر, ضمان 10 سنوات">
   <meta name="author" content="الماسية للمطابخ">
   <meta name="copyright" content="شركة الماسية للمطابخ - جميع الحقوق محفوظة">
 
@@ -177,40 +189,142 @@
     }
   }
   </script>
-</head>
 
 
-<style>
-  /* Critical CSS for above-the-fold content */
-  .header,
-  .hero,
-  .scrolly-section {
-    opacity: 0;
+
+  <style>
+    /* Critical CSS for above-the-fold content (gated on html.js so content shows if JS is disabled) */
+    html.js .header,
+    html.js .hero,
+    html.js .scrolly-section {
+      opacity: 0;
+    }
+
+    html.js .loaded .header,
+    html.js .loaded .hero,
+    html.js .loaded .scrolly-section {
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+
+    /* Preserve section-title styling after h3.gold-title -> h2.gold-title (mirrors .section h3 in css/main.css) */
+    .section h2.gold-title {
+      color: var(--gold);
+      font-size: 1.8rem;
+      margin-bottom: 18px;
+      position: relative;
+      display: inline-block;
+      padding-bottom: 8px;
+    }
+
+    /* Screen-reader-only utility for form labels */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 6px;
+      background: #000;
+      color: white;
+      padding: 8px;
+      z-index: 10000;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+
+    .skip-link:focus {
+      top: 6px;
+    }
+  </style>
+  <noscript>
+    <style>
+      #preloader {
+        display: none !important;
+      }
+      html.js .header,
+      html.js .hero,
+      html.js .scrolly-section,
+      .header,
+      .hero,
+      .scrolly-section {
+        opacity: 1 !important;
+      }
+    </style>
+  </noscript>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "كم مدة تنفيذ المطبخ؟",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "مدة التنفيذ تتراوح بين 15 و25 يوم عمل حسب التصميم والمساحة والتعقيد. نحرص على التسليم في الوقت المتفق عليه مع الحفاظ على أعلى معايير الجودة."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "هل تقدمون خدمة التصميم المجاني؟",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "نعم، نقدم استشارة وتصميم أولي مجاني. يمكنك زيارة أحد فروعنا أو طلب زيارة منزلية مجانية حيث يقوم مصممنا بقياس المساحة وتقديم التصميم المناسب."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "ما أنواع الخامات التي تستخدمونها؟",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "نستخدم أفضل أنواع الخامات مثل الألومنيوم عالي الجودة، الخشب الطبيعي، والـ MDF المقاوم للرطوبة. جميع الخامات مختارة بعناية وتخضع لمعايير الجودة العالمية."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "هل يوجد ضمان على المطابخ؟",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "نعم، نقدم ضمان لمدة 10 سنوات على المطابخ والدريسينج ووحدات الحمام ضد عيوب الصنعة، بالإضافة إلى خدمة صيانة دورية ودعم فني مستمر."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "هل تقدمون تقسيط للمطابخ؟",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "نعم، نقدم خيارات تقسيط مرنة تناسب احتياجاتك. يمكنك الاختيار من بين عدة برامج تقسيط عبر البنوك المشاركة أو الدفع نقداً والحصول على خصم إضافي."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "هل تقدمون خدمة التركيب؟",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "نعم، نقدم خدمة تركيب مجانية مع كل مطبخ. فريق التركيب لديه خبرة واسعة ويضمن تركيباً مثالياً مع الاهتمام بكل التفاصيل والدقة في التنفيذ."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "كم تستغرق مدة التفصيل؟",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "تتراوح مدة التفصيل والتركيب عادة بين 15 إلى 25 يوم عمل من تاريخ التعاقد والرفع المساحي النهائي، اعتماداً على نوع الخامات المختار وحجم المطبخ."
+        }
+      }
+    ]
   }
-
-  .loaded .header,
-  .loaded .hero,
-  .loaded .scrolly-section {
-    opacity: 1;
-    transition: opacity 0.5s ease;
-  }
-
-  .skip-link {
-    position: absolute;
-    top: -40px;
-    left: 6px;
-    background: #000;
-    color: white;
-    padding: 8px;
-    z-index: 10000;
-    text-decoration: none;
-    border-radius: 4px;
-  }
-
-  .skip-link:focus {
-    top: 6px;
-  }
-</style>
+  </script>
 </head>
 
 <body>
@@ -233,7 +347,7 @@
   <div id="preloader" aria-hidden="true">
     <div class="preloader-content">
       <div class="preloader-logo">
-        <img src="images/logo-light.png" alt="الماسية للمطابخ" width="150" height="75" class="logo-animate">
+        <picture><source srcset="images/logo-light.webp" type="image/webp"><img decoding="async" src="images/logo-light.png" alt="الماسية للمطابخ" width="150" height="75" class="logo-animate"></picture>
       </div>
       <div class="progress-wrapper">
         <div class="progress-bar-bg">
@@ -260,13 +374,13 @@
         <picture>
           <source srcset="images/logo-light.webp" type="image/webp">
           <source srcset="images/logo-light.png" type="image/png">
-          <img src="images/logo-light.png" alt="شعار الماسية للمطابخ" class="logo logo-light" width="120" height="60"
+          <img decoding="async" src="images/logo-light.png" alt="شعار الماسية للمطابخ" class="logo logo-light" width="120" height="60"
             loading="eager">
         </picture>
         <picture>
           <source srcset="images/logo-dark.webp" type="image/webp">
           <source srcset="images/logo-dark.png" type="image/png">
-          <img src="images/logo-dark.png" alt="شعار الماسية للمطابخ" class="logo logo-dark" width="120" height="60"
+          <img decoding="async" src="images/logo-dark.png" alt="شعار الماسية للمطابخ" class="logo logo-dark" width="120" height="60"
             style="display: none;" loading="eager">
         </picture>
         <div class="brand-text">
@@ -276,7 +390,7 @@
       </div>
 
       <!-- main nav -->
-      <nav class="main-nav nav-menu" aria-label="القائمة الرئيسية" role="navigation">
+      <nav class="main-nav nav-menu" aria-label="القائمة الرئيسية">
         <a href="#materials" class="nav-link">الخامات والأسعار</a>
         <a href="#calculator" class="nav-link">احسب التكلفة</a>
         <a href="#why-us" class="nav-link">لماذا تختارنا</a>
@@ -286,15 +400,10 @@
       </nav>
 
       <!-- Mobile Menu Button -->
-      <button class="mobile-menu-btn" aria-expanded="false" aria-controls="mobile-menu" aria-label="قائمة الجوال">
+      <button type="button" class="mobile-menu-btn" aria-expanded="false" aria-controls="mobile-menu" aria-label="قائمة الجوال">
         <span></span>
         <span></span>
         <span></span>
-      </button>
-
-      <!-- theme toggle -->
-      <button class="theme-toggle" aria-label="تبديل الوضع">
-        <i data-lucide="moon" class="premium-icon"></i>
       </button>
     </div>
 
@@ -311,32 +420,38 @@
     </div>
   </header>
 
+  <!-- theme toggle (direct child of body: header has backdrop-filter which would
+       trap position:fixed and pin the button to the header instead of the viewport) -->
+  <button type="button" class="theme-toggle" aria-label="تبديل الوضع">
+    <i data-lucide="moon" class="premium-icon"></i>
+  </button>
+
   <main id="main">
     <!-- ===== Scrollytelling Hero Section ===== -->
     <section class="scrolly-section" id="scrollytelling">
       <div class="scrolly-sticky">
         <!-- Parallax Background Elements -->
         <div class="parallax-bg" id="scrolly-bg">
-          <div class="p-item p-1" data-speed="0.2"><img src="images/Aluminum/massia1-1.png" alt="مطبخ ألومنيوم حديث"
-              width="800" height="600"></div>
-          <div class="p-item p-2" data-speed="0.5"><img src="images/Aluminum/1.webp" alt="مطبخ ألومنيوم رمادي"
+          <div class="p-item p-1" data-speed="0.2"><picture><source srcset="images/Aluminum/massia1-1-600.webp 600w, images/Aluminum/massia1-1.webp 1200w" sizes="300px" type="image/webp"><img loading="eager" fetchpriority="high" decoding="async" src="images/Aluminum/massia1-1-600.jpg" srcset="images/Aluminum/massia1-1-600.jpg 600w, images/Aluminum/massia1-1.png 1200w" sizes="300px" alt="مطبخ ألومنيوم حديث"
+              width="800" height="600"></picture></div>
+          <div class="p-item p-2" data-speed="0.5"><img loading="lazy" decoding="async" src="images/Aluminum/1-600.webp" srcset="images/Aluminum/1-600.webp 600w, images/Aluminum/1.webp 1200w" sizes="300px" alt="مطبخ ألومنيوم رمادي"
               width="400" height="300"></div>
-          <div class="p-item p-3" data-speed="0.3"><img src="images/Wood/1.webp" alt="مطبخ خشب بنمط مودرن" width="400"
+          <div class="p-item p-3" data-speed="0.3"><img loading="lazy" decoding="async" src="images/Wood/1-600.webp" srcset="images/Wood/1-600.webp 600w, images/Wood/1.webp 1200w" sizes="300px" alt="مطبخ خشب بنمط مودرن" width="400"
               height="300"></div>
-          <div class="p-item p-4" data-speed="0.8"><img src="images/Aluminum/2.webp" alt="مطبخ ألومنيوم أنيق"
+          <div class="p-item p-4" data-speed="0.8"><img loading="lazy" decoding="async" src="images/Aluminum/2-600.webp" srcset="images/Aluminum/2-600.webp 600w, images/Aluminum/2.webp 1200w" sizes="300px" alt="مطبخ ألومنيوم أنيق"
               width="400" height="300"></div>
-          <div class="p-item p-5" data-speed="0.4"><img src="images/Wood/2.webp" alt="مطبخ خشب أبيض" width="400"
+          <div class="p-item p-5" data-speed="0.4"><img loading="lazy" decoding="async" src="images/Wood/2-600.webp" srcset="images/Wood/2-600.webp 600w, images/Wood/2.webp 1200w" sizes="300px" alt="مطبخ خشب أبيض" width="400"
               height="300"></div>
-          <div class="p-item p-6" data-speed="0.6"><img src="images/Aluminum/11.webp" alt="مطبخ ألومنيوم فاخر"
+          <div class="p-item p-6" data-speed="0.6"><img loading="lazy" decoding="async" src="images/Aluminum/11-600.webp" srcset="images/Aluminum/11-600.webp 600w, images/Aluminum/11.webp 1200w" sizes="300px" alt="مطبخ ألومنيوم فاخر"
               width="400" height="300"></div>
-          <div class="p-item p-7" data-speed="0.3"><img src="images/Aluminum/massia1-2.png" alt="مطبخ ألومنيوم متطور"
-              width="400" height="300"></div>
-          <div class="p-item p-8" data-speed="0.7"><img src="images/Wood/massia1.png" alt="مطبخ خشب فاخر" width="400"
-              height="300"></div>
-          <div class="p-item p-9" data-speed="0.4"><img src="images/Aluminum/massia1-3.png" alt="تصميم مطبخ حديث"
-              width="400" height="300"></div>
-          <div class="p-item p-10" data-speed="0.5"><img src="images/Wood/massia2.png" alt="مطبخ راقي" width="400"
-              height="300"></div>
+          <div class="p-item p-7" data-speed="0.3"><picture><source srcset="images/Aluminum/massia1-2-600.webp 600w, images/Aluminum/massia1-2.webp 1200w" sizes="300px" type="image/webp"><img loading="lazy" decoding="async" src="images/Aluminum/massia1-2-600.jpg" srcset="images/Aluminum/massia1-2-600.jpg 600w, images/Aluminum/massia1-2.png 1200w" sizes="300px" alt="مطبخ ألومنيوم متطور"
+              width="400" height="300"></picture></div>
+          <div class="p-item p-8" data-speed="0.7"><picture><source srcset="images/Wood/massia1-600.webp 600w, images/Wood/massia1.webp 1200w" sizes="300px" type="image/webp"><img loading="lazy" decoding="async" src="images/Wood/massia1-600.jpg" srcset="images/Wood/massia1-600.jpg 600w, images/Wood/massia1.png 1200w" sizes="300px" alt="مطبخ خشب فاخر" width="400"
+              height="300"></picture></div>
+          <div class="p-item p-9" data-speed="0.4"><picture><source srcset="images/Aluminum/massia1-3-600.webp 600w, images/Aluminum/massia1-3.webp 1200w" sizes="300px" type="image/webp"><img loading="lazy" decoding="async" src="images/Aluminum/massia1-3-600.jpg" srcset="images/Aluminum/massia1-3-600.jpg 600w, images/Aluminum/massia1-3.png 1200w" sizes="300px" alt="تصميم مطبخ حديث"
+              width="400" height="300"></picture></div>
+          <div class="p-item p-10" data-speed="0.5"><picture><source srcset="images/Wood/massia2-600.webp 600w, images/Wood/massia2.webp 1200w" sizes="300px" type="image/webp"><img loading="lazy" decoding="async" src="images/Wood/massia2-600.jpg" srcset="images/Wood/massia2-600.jpg 600w, images/Wood/massia2.png 1200w" sizes="300px" alt="مطبخ راقي" width="400"
+              height="300"></picture></div>
 
         </div>
 
@@ -344,12 +459,12 @@
         <div class="scrolly-content">
           <div class="scrolly-card glass">
             <div class="card-header-actions">
-              <button class="theme-toggle hero-theme-toggle" aria-label="تبديل الوضع">
+              <button type="button" class="theme-toggle hero-theme-toggle" aria-label="تبديل الوضع">
                 <i data-lucide="moon" class="premium-icon"></i>
               </button>
             </div>
 
-            <h2 class="white-heading">أهلاً بك في شركة</h2>
+            <p class="white-heading">أهلاً بك في شركة</p>
             <h1 class="gold-heading">الماسية للمطابخ</h1>
 
             <!-- Trust Badges -->
@@ -380,18 +495,18 @@
     <!-- ===== Materials & Prices ===== -->
     <section id="materials" class="section materials-prices">
       <div class="container">
-        <h3 class="gold-title">الخامات والمميزات</h3>
+        <h2 class="gold-title">الخامات والمميزات</h2>
 
 
 
         <!-- Tabs Navigation -->
         <div class="cu-tabs-container">
-          <button class="cu-tab-btn" data-target="tab-offers">العروض <i data-lucide="flame"
+          <button type="button" class="cu-tab-btn" data-target="tab-offers">العروض <i data-lucide="flame"
               class="premium-icon flame sm"></i></button>
-          <button class="cu-tab-btn" data-target="tab-aluminum">الألومنيوم</button>
-          <button class="cu-tab-btn" data-target="tab-wood">الخشب</button>
-          <button class="cu-tab-btn" data-target="tab-dressing">الدريسينج</button>
-          <button class="cu-tab-btn" data-target="tab-bathroom">وحدات الحمام</button>
+          <button type="button" class="cu-tab-btn" data-target="tab-aluminum">الألومنيوم</button>
+          <button type="button" class="cu-tab-btn" data-target="tab-wood">الخشب</button>
+          <button type="button" class="cu-tab-btn" data-target="tab-dressing">الدريسينج</button>
+          <button type="button" class="cu-tab-btn" data-target="tab-bathroom">وحدات الحمام</button>
         </div>
 
 
@@ -445,58 +560,57 @@
                   طلباً</span>
               </div>
               <div class="pricing-grid enhanced-grid">
-                <div class="price-item clickable-material"
+                <div class="price-item clickable-material" tabindex="0" role="button"
                   data-pros="مقاوم ممتاز للرطوبة والمياه|يتوفر بتشكيلة ألوان واسعة جداً|سهل التنظيف والصيانة|سعر اقتصادي مقارنة بالخامات الأخرى|خفيف الوزن ولا يمثل حمل على المفصلات"
                   data-cons="قد يظهر فواصل في الزوايا إذا لم يتم التقفيل بدقة|طبقة اللون قد تتأثر بالخدوش الحادة|الشكل التقليدي قد لا يناسب الأذواق المودرن جداً">
                   <div class="card-bg-image">
-                    <img src="images/bento_aluminum_cabinet_1767252451639.png" alt="خامة ألومنيوم" width="300"
-                      height="300" loading="lazy">
+                    <picture><source srcset="images/bento_aluminum_cabinet_1767252451639-800.webp" type="image/webp"><img decoding="async" src="images/bento_aluminum_cabinet_1767252451639.png" alt="خامة ألومنيوم" width="300"
+                      height="300" loading="lazy"></picture>
                   </div>
                   <div class="card-content">
                     <div class="price-header">
                       <h5>كلادينج</h5>
                       <div class="price-badge standard">قياسي</div>
                     </div>
-                    <div class="click-hint"><i data-lucide="hand-pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
+                    <div class="click-hint"><i data-lucide="pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
                   </div>
                 </div>
 
-                <div class="price-item clickable-material"
+                <div class="price-item clickable-material" tabindex="0" role="button"
                   data-pros="مظهر معدني نقي ولامع|متانة عالية جداً ضد الصدمات|لا يتأثر بالمياه أو الحرارة نهائياً|عمر افتراضي طويل جداً"
                   data-cons="خيارات الألوان محدودة (غالباً فضي أو ذهبي)|قد تظهر عليه بصمات الأصابع بسهولة|سعره أعلى من الكلادينج العادي">
                   <div class="card-bg-image">
-                    <img src="images/bento_aluminum_cabinet_1767252451639.png" alt="شيت ألومنيوم" width="300"
-                      height="300" loading="lazy">
+                    <picture><source srcset="images/bento_aluminum_cabinet_1767252451639-800.webp" type="image/webp"><img decoding="async" src="images/bento_aluminum_cabinet_1767252451639.png" alt="شيت ألومنيوم" width="300"
+                      height="300" loading="lazy"></picture>
                   </div>
                   <div class="card-content">
                     <div class="price-header">
                       <h5>شيت ألومنيوم</h5>
                       <div class="price-badge popular">الأفضل</div>
                     </div>
-                    <div class="click-hint"><i data-lucide="hand-pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
+                    <div class="click-hint"><i data-lucide="pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
                   </div>
                 </div>
 
-                <div class="price-item clickable-material"
+                <div class="price-item clickable-material" tabindex="0" role="button"
                   data-pros="يجمع بين متانة الألومنيوم وشكل الخشب الفخيم|مقاوم للماء والحشرات بعكس الخشب الطبيعي|ألوان خشبية واقعية جداً|سهل التنظيف ولا يحتاج تلميع مثل الخشب"
                   data-cons="التكلفة أعلى من الألوان السادة|الخامات الرديئة منه قد يتقشر لونها مع الزمن (نحن نستخدم أجود الأنواع)|الوزن قد يكون أثقل قليلاً">
                   <div class="card-bg-image">
-                    <img src="images/bento_wood_cabinet_1767252469276.png" alt="شيت خشمنيوم" width="300" height="300"
-                      loading="lazy">
+                    <picture><source srcset="images/bento_wood_cabinet_1767252469276-800.webp" type="image/webp"><img decoding="async" src="images/bento_wood_cabinet_1767252469276.png" alt="شيت خشمنيوم" width="300" height="300"
+                      loading="lazy"></picture>
                   </div>
                   <div class="card-content">
                     <div class="price-header">
                       <h5>شيت خشمنيوم</h5>
                       <div class="price-badge premium">فاخر</div>
                     </div>
-                    <div class="click-hint"><i data-lucide="hand-pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
+                    <div class="click-hint"><i data-lucide="pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
                   </div>
                 </div>
               </div>
             </div>
 
-          </div>
-        </div> <!-- End Aluminum Tab -->
+          </div><!-- End Aluminum Tab -->
 
         <!-- Tab 3: Wood -->
         <div id="tab-wood" class="cu-tab-content">
@@ -507,43 +621,43 @@
               <span class="category-badge"><i data-lucide="gem" class="premium-icon gold sm"></i> فاخرة جداً</span>
             </div>
             <div class="pricing-grid enhanced-grid">
-              <div class="price-item clickable-material"
+              <div class="price-item clickable-material" tabindex="0" role="button"
                 data-pros="مقاوم للماء بنسبة 100%|سهل التنظيف|تشكيلة ألوان واسعة|اقتصادي التكلفة"
                 data-cons="عمر افتراضي أقل من الألومنيوم|قد يتأثر بالحرارة العالية جداً|الشكل البلاستيكي قد لا يعجب البعض">
                 <div class="card-bg-image">
-                  <img src="images/bento_wood_cabinet_1767252469276.png" alt="خشب PVC" width="300" height="300"
-                    loading="lazy">
+                  <picture><source srcset="images/bento_wood_cabinet_1767252469276-800.webp" type="image/webp"><img decoding="async" src="images/bento_wood_cabinet_1767252469276.png" alt="خشب PVC" width="300" height="300"
+                    loading="lazy"></picture>
                 </div>
                 <div class="card-content">
                   <div class="price-header">
                     <h5>PVC</h5>
                     <div class="price-badge economy">اقتصادي</div>
                   </div>
-                  <div class="click-hint"><i data-lucide="hand-pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
+                  <div class="click-hint"><i data-lucide="pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
                 </div>
               </div>
 
-              <div class="price-item clickable-material"
+              <div class="price-item clickable-material" tabindex="0" role="button"
                 data-pros="مقاوم ممتاز للخدش والحرارة|ملمس وتجزيعات طبيعية جداً|عمر افتراضي طويل|قوة تحمل عالية"
                 data-cons="وزن ثقيل|يحتاج دقة في التركيب|خيارات الألوان السادة محدودة">
                 <div class="card-bg-image">
-                  <img src="images/bento_wood_cabinet_1767252469276.png" alt="خشب HPL" width="300" height="300"
-                    loading="lazy">
+                  <picture><source srcset="images/bento_wood_cabinet_1767252469276-800.webp" type="image/webp"><img decoding="async" src="images/bento_wood_cabinet_1767252469276.png" alt="خشب HPL" width="300" height="300"
+                    loading="lazy"></picture>
                 </div>
                 <div class="card-content">
                   <div class="price-header">
                     <h5>HPL</h5>
                     <div class="price-badge popular">الأكثر مبيعاً</div>
                   </div>
-                  <div class="click-hint"><i data-lucide="hand-pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
+                  <div class="click-hint"><i data-lucide="pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
                 </div>
               </div>
 
-              <div class="price-item clickable-material"
+              <div class="price-item clickable-material" tabindex="0" role="button"
                 data-pros="لمعان زجاجي فائق|مظهر غاية في الفخامة|ألوان عصرية وجذابة|سهل التنظيف"
                 data-cons="الحواف هي نقطة الضعف|تظهر عليه بصمات الأصابع|يحتاج عناية لتجنب الخدوش العميقة">
                 <div class="card-bg-image">
-                  <img src="images/icon_acrylic_3d_1767251905346.png" alt="أكريليك" width="300" height="300"
+                  <img decoding="async" src="images/icon_acrylic_3d_1767251905346.png" alt="أكريليك" width="300" height="300"
                     loading="lazy">
                 </div>
                 <div class="card-content">
@@ -551,15 +665,15 @@
                     <h5>أكريليك</h5>
                     <div class="price-badge premium">فاخر</div>
                   </div>
-                  <div class="click-hint"><i data-lucide="hand-pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
+                  <div class="click-hint"><i data-lucide="pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
                 </div>
               </div>
 
-              <div class="price-item clickable-material"
+              <div class="price-item clickable-material" tabindex="0" role="button"
                 data-pros="لمعان أعلى من الأكريليك (Mirror Finish)|مقاومة عالية جداً للخدش (أعلى من الأكريليك)|مقاوم للصدمات|صديق للبيئة"
                 data-cons="سعره مرتفع|يتطلب تقنيات حديثة جداً في التصنيع">
                 <div class="card-bg-image">
-                  <img src="images/icon_premium_3d_1767251923306.png" alt="بولي لاك" width="300" height="300"
+                  <img decoding="async" src="images/icon_premium_3d_1767251923306.png" alt="بولي لاك" width="300" height="300"
                     loading="lazy">
                 </div>
                 <div class="card-content">
@@ -567,16 +681,16 @@
                     <h5>بولي لاك</h5>
                     <div class="price-badge luxury">فاخر جداً</div>
                   </div>
-                  <div class="click-hint"><i data-lucide="hand-pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
+                  <div class="click-hint"><i data-lucide="pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
                 </div>
               </div>
 
               <!-- New Items -->
-              <div class="price-item clickable-material"
+              <div class="price-item clickable-material" tabindex="0" role="button"
                 data-pros="ضلف مصنوعة بجودة عالية جداً|كونتر شرقاوي أصلي|تشطيب مثالي|ضمان حقيقي"
                 data-cons="سعر مرتفع جداً|وقت تصنيع أطول">
                 <div class="card-bg-image">
-                  <img src="images/icon_premium_3d_1767251923306.png" alt="بولي باك" width="300" height="300"
+                  <img decoding="async" src="images/icon_premium_3d_1767251923306.png" alt="بولي باك" width="300" height="300"
                     loading="lazy">
                 </div>
                 <div class="card-content">
@@ -584,39 +698,39 @@
                     <h5>بولي باك جوود وود</h5>
                     <div class="price-badge premium">الأفضل جودة</div>
                   </div>
-                  <div class="click-hint"><i data-lucide="hand-pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
+                  <div class="click-hint"><i data-lucide="pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
                 </div>
               </div>
 
-              <div class="price-item clickable-material"
+              <div class="price-item clickable-material" tabindex="0" role="button"
                 data-pros="مقاوم للرطوبة (اللون الأخضر)|سعر ممتاز|سطح ناعم جداً للدهان"
                 data-cons="ليس مقاوماً للماء بشكل كامل (فقط الرطوبة)|أقل صلابة من الكونتر">
                 <div class="card-bg-image">
-                  <img src="images/bento_wood_cabinet_1767252469276.png" alt="خشب MDF أخضر" width="300" height="300"
-                    loading="lazy">
+                  <picture><source srcset="images/bento_wood_cabinet_1767252469276-800.webp" type="image/webp"><img decoding="async" src="images/bento_wood_cabinet_1767252469276.png" alt="خشب MDF أخضر" width="300" height="300"
+                    loading="lazy"></picture>
                 </div>
                 <div class="card-content">
                   <div class="price-header">
                     <h5>Lamber J MDF أخضر</h5>
                     <div class="price-badge standard">مقاوم للرطوبة</div>
                   </div>
-                  <div class="click-hint"><i data-lucide="hand-pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
+                  <div class="click-hint"><i data-lucide="pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
                 </div>
               </div>
 
-              <div class="price-item clickable-material"
+              <div class="price-item clickable-material" tabindex="0" role="button"
                 data-pros="متانة عالية جداً (طبقات متعاكسة)|مقاوم للانحناء|يمسك المسامير بقوة ممتازة|عمر افتراضي طويل"
                 data-cons="يحتاج لبطانة وجه قبل الدهان|سعره مرتفع">
                 <div class="card-bg-image">
-                  <img src="images/bento_wood_cabinet_1767252469276.png" alt="كونتر طبقات" width="300" height="300"
-                    loading="lazy">
+                  <picture><source srcset="images/bento_wood_cabinet_1767252469276-800.webp" type="image/webp"><img decoding="async" src="images/bento_wood_cabinet_1767252469276.png" alt="كونتر طبقات" width="300" height="300"
+                    loading="lazy"></picture>
                 </div>
                 <div class="card-content">
                   <div class="price-header">
                     <h5>Lamber J كونتر طبقات</h5>
                     <div class="price-badge premium">متعدد الطبقات</div>
                   </div>
-                  <div class="click-hint"><i data-lucide="hand-pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
+                  <div class="click-hint"><i data-lucide="pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
                 </div>
               </div>
             </div>
@@ -643,27 +757,27 @@
 
 
             <div class="pricing-grid enhanced-grid">
-              <div class="price-item clickable-material"
+              <div class="price-item clickable-material" tabindex="0" role="button"
                 data-pros="سعر اقتصادي جداً (الأرخص على الإطلاق)|مناسب للتجهيزات المؤقتة أو الميزانيات المحدودة|ألوان متعددة ومتوفرة بسهولة|سهل القص والتشكيل"
                 data-cons="ضعيف المقاومة للرطوبة والمياه (يتنفخ بسهولة)|غير مناسب للأماكن التي بها رطوبة عالية|عمر افتراضي قصير نسبياً|المفصلات قد ترتخي مع الوقت لضعف الخامة">
                 <div class="card-bg-image">
-                  <img src="images/bento_wood_cabinet_1767252469276.png" alt="خشب MDF اقتصادي" width="300" height="300"
-                    loading="lazy">
+                  <picture><source srcset="images/bento_wood_cabinet_1767252469276-800.webp" type="image/webp"><img decoding="async" src="images/bento_wood_cabinet_1767252469276.png" alt="خشب MDF اقتصادي" width="300" height="300"
+                    loading="lazy"></picture>
                 </div>
                 <div class="card-content">
                   <div class="price-header">
                     <h5>خشب MDf عادي</h5>
                     <div class="price-badge economy">الأرخص</div>
                   </div>
-                  <div class="click-hint"><i data-lucide="hand-pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
+                  <div class="click-hint"><i data-lucide="pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
                 </div>
               </div>
 
-              <div class="price-item clickable-material"
+              <div class="price-item clickable-material" tabindex="0" role="button"
                 data-pros="مظهر عصري جداً بألوان مطفية|ملمس مخملي ناعم|مقاوم لبصمات الأصابع|يعطي إحساساً بالهدوء والفخامة"
                 data-cons="قد يكون سعره مرتفعاً|يتأثر بالمنظفات الكيميائية القوية">
                 <div class="card-bg-image">
-                  <img src="images/icon_premium_3d_1767251923306.png" alt="خشب سوبر مات" width="300" height="300"
+                  <img decoding="async" src="images/icon_premium_3d_1767251923306.png" alt="خشب سوبر مات" width="300" height="300"
                     loading="lazy">
                 </div>
                 <div class="card-content">
@@ -671,23 +785,23 @@
                     <h5>خشب سوبر مات</h5>
                     <div class="price-badge premium">مودرن</div>
                   </div>
-                  <div class="click-hint"><i data-lucide="hand-pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
+                  <div class="click-hint"><i data-lucide="pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
                 </div>
               </div>
 
-              <div class="price-item clickable-material"
+              <div class="price-item clickable-material" tabindex="0" role="button"
                 data-pros="أعلى درجات المتانة في الأخشاب المصنعة|قلب خشبي طبقات (كونتر) لا يتأثر بالمياه بسهولة|طبقة HPL خارجية مقاومة للخدش والحرارة|يعتبر استثمار طويل الأمد"
                 data-cons="السعر مرتفع مقارنة بالأنواع الأخرى|وزن ثقيل يحتاج لتثبيت جيد|يحتاج لعمالة ماهرة جداً في التقفيل (الشريط)">
                 <div class="card-bg-image">
-                  <img src="images/bento_wood_cabinet_1767252469276.png" alt="خشب HPL كاونتر" width="300" height="300"
-                    loading="lazy">
+                  <picture><source srcset="images/bento_wood_cabinet_1767252469276-800.webp" type="image/webp"><img decoding="async" src="images/bento_wood_cabinet_1767252469276.png" alt="خشب HPL كاونتر" width="300" height="300"
+                    loading="lazy"></picture>
                 </div>
                 <div class="card-content">
                   <div class="price-header">
                     <h5>خشب HPL كاونتر</h5>
                     <div class="price-badge luxury">خيار العمر</div>
                   </div>
-                  <div class="click-hint"><i data-lucide="hand-pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
+                  <div class="click-hint"><i data-lucide="pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
                 </div>
               </div>
             </div>
@@ -707,56 +821,56 @@
 
 
             <div class="pricing-grid enhanced-grid">
-              <div class="price-item clickable-material"
+              <div class="price-item clickable-material" tabindex="0" role="button"
                 data-pros="مقاوم للماء بنسبة 100% (لا يصدأ ولا يتعفن)|سهل التنظيف والتعقيم|خفيف الوزن على الحائط المعلق|عمر افتراضي مدى الحياة تقريباً"
                 data-cons="الشكل المعدني قد لا يناسب كل الأذواق|سعره قد يكون مرتفعاً لبعض التصميمات|صوت عند الفتح والغلق (إلا بوجود مفصلات Soft Close)">
                 <div class="card-bg-image">
-                  <img src="images/bento_aluminum_cabinet_1767252451639.png" alt="خامة بورديوم" width="300" height="300"
-                    loading="lazy">
+                  <picture><source srcset="images/bento_aluminum_cabinet_1767252451639-800.webp" type="image/webp"><img decoding="async" src="images/bento_aluminum_cabinet_1767252451639.png" alt="خامة بورديوم" width="300" height="300"
+                    loading="lazy"></picture>
                 </div>
                 <div class="card-content">
                   <div class="price-header">
                     <h5>بورديوم</h5>
                     <div class="price-badge popular">الأكثر طلباً</div>
                   </div>
-                  <div class="click-hint"><i data-lucide="hand-pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
+                  <div class="click-hint"><i data-lucide="pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
                 </div>
               </div>
 
-              <div class="price-item clickable-material"
+              <div class="price-item clickable-material" tabindex="0" role="button"
                 data-pros="مقاوم للماء والرطوبة بكفاءة عالية|تنوع كبير في الأشكال والألوان (خشبيات، رخاميات)|سهل التنظيف|سعر منافس بالنسبة لمميزاته"
                 data-cons="يجب التأكد من جودة كبس الأحرف (Edge Banding) لمنع تسرب الماء|أقل صلابة قليلاً من البورديوم">
                 <div class="card-bg-image">
-                  <img src="images/bento_aluminum_cabinet_1767252451639.png" alt="HPL مقاوم للماء" width="300"
-                    height="300" loading="lazy">
+                  <picture><source srcset="images/bento_aluminum_cabinet_1767252451639-800.webp" type="image/webp"><img decoding="async" src="images/bento_aluminum_cabinet_1767252451639.png" alt="HPL مقاوم للماء" width="300"
+                    height="300" loading="lazy"></picture>
                 </div>
                 <div class="card-content">
                   <div class="price-header">
                     <h5>HPL مقاوم للماء</h5>
                     <div class="price-badge luxury">فئة عليا</div>
                   </div>
-                  <div class="click-hint"><i data-lucide="hand-pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
+                  <div class="click-hint"><i data-lucide="pointer" class="hint-icon"></i> اضغط للتفاصيل</div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div> <!-- End Others Tab -->
+        </div><!-- End Bathroom Tab -->
+      </div><!-- End materials-content-wrapper -->
 
-      </div>
+      </div><!-- End container -->
     </section>
 
 
 
 
     <!-- ===== Cost Calculator ===== -->
-    <section id="calculator" class="section calculator reveal" style="display: none;">
+    <section id="calculator" class="section calculator reveal">
       <div class="container">
-        <h3 class="gold-title">حاسبة تكلفة المطبخ</h3>
+        <h2 class="gold-title">حاسبة تكلفة المطبخ</h2>
         <div class="calculator-card card calculator-enhanced">
           <div class="calculator-tabs">
-            <button class="calculator-tab active" data-tab="area">حساب بالمساحة</button>
-            <button class="calculator-tab" data-tab="dimensions">حساب بالأبعاد</button>
+            <button type="button" class="calculator-tab active" data-tab="area">حساب بالمساحة</button>
+            <button type="button" class="calculator-tab" data-tab="dimensions">حساب بالأبعاد</button>
           </div>
 
           <div class="calculator-tab-content active" id="area-tab">
@@ -786,12 +900,12 @@
                 <div class="input-group">
                   <label>الإضافات (تضاف لكل متر)</label>
                   <div class="checkbox-group">
-                    <label><input type="checkbox" name="addons" value="counter" data-price="500"> كونتر جوود وود (+500
-                      ج/م)</label>
-                    <label><input type="checkbox" name="addons" value="led" data-price="200"> إضاءة LED (+200
-                      ج/م)</label>
-                    <label><input type="checkbox" name="addons" value="handles" data-price="100"> مقابض بلت إن (+100
-                      ج/م)</label>
+                    <input type="checkbox" id="addon-counter" name="addons" value="counter" data-price="500">
+                    <label for="addon-counter">كونتر جوود وود (+500 ج/م)</label>
+                    <input type="checkbox" id="addon-led" name="addons" value="led" data-price="200">
+                    <label for="addon-led">إضاءة LED (+200 ج/م)</label>
+                    <input type="checkbox" id="addon-handles" name="addons" value="handles" data-price="100">
+                    <label for="addon-handles">مقابض بلت إن (+100 ج/م)</label>
                   </div>
                 </div>
               </div>
@@ -825,7 +939,7 @@
                     <p id="recommendation-reason">مثالي للمساحات المتوسطة، يجمع بين المتانة والسعر المعقول</p>
                   </div>
 
-                  <button class="btn btn-primary btn-full" onclick="requestDetailedQuote()">
+                  <button type="button" class="btn btn-primary btn-full" onclick="requestDetailedQuote()">
                     اطلب عرض سعر دقيق
                   </button>
                   <p class="note">* الأسعار تقريبية وقد تختلف حسب التفاصيل والقياسات الفعلية</p>
@@ -892,7 +1006,7 @@
                     </div>
                   </div>
 
-                  <button class="btn btn-primary btn-full" onclick="requestDetailedQuote()">
+                  <button type="button" class="btn btn-primary btn-full" onclick="requestDetailedQuote()">
                     اطلب عرض سعر دقيق
                   </button>
                   <p class="note">* الأسعار تقريبية وقد تختلف حسب التفاصيل والقياسات الفعلية</p>
@@ -909,7 +1023,7 @@
     <!-- ===== Trust Center (Unified Why Us & Warranty) ===== -->
     <section id="why-us" class="section why-us-section reveal">
       <div class="container">
-        <h3 class="gold-title">لماذا تختار الماسية؟</h3>
+        <h2 class="gold-title">لماذا تختار الماسية؟</h2>
         <p class="section-subtitle">نحن نجمع بين الخبرة
           الطويلة، الجودة العالمية، والضمان الحقيقي لنقدم لك أفضل تجربة في تصميم مطبخك.</p>
 
@@ -969,8 +1083,12 @@
           <div class="booking-system card">
             <h4>احجز استشارة مجانية الآن</h4>
             <form class="booking-form">
-              <input type="text" placeholder="الاسم الكامل" required aria-label="الاسم الكامل">
-              <input type="tel" placeholder="رقم الهاتف" required aria-label="رقم الهاتف">
+              <label for="booking-name" class="sr-only">الاسم الكامل</label>
+              <input type="text" id="booking-name" name="booking-name" placeholder="الاسم الكامل" required
+                aria-label="الاسم الكامل">
+              <label for="booking-phone" class="sr-only">رقم الهاتف</label>
+              <input type="tel" id="booking-phone" name="booking-phone" placeholder="رقم الهاتف" required
+                aria-label="رقم الهاتف">
               <button type="submit" class="btn btn-primary btn-full">احجز الاستشارة</button>
             </form>
             <p class="note">سيتم التواصل معك خلال 24 ساعة
@@ -987,15 +1105,15 @@
     <!-- ===== Works / Gallery ===== -->
     <section id="works" class="section works reveal">
       <div class="container">
-        <h3 class="gold-title">أعمالنا</h3>
+        <h2 class="gold-title">أعمالنا</h2>
 
 
         <div class="filter-container">
-          <button class="filter-btn active" data-filter="all">الكل</button>
-          <button class="filter-btn" data-filter="aluminum">مطابخ ألومنيوم</button>
-          <button class="filter-btn" data-filter="wood">مطابخ خشب</button>
-          <button class="filter-btn" data-filter="dressing">دريسينج</button>
-          <button class="filter-btn" data-filter="bathroom">وحدات حمام</button>
+          <button type="button" class="filter-btn active" data-filter="all">الكل</button>
+          <button type="button" class="filter-btn" data-filter="aluminum">مطابخ ألومنيوم</button>
+          <button type="button" class="filter-btn" data-filter="wood">مطابخ خشب</button>
+          <button type="button" class="filter-btn" data-filter="dressing">دريسينج</button>
+          <button type="button" class="filter-btn" data-filter="bathroom">وحدات حمام</button>
         </div>
 
 
@@ -1013,11 +1131,11 @@
           <!-- Aluminum -->
           <figure class="card item aluminum modern reveal gallery-item" data-gallery-id="aluminum-1"
             data-title="مطبخ ألومنيوم عصري" data-description="تصميم مودرن مقاوم للرطوبة مع تشطيبات فاخرة"
-            data-images='["images/Aluminum/1.jpeg", "images/Aluminum/2.jpeg", "images/Aluminum/11.jpeg"]'
-            data-video="videos/reals assets.mp4" onclick="openGalleryModal('aluminum-1', event)"
+            data-images='["images/Aluminum/1.webp", "images/Aluminum/2.webp", "images/Aluminum/11.webp"]'
+            data-video="videos/reals-assets.mp4" tabindex="0" role="button" onclick="openGalleryModal('aluminum-1', event)"
             style="cursor: pointer;">
             <div class="card-bg-image">
-              <img src="images/Aluminum/1.jpeg" alt="مطبخ ألومنيوم عصري">
+              <picture><source srcset="images/Aluminum/1.webp" type="image/webp"><img width="963" height="1280" loading="lazy" decoding="async" src="images/Aluminum/1.jpeg" alt="مطبخ ألومنيوم عصري"></picture>
             </div>
             <div class="card-content">
               <div class="works-cta">عرض المطبخ</div>
@@ -1025,10 +1143,11 @@
           </figure>
 
           <figure class="card item wood reveal gallery-item" data-gallery-id="wood-1" data-title="مطبخ خشب HPL فاخر"
-            data-images='["images/Wood/2.jpeg", "images/Wood/1.jpeg"]' data-video="videos/reals assets.mp4"
-            onclick="openGalleryModal('wood-1', event)" style="cursor: pointer;">
+            data-description="تشطيب خشبي فاخر بتصميم عصري وخامات عالية الجودة"
+            data-images='["images/Wood/2.webp", "images/Wood/1.webp"]' data-video="videos/reals-assets.mp4"
+            tabindex="0" role="button" onclick="openGalleryModal('wood-1', event)" style="cursor: pointer;">
             <div class="card-bg-image">
-              <img src="images/Wood/2.jpeg" alt="مطبخ خشب">
+              <picture><source srcset="images/Wood/2.webp" type="image/webp"><img width="1204" height="1600" loading="lazy" decoding="async" src="images/Wood/2.jpeg" alt="مطبخ خشب"></picture>
             </div>
             <div class="card-content">
               <div class="works-cta">عرض المطبخ</div>
@@ -1037,11 +1156,11 @@
 
           <figure class="card item aluminum reveal gallery-item" data-gallery-id="aluminum-2"
             data-title="مطبخ ألومنيوم بلمسات ذهبية" data-description="تصميم راقي بلمسات ذهبية فاخرة وتشطيب عالي الجودة"
-            data-images='["images/Aluminum/11.jpeg", "images/Aluminum/111.jpeg", "images/Aluminum/1.jpeg"]'
-            data-video="videos/reals assets.mp4" onclick="openGalleryModal('aluminum-2', event)"
+            data-images='["images/Aluminum/11.webp", "images/Aluminum/111.webp", "images/Aluminum/1.webp"]'
+            data-video="videos/reals-assets.mp4" tabindex="0" role="button" onclick="openGalleryModal('aluminum-2', event)"
             style="cursor: pointer;">
             <div class="card-bg-image">
-              <img src="images/Aluminum/11.jpeg" alt="مطبخ ألومنيوم">
+              <picture><source srcset="images/Aluminum/11.webp" type="image/webp"><img width="963" height="1280" loading="lazy" decoding="async" src="images/Aluminum/11.jpeg" alt="مطبخ ألومنيوم"></picture>
             </div>
             <div class="card-content">
               <div class="works-cta">عرض المطبخ</div>
@@ -1051,11 +1170,11 @@
           <!-- Additional items (initially hidden) -->
           <figure class="card item aluminum reveal gallery-item gallery-item-hidden" data-gallery-id="aluminum-3"
             data-title="مطبخ ألومنيوم كلاسيكي" data-description="تصميم كلاسيكي أنيق بتفاصيل عصرية"
-            data-images='["images/Aluminum/2.jpeg", "images/Aluminum/1.jpeg", "images/Aluminum/11.jpeg"]'
-            data-video="videos/reals assets.mp4" onclick="openGalleryModal('aluminum-3', event)"
+            data-images='["images/Aluminum/2.webp", "images/Aluminum/1.webp", "images/Aluminum/11.webp"]'
+            data-video="videos/reals-assets.mp4" tabindex="0" role="button" onclick="openGalleryModal('aluminum-3', event)"
             style="cursor: pointer;">
             <div class="card-bg-image">
-              <img src="images/Aluminum/2.jpeg" alt="تصميم ألومنيوم 3">
+              <picture><source srcset="images/Aluminum/2.webp" type="image/webp"><img width="1204" height="1600" loading="lazy" decoding="async" src="images/Aluminum/2.jpeg" alt="تصميم ألومنيوم 3"></picture>
             </div>
             <div class="card-content">
               <div class="works-cta">عرض المطبخ</div>
@@ -1063,10 +1182,11 @@
           </figure>
 
           <figure class="card item wood reveal gallery-item gallery-item-hidden" data-gallery-id="wood-2"
-            data-images='["images/Wood/1.jpeg", "images/Wood/2.jpeg"]' data-video="videos/reals assets.mp4"
-            onclick="openGalleryModal('wood-2', event)" style="cursor: pointer;">
+            data-title="مطبخ خشب طبيعي أنيق" data-description="تصميم خشبي دافئ بتفاصيل عصرية وتشطيب متقن"
+            data-images='["images/Wood/1.webp", "images/Wood/2.webp"]' data-video="videos/reals-assets.mp4"
+            tabindex="0" role="button" onclick="openGalleryModal('wood-2', event)" style="cursor: pointer;">
             <div class="card-bg-image">
-              <img src="images/Wood/1.jpeg" alt="مطبخ خشب 2">
+              <picture><source srcset="images/Wood/1.webp" type="image/webp"><img width="1280" height="963" loading="lazy" decoding="async" src="images/Wood/1.jpeg" alt="مطبخ خشب 2"></picture>
             </div>
             <div class="card-content">
               <div class="works-cta">عرض المطبخ</div>
@@ -1075,11 +1195,11 @@
 
           <figure class="card item aluminum reveal gallery-item gallery-item-hidden" data-gallery-id="aluminum-4"
             data-title="مطبخ ألومنيوم مودرن" data-description="تصميم عصري بألوان جريئة وتشطيب متقن"
-            data-images='["images/Aluminum/111.jpeg", "images/Aluminum/11.jpeg", "images/Aluminum/2.jpeg"]'
-            data-video="videos/reals assets.mp4" onclick="openGalleryModal('aluminum-4', event)"
+            data-images='["images/Aluminum/111.webp", "images/Aluminum/11.webp", "images/Aluminum/2.webp"]'
+            data-video="videos/reals-assets.mp4" tabindex="0" role="button" onclick="openGalleryModal('aluminum-4', event)"
             style="cursor: pointer;">
             <div class="card-bg-image">
-              <img src="images/Aluminum/111.jpeg" alt="تصميم ألومنيوم 4">
+              <picture><source srcset="images/Aluminum/111.webp" type="image/webp"><img width="963" height="1280" loading="lazy" decoding="async" src="images/Aluminum/111.jpeg" alt="تصميم ألومنيوم 4"></picture>
             </div>
             <div class="card-content">
               <div class="works-cta">عرض المطبخ</div>
@@ -1087,10 +1207,11 @@
           </figure>
 
           <figure class="card item dressing reveal gallery-item gallery-item-hidden" data-gallery-id="dressing-1"
-            data-images='["images/Wood/11.jpeg", "images/Wood/111.jpeg"]' data-video="videos/reals assets.mp4"
-            onclick="openGalleryModal('dressing-1', event)" style="cursor: pointer;">
+            data-title="دريسينج روم عصري" data-description="تصميم عملي أنيق لاستغلال أمثل للمساحات"
+            data-images='["images/Wood/11.webp", "images/Wood/111.webp"]' data-video="videos/reals-assets.mp4"
+            tabindex="0" role="button" onclick="openGalleryModal('dressing-1', event)" style="cursor: pointer;">
             <div class="card-bg-image">
-              <img src="images/Wood/11.jpeg" alt="دريسينج 1">
+              <picture><source srcset="images/Wood/11.webp" type="image/webp"><img width="963" height="1280" loading="lazy" decoding="async" src="images/Wood/11.jpeg" alt="دريسينج 1"></picture>
             </div>
             <div class="card-content">
               <div class="works-cta">عرض المطبخ</div>
@@ -1098,10 +1219,11 @@
           </figure>
 
           <figure class="card item wood reveal gallery-item gallery-item-hidden" data-gallery-id="wood-3"
-            data-images='["images/Wood/11.jpeg", "images/Wood/1.jpeg", "images/Wood/2.jpeg"]'
-            data-video="videos/reals assets.mp4" onclick="openGalleryModal('wood-3', event)" style="cursor: pointer;">
+            data-title="مطبخ خشب مودرن" data-description="تصميم خشبي عصري يجمع بين الفخامة والعملية"
+            data-images='["images/Wood/11.webp", "images/Wood/1.webp", "images/Wood/2.webp"]'
+            data-video="videos/reals-assets.mp4" tabindex="0" role="button" onclick="openGalleryModal('wood-3', event)" style="cursor: pointer;">
             <div class="card-bg-image">
-              <img src="images/Wood/11.jpeg" alt="مطبخ خشب 3">
+              <picture><source srcset="images/Wood/11.webp" type="image/webp"><img width="963" height="1280" loading="lazy" decoding="async" src="images/Wood/11.jpeg" alt="مطبخ خشب 3"></picture>
             </div>
             <div class="card-content">
               <div class="works-cta">عرض المطبخ</div>
@@ -1109,10 +1231,11 @@
           </figure>
 
           <figure class="card item bathroom reveal gallery-item gallery-item-hidden" data-gallery-id="bathroom-1"
-            data-images='["images/Aluminum/1.jpeg", "images/Aluminum/2.jpeg"]' data-video="videos/reals assets.mp4"
-            onclick="openGalleryModal('bathroom-1', event)" style="cursor: pointer;">
+            data-title="وحدة حمام عصرية" data-description="تصميم مقاوم للرطوبة بتشطيب أنيق وعملي"
+            data-images='["images/Aluminum/1.webp", "images/Aluminum/2.webp"]' data-video="videos/reals-assets.mp4"
+            tabindex="0" role="button" onclick="openGalleryModal('bathroom-1', event)" style="cursor: pointer;">
             <div class="card-bg-image">
-              <img src="images/Aluminum/1.jpeg" alt="وحدة حمام 1">
+              <picture><source srcset="images/Aluminum/1.webp" type="image/webp"><img width="963" height="1280" loading="lazy" decoding="async" src="images/Aluminum/1.jpeg" alt="وحدة حمام 1"></picture>
             </div>
             <div class="card-content">
               <div class="works-cta">عرض المطبخ</div>
@@ -1120,10 +1243,11 @@
           </figure>
 
           <figure class="card item aluminum reveal gallery-item gallery-item-hidden" data-gallery-id="aluminum-5"
-            data-images='["images/Aluminum/1.jpeg", "images/Aluminum/11.jpeg"]' data-video="videos/reals assets.mp4"
-            onclick="openGalleryModal('aluminum-5', event)" style="cursor: pointer;">
+            data-title="مطبخ ألومنيوم عملي" data-description="تصميم متين مقاوم للرطوبة والحرارة بتشطيب راقي"
+            data-images='["images/Aluminum/1.webp", "images/Aluminum/11.webp"]' data-video="videos/reals-assets.mp4"
+            tabindex="0" role="button" onclick="openGalleryModal('aluminum-5', event)" style="cursor: pointer;">
             <div class="card-bg-image">
-              <img src="images/Aluminum/1.jpeg" alt="تصميم ألومنيوم 5">
+              <picture><source srcset="images/Aluminum/1.webp" type="image/webp"><img width="963" height="1280" loading="lazy" decoding="async" src="images/Aluminum/1.jpeg" alt="تصميم ألومنيوم 5"></picture>
             </div>
             <div class="card-content">
               <div class="works-cta">عرض المطبخ</div>
@@ -1131,10 +1255,11 @@
           </figure>
 
           <figure class="card item dressing reveal gallery-item gallery-item-hidden" data-gallery-id="dressing-2"
-            data-images='["images/Wood/111.jpeg", "images/Wood/11.jpeg"]' data-video="videos/reals assets.mp4"
-            onclick="openGalleryModal('dressing-2', event)" style="cursor: pointer;">
+            data-title="دريسينج مخصص بتصميم ذكي" data-description="تقسيمات ذكية وخامات فاخرة لتنظيم مثالي"
+            data-images='["images/Wood/111.webp", "images/Wood/11.webp"]' data-video="videos/reals-assets.mp4"
+            tabindex="0" role="button" onclick="openGalleryModal('dressing-2', event)" style="cursor: pointer;">
             <div class="card-bg-image">
-              <img src="images/Wood/111.jpeg" alt="دريسينج مخصص بتصميم ذكي" width="400" height="400" loading="lazy">
+              <picture><source srcset="images/Wood/111.webp" type="image/webp"><img decoding="async" src="images/Wood/111.jpeg" alt="دريسينج مخصص بتصميم ذكي" width="400" height="400" loading="lazy"></picture>
             </div>
             <div class="card-content">
               <div class="works-cta">عرض المطبخ</div>
@@ -1142,10 +1267,11 @@
           </figure>
 
           <figure class="card item wood reveal gallery-item gallery-item-hidden" data-gallery-id="wood-4"
-            data-images='["images/Wood/111.jpeg", "images/Wood/2.jpeg", "images/Wood/1.jpeg"]'
-            data-video="videos/reals assets.mp4" onclick="openGalleryModal('wood-4', event)" style="cursor: pointer;">
+            data-title="مطبخ خشب كلاسيكي" data-description="تصميم كلاسيكي فاخر بتفاصيل خشبية راقية"
+            data-images='["images/Wood/111.webp", "images/Wood/2.webp", "images/Wood/1.webp"]'
+            data-video="videos/reals-assets.mp4" tabindex="0" role="button" onclick="openGalleryModal('wood-4', event)" style="cursor: pointer;">
             <div class="card-bg-image">
-              <img src="images/Wood/111.jpeg" alt="مطبخ خشب 5">
+              <picture><source srcset="images/Wood/111.webp" type="image/webp"><img width="1280" height="963" loading="lazy" decoding="async" src="images/Wood/111.jpeg" alt="مطبخ خشب 5"></picture>
             </div>
             <div class="card-content">
               <div class="works-cta">عرض المطبخ</div>
@@ -1155,8 +1281,8 @@
 
         <!-- Load More Button -->
         <div class="load-more-container" id="loadMoreContainer" style="text-align: center; margin-top: 2rem;">
-          <button class="btn btn-primary" id="loadMoreBtn" onclick="loadMoreGalleryItems()">
-            <i data-lucide="plus-circle" class="premium-icon sm" style="margin-left: 0.5rem;"></i>
+          <button type="button" class="btn btn-primary" id="loadMoreBtn" onclick="loadMoreGalleryItems()">
+            <i data-lucide="plus-circle" class="premium-icon sm" style="margin-inline-end: 0.5rem;"></i>
             عرض المزيد
           </button>
         </div>
@@ -1166,62 +1292,56 @@
     <!-- ===== Facebook Feed Slider ===== -->
     <section id="facebook-slider" class="section facebook-slider-section reveal">
       <div class="container">
-        <h3 class="gold-title">من معرضنا على فيسبوك</h3>
+        <h2 class="gold-title">من معرضنا على فيسبوك</h2>
         <p class="section-subtitle">تابعوا أحدث التصميمات والريلز مباشرة من صفحتنا</p>
 
         <div class="fb-slider-container">
-          <button class="fb-nav-btn prev" aria-label="السابق">
+          <button type="button" class="fb-nav-btn prev" aria-label="السابق">
             <i data-lucide="chevron-right"></i>
           </button>
 
           <div class="fb-slider-wrapper" id="fbSliderWrapper">
             <!-- Reels -->
             <div class="fb-slide reel-slide">
-              <iframe
-                src="https://www.facebook.com/plugins/video.php?height=600&href=https://www.facebook.com/reel/1518330712776952/&show_text=false&width=360"
-                width="360" height="600" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
-                allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                loading="lazy"></iframe>
+              <button type="button" class="fb-facade" data-src="https://www.facebook.com/plugins/video.php?height=600&href=https://www.facebook.com/reel/1518330712776952/&show_text=false&width=360" data-title="ريلز من صفحة الماسية للمطابخ على فيسبوك 1" data-width="360" data-height="600" aria-label="اضغط لعرض المنشور: ريلز من صفحة الماسية للمطابخ على فيسبوك 1">
+                <span class="fb-facade-icon" aria-hidden="true"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="2" opacity="0.6" /><path d="M20 17L32 24L20 31V17Z" fill="currentColor" /></svg></span>
+                <span class="fb-facade-text">اضغط لعرض المنشور</span>
+              </button>
             </div>
             <div class="fb-slide reel-slide">
-              <iframe
-                src="https://www.facebook.com/plugins/video.php?height=600&href=https://www.facebook.com/reel/1176986437193592/&show_text=false&width=360"
-                width="360" height="600" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
-                allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                loading="lazy"></iframe>
+              <button type="button" class="fb-facade" data-src="https://www.facebook.com/plugins/video.php?height=600&href=https://www.facebook.com/reel/1176986437193592/&show_text=false&width=360" data-title="ريلز من صفحة الماسية للمطابخ على فيسبوك 2" data-width="360" data-height="600" aria-label="اضغط لعرض المنشور: ريلز من صفحة الماسية للمطابخ على فيسبوك 2">
+                <span class="fb-facade-icon" aria-hidden="true"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="2" opacity="0.6" /><path d="M20 17L32 24L20 31V17Z" fill="currentColor" /></svg></span>
+                <span class="fb-facade-text">اضغط لعرض المنشور</span>
+              </button>
             </div>
             <div class="fb-slide reel-slide">
-              <iframe
-                src="https://www.facebook.com/plugins/video.php?height=600&href=https://www.facebook.com/reel/1772499206851449/&show_text=false&width=360"
-                width="360" height="600" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
-                allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                loading="lazy"></iframe>
+              <button type="button" class="fb-facade" data-src="https://www.facebook.com/plugins/video.php?height=600&href=https://www.facebook.com/reel/1772499206851449/&show_text=false&width=360" data-title="ريلز من صفحة الماسية للمطابخ على فيسبوك 3" data-width="360" data-height="600" aria-label="اضغط لعرض المنشور: ريلز من صفحة الماسية للمطابخ على فيسبوك 3">
+                <span class="fb-facade-icon" aria-hidden="true"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="2" opacity="0.6" /><path d="M20 17L32 24L20 31V17Z" fill="currentColor" /></svg></span>
+                <span class="fb-facade-text">اضغط لعرض المنشور</span>
+              </button>
             </div>
             <!-- Posts -->
             <div class="fb-slide post-slide">
-              <iframe
-                src="https://www.facebook.com/plugins/post.php?href=https://www.facebook.com/MassiaKitchen/posts/pfbid02h6Mb3zKJG3fYH1g6Sszu2oRGm3ZUYaS6dSbkva8YLq8mu8KKWagvzWUaeDbSe1Bkl&width=500&show_text=true&height=600"
-                width="500" height="600" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
-                allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                loading="lazy"></iframe>
+              <button type="button" class="fb-facade" data-src="https://www.facebook.com/plugins/post.php?href=https://www.facebook.com/MassiaKitchen/posts/pfbid02h6Mb3zKJG3fYH1g6Sszu2oRGm3ZUYaS6dSbkva8YLq8mu8KKWagvzWUaeDbSe1Bkl&width=500&show_text=true&height=600" data-title="منشور من صفحة الماسية للمطابخ على فيسبوك 1" data-width="500" data-height="600" aria-label="اضغط لعرض المنشور: منشور من صفحة الماسية للمطابخ على فيسبوك 1">
+                <span class="fb-facade-icon" aria-hidden="true"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="2" opacity="0.6" /><path d="M20 17L32 24L20 31V17Z" fill="currentColor" /></svg></span>
+                <span class="fb-facade-text">اضغط لعرض المنشور</span>
+              </button>
             </div>
             <div class="fb-slide post-slide">
-              <iframe
-                src="https://www.facebook.com/plugins/post.php?href=https://www.facebook.com/MassiaKitchen/posts/pfbid029jgQeCMXxnrZTPpx1FVsYh7vGbsFDVRmR27gFMJX9f4sQhoJkoAfVKcGuqXoMopcl&width=500&show_text=true&height=600"
-                width="500" height="600" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
-                allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                loading="lazy"></iframe>
+              <button type="button" class="fb-facade" data-src="https://www.facebook.com/plugins/post.php?href=https://www.facebook.com/MassiaKitchen/posts/pfbid029jgQeCMXxnrZTPpx1FVsYh7vGbsFDVRmR27gFMJX9f4sQhoJkoAfVKcGuqXoMopcl&width=500&show_text=true&height=600" data-title="منشور من صفحة الماسية للمطابخ على فيسبوك 2" data-width="500" data-height="600" aria-label="اضغط لعرض المنشور: منشور من صفحة الماسية للمطابخ على فيسبوك 2">
+                <span class="fb-facade-icon" aria-hidden="true"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="2" opacity="0.6" /><path d="M20 17L32 24L20 31V17Z" fill="currentColor" /></svg></span>
+                <span class="fb-facade-text">اضغط لعرض المنشور</span>
+              </button>
             </div>
             <div class="fb-slide post-slide">
-              <iframe
-                src="https://www.facebook.com/plugins/post.php?href=https://www.facebook.com/MassiaKitchen/posts/pfbid0yReQQPRgDD3iJyoWfkyNry2t26jzfWEiNG5C2tLeSJQh3dRRKggE91KHjkecAKiAl&width=500&show_text=true&height=600"
-                width="500" height="600" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
-                allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                loading="lazy"></iframe>
+              <button type="button" class="fb-facade" data-src="https://www.facebook.com/plugins/post.php?href=https://www.facebook.com/MassiaKitchen/posts/pfbid0yReQQPRgDD3iJyoWfkyNry2t26jzfWEiNG5C2tLeSJQh3dRRKggE91KHjkecAKiAl&width=500&show_text=true&height=600" data-title="منشور من صفحة الماسية للمطابخ على فيسبوك 3" data-width="500" data-height="600" aria-label="اضغط لعرض المنشور: منشور من صفحة الماسية للمطابخ على فيسبوك 3">
+                <span class="fb-facade-icon" aria-hidden="true"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="2" opacity="0.6" /><path d="M20 17L32 24L20 31V17Z" fill="currentColor" /></svg></span>
+                <span class="fb-facade-text">اضغط لعرض المنشور</span>
+              </button>
             </div>
           </div>
 
-          <button class="fb-nav-btn next" aria-label="التالي">
+          <button type="button" class="fb-nav-btn next" aria-label="التالي">
             <i data-lucide="chevron-left"></i>
           </button>
 
@@ -1234,7 +1354,7 @@
     <!-- ===== Branches ===== -->
     <section id="branches" class="section branches reveal">
       <div class="container">
-        <h3 class="gold-title">فروعنا</h3>
+        <h2 class="gold-title">فروعنا</h2>
 
         <div class="branches-grid">
           <!-- الفرع الرئيسي -->
@@ -1243,12 +1363,12 @@
               <h4 class="branch-toggle">الفرع الرئيسي</h4>
               <p>المنصورة - شارع عبد السلام عارف</p>
               <div class="branch-contact">
-                <span><i data-lucide="phone" class="premium-icon gold sm"></i> 01010391594 - 0502241955</span>
+                <span dir="ltr"><i data-lucide="phone" class="premium-icon gold sm"></i> 01010391594 - 0502241955</span>
                 <span><i data-lucide="clock" class="premium-icon gold sm"></i> 10:30 ص - 10:00 م</span>
                 <span><i data-lucide="mail" class="premium-icon gold sm"></i> massiakitchen@gmail.com</span>
               </div>
               <div class="branch-actions">
-                <button class="btn-map-toggle" data-branch="main">عرض الخريطة</button>
+                <button type="button" class="btn-map-toggle" data-branch="main">عرض الخريطة</button>
               </div>
             </div>
             <div class="branch-map" id="map-main" style="display: none;">
@@ -1271,12 +1391,12 @@
               <h4 class="branch-toggle">الفرع الثاني</h4>
               <p>المنصورة - شارع سامية الجمل</p>
               <div class="branch-contact">
-                <span><i data-lucide="phone" class="premium-icon gold sm"></i> 01099476513 - 0502260789</span>
+                <span dir="ltr"><i data-lucide="phone" class="premium-icon gold sm"></i> 01099476513 - 0502260789</span>
                 <span><i data-lucide="clock" class="premium-icon gold sm"></i> 10:30 ص - 10:00 م</span>
                 <span><i data-lucide="mail" class="premium-icon gold sm"></i> massiakitchen@gmail.com</span>
               </div>
               <div class="branch-actions">
-                <button class="btn-map-toggle" data-branch="secondary">عرض الخريطة</button>
+                <button type="button" class="btn-map-toggle" data-branch="secondary">عرض الخريطة</button>
               </div>
             </div>
             <div class="branch-map" id="map-secondary" style="display: none;">
@@ -1294,7 +1414,7 @@
         </div>
 
         <div class="contact-mini">
-          <a href="tel:+201092497811"><i data-lucide="phone" class="premium-icon gold sm"></i> +201092497811</a>
+          <a dir="ltr" href="tel:+201092497811"><i data-lucide="phone" class="premium-icon gold sm"></i> +201092497811</a>
           <a href="https://wa.me/201092497811" target="_blank" rel="noopener"><i data-lucide="message-square"
               class="premium-icon gold sm"></i> تواصل عبر واتساب</a>
           <a href="#contact"><i data-lucide="map-pin" class="premium-icon gold sm"></i> احجز زيارة منزلية</a>
@@ -1305,7 +1425,7 @@
     <!-- ===== Reviews ===== -->
     <section id="reviews" class="section reviews reveal">
       <div class="container">
-        <h3 class="gold-title">آراء عملائنا</h3>
+        <h2 class="gold-title">آراء عملائنا</h2>
         <p class="section-description">ما يقوله عملاؤنا عن تجربتهم مع الماسية للمطابخ</p>
 
         <div class="reviews-container">
@@ -1440,20 +1560,20 @@
             </div>
 
             <!-- Navigation Buttons -->
-            <button class="slider-nav prev" onclick="prevReview()" aria-label="التقييم السابق">
+            <button type="button" class="slider-nav prev" onclick="prevReview()" aria-label="التقييم السابق">
               <i data-lucide="chevron-right"></i>
             </button>
-            <button class="slider-nav next" onclick="nextReview()" aria-label="التقييم التالي">
+            <button type="button" class="slider-nav next" onclick="nextReview()" aria-label="التقييم التالي">
               <i data-lucide="chevron-left"></i>
             </button>
 
             <!-- Indicators -->
             <div class="slider-indicators">
-              <button class="indicator active" data-slide="0" aria-label="الشريحة 1"></button>
-              <button class="indicator" data-slide="1" aria-label="الشريحة 2"></button>
-              <button class="indicator" data-slide="2" aria-label="الشريحة 3"></button>
-              <button class="indicator" data-slide="3" aria-label="الشريحة 4"></button>
-              <button class="indicator" data-slide="4" aria-label="الشريحة 5"></button>
+              <button type="button" class="indicator active" data-slide="0" aria-label="الشريحة 1"></button>
+              <button type="button" class="indicator" data-slide="1" aria-label="الشريحة 2"></button>
+              <button type="button" class="indicator" data-slide="2" aria-label="الشريحة 3"></button>
+              <button type="button" class="indicator" data-slide="3" aria-label="الشريحة 4"></button>
+              <button type="button" class="indicator" data-slide="4" aria-label="الشريحة 5"></button>
             </div>
           </div>
         </div>
@@ -1497,10 +1617,11 @@
     <!-- ===== FAQ Section ===== -->
     <section id="faq" class="section faq reveal">
       <div class="container">
-        <h3 class="gold-title">أسئلة شائعة</h3>
+        <h2 class="gold-title">أسئلة شائعة</h2>
         <p class="section-description">إجابات على أكثر الأسئلة التي تهم عملائنا الكرام</p>
 
         <div class="faq-search">
+          <label for="faqSearch" class="sr-only">ابحث في الأسئلة الشائعة</label>
           <input type="text" id="faqSearch" placeholder="ابحث في الأسئلة الشائعة..." class="search-input">
           <i data-lucide="search" class="premium-icon gold sm search-icon-pos"></i>
           <div class="search-results" id="searchResults"></div>
@@ -1508,11 +1629,11 @@
 
 
         <div class="faq-categories">
-          <button class="category-btn active" data-category="all">الكل</button>
-          <button class="category-btn" data-category="design">التصميم والتنفيذ</button>
-          <button class="category-btn" data-category="materials">الخامات والجودة</button>
-          <button class="category-btn" data-category="warranty">الضمان والخدمات</button>
-          <button class="category-btn" data-category="payment">الدفع والتسليم</button>
+          <button type="button" class="category-btn active" data-category="all">الكل</button>
+          <button type="button" class="category-btn" data-category="design">التصميم والتنفيذ</button>
+          <button type="button" class="category-btn" data-category="materials">الخامات والجودة</button>
+          <button type="button" class="category-btn" data-category="warranty">الضمان والخدمات</button>
+          <button type="button" class="category-btn" data-category="payment">الدفع والتسليم</button>
         </div>
 
         <div class="faq-stats">
@@ -1533,7 +1654,7 @@
         <div class="faq-grid">
           <!-- Design & Implementation -->
           <div class="faq-item" data-category="design">
-            <button class="faq-question" aria-expanded="false">
+            <button type="button" class="faq-question" aria-expanded="false">
               <div class="question-content">
                 <span class="question-icon"><i data-lucide="palette" class="premium-icon gold sm"></i></span>
                 <span class="question-text">كم مدة تنفيذ المطبخ؟</span>
@@ -1547,11 +1668,10 @@
             </button>
             <div class="faq-answer">
               <div class="answer-content">
-                <p>مدة التنفيذ تتراوح بين 2-4 أسابيع حسب التصميم والمساحة والتعقيد. نحرص على التسليم في الوقت المتفق
+                <p>مدة التنفيذ تتراوح بين 15 و25 يوم عمل حسب التصميم والمساحة والتعقيد. نحرص على التسليم في الوقت المتفق
                   عليه مع الحفاظ على أعلى معايير الجودة.</p>
                 <div class="answer-details">
-                  <span class="detail-item"><i data-lucide="clock" class="premium-icon gold sm"></i> متوسط المدة: 3
-                    أسابيع</span>
+                  <span class="detail-item"><i data-lucide="clock" class="premium-icon gold sm"></i> المدة: 15 - 25 يوم عمل</span>
                   <span class="detail-item"><i data-lucide="check-circle" class="premium-icon gold sm"></i> متابعة
                     مستمرة</span>
                   <span class="detail-item"><i data-lucide="phone" class="premium-icon gold sm"></i> تحديث أسبوعي</span>
@@ -1561,7 +1681,7 @@
           </div>
 
           <div class="faq-item" data-category="design">
-            <button class="faq-question" aria-expanded="false">
+            <button type="button" class="faq-question" aria-expanded="false">
               <div class="question-content">
                 <span class="question-icon"><i data-lucide="ruler" class="premium-icon gold sm"></i></span>
                 <span class="question-text">هل تقدمون خدمة التصميم المجاني؟</span>
@@ -1588,7 +1708,7 @@
 
           <!-- Materials & Quality -->
           <div class="faq-item" data-category="materials">
-            <button class="faq-question" aria-expanded="false">
+            <button type="button" class="faq-question" aria-expanded="false">
               <div class="question-content">
                 <span class="question-icon"><i data-lucide="wrench" class="premium-icon gold sm"></i></span>
                 <span class="question-text">ما أنواع الخامات التي تستخدمونها؟</span>
@@ -1621,7 +1741,7 @@
 
           <!-- Warranty & Services -->
           <div class="faq-item" data-category="warranty">
-            <button class="faq-question" aria-expanded="false">
+            <button type="button" class="faq-question" aria-expanded="false">
               <div class="question-content">
                 <span class="question-icon"><i data-lucide="shield-check" class="premium-icon gold sm"></i></span>
                 <span class="question-text">هل يوجد ضمان على المطابخ؟</span>
@@ -1657,7 +1777,7 @@
 
           <!-- Additional FAQ Items -->
           <div class="faq-item" data-category="payment">
-            <button class="faq-question" aria-expanded="false" aria-controls="faq-ans-payment">
+            <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-ans-payment">
               <div class="question-content">
                 <span class="question-icon"><i data-lucide="credit-card" class="premium-icon gold sm"></i></span>
                 <span class="question-text">هل تقدمون تقسيط للمطابخ؟</span>
@@ -1689,7 +1809,7 @@
           </div>
 
           <div class="faq-item" data-category="design">
-            <button class="faq-question" aria-expanded="false" aria-controls="faq-ans-installation">
+            <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-ans-installation">
               <div class="question-content">
                 <span class="question-icon"><i data-lucide="home" class="premium-icon gold sm"></i></span>
                 <span class="question-text">هل تقدمون خدمة التركيب؟</span>
@@ -1716,7 +1836,7 @@
           </div>
 
           <div class="faq-item" data-category="design">
-            <button class="faq-question" aria-expanded="false" aria-controls="faq-ans-time">
+            <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-ans-time">
               <div class="question-content">
                 <span class="question-icon"><i data-lucide="clock" class="premium-icon gold sm"></i></span>
                 <span class="question-text">كم تستغرق مدة التفصيل؟</span>
@@ -1742,7 +1862,7 @@
             <h4>لا زلت لديك أسئلة؟</h4>
             <p>فريق الدعم لدينا مستعد للإجابة على جميع استفساراتك</p>
             <div class="cta-buttons">
-              <a href="tel:+201092497811" class="btn btn-primary">
+              <a dir="ltr" href="tel:+201092497811" class="btn btn-primary">
                 <i data-lucide="phone"></i> اتصل بنا الآن
               </a>
               <a href="https://wa.me/201092497811" target="_blank" class="btn btn-ghost">
@@ -1758,16 +1878,16 @@
     <section id="contact" class="section contact-section reveal">
       <div class="container contact-inner">
         <div class="contact-card card reveal">
-          <h3 class="gold-title">تواصل معنا</h3>
+          <h2 class="gold-title">تواصل معنا</h2>
           <p class="contact-subtitle">للاستفسار أو طلب قياس/عرض سعر</p>
 
           <!-- Quick Contact Buttons -->
           <div class="quick-contact-grid">
-            <a class="quick-contact-btn phone-btn" href="tel:+201092497811">
+            <a dir="ltr" class="quick-contact-btn phone-btn" href="tel:+201092497811">
               <div class="btn-icon"><i data-lucide="phone" class="premium-icon md"></i></div>
               <div class="btn-content">
                 <span class="btn-title">اتصل بنا</span>
-                <span class="btn-subtitle">01092497811</span>
+                <span class="btn-subtitle" dir="ltr">01092497811</span>
               </div>
             </a>
 
@@ -1803,7 +1923,7 @@
               <div class="info-icon"><i data-lucide="mail" class="premium-icon gold md"></i></div>
               <div class="info-content">
                 <span class="info-label">البريد الإلكتروني</span>
-                <a href="mailto:info@almassia.com" class="info-value">massiakitchen@gmail.com</a>
+                <a href="mailto:massiakitchen@gmail.com" class="info-value">massiakitchen@gmail.com</a>
               </div>
             </div>
 
@@ -1833,18 +1953,6 @@
                 rel="noopener">
                 <span class="social-icon"><i data-lucide="facebook" class="premium-icon md facebook"></i></span>
                 <span class="social-name">فيسبوك</span>
-              </a>
-              <a class="social-btn instagram" href="#" target="_blank" rel="noopener">
-                <span class="social-icon"><i data-lucide="instagram" class="premium-icon md instagram"></i></span>
-                <span class="social-name">إنستجرام</span>
-              </a>
-              <a class="social-btn youtube" href="#" target="_blank" rel="noopener">
-                <span class="social-icon"><i data-lucide="youtube" class="premium-icon md youtube"></i></span>
-                <span class="social-name">يوتيوب</span>
-              </a>
-              <a class="social-btn tiktok" href="#" target="_blank" rel="noopener">
-                <span class="social-icon"><i data-lucide="music" class="premium-icon md"></i></span>
-                <span class="social-name">تيك توك</span>
               </a>
             </div>
           </div>
@@ -1927,6 +2035,7 @@
                   <i data-lucide="paperclip" class="premium-icon gold md"></i>
                   <span class="upload-text">اختر الصور أو اسحبها هنا</span>
                 </label>
+                <p class="upload-note">ملاحظة: روابط واتساب لا تنقل الصور، لذا بعد فتح المحادثة عند الضغط على «إرسال الطلب» يُرجى إرفاق الصور يدويًا في المحادثة (بحد أقصى 3 صور).</p>
               </div>
             </div>
 
@@ -1994,7 +2103,7 @@
 
         <div class="footer-section">
           <h4>معلومات الاتصال</h4>
-          <p><i data-lucide="phone" class="premium-icon gold sm"></i> 01092497811</p>
+          <p dir="ltr"><i data-lucide="phone" class="premium-icon gold sm"></i> 01092497811</p>
           <p><i data-lucide="mail" class="premium-icon gold sm"></i> massiakitchen@gmail.com</p>
           <p><i data-lucide="map-pin" class="premium-icon gold sm"></i> المنصورة - شارع عبد السلام عارف</p>
           <p><i data-lucide="clock" class="premium-icon gold sm"></i> 9 ص - 9 م طوال الأسبوع</p>
@@ -2027,28 +2136,28 @@
   <div id="lightbox" class="lightbox" aria-hidden="true" onclick="closeLightbox()">
     <img id="lightboxImg" src="" alt="صورة مكبرة" aria-describedby="lightbox-desc">
     <p id="lightbox-desc" class="sr-only">صورة مكبرة من معرض الأعمال</p>
-    <button class="close-lightbox" onclick="closeLightbox()" aria-label="إغلاق">
+    <button type="button" class="close-lightbox" onclick="closeLightbox()" aria-label="إغلاق">
       <i data-lucide="x"></i>
     </button>
   </div>
 
   <!-- ===== Gallery Modal ===== -->
-  <div id="galleryModal" class="gallery-modal" aria-hidden="true" role="dialog" aria-labelledby="galleryTitle">
+  <div id="galleryModal" class="gallery-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalProjectTitle">
     <div class="gallery-modal-overlay" onclick="closeGalleryModal()"></div>
     <div class="gallery-modal-content">
-      <button class="gallery-close" onclick="closeGalleryModal()" aria-label="إغلاق المعرض">
+      <button type="button" class="gallery-close" onclick="closeGalleryModal()" aria-label="إغلاق المعرض">
         <i data-lucide="x"></i>
       </button>
 
       <!-- Zoom Controls -->
       <div class="gallery-zoom-container">
-        <button class="btn-zoom" onclick="zoomGalleryImage(1.2)" aria-label="تكبير الصورة">
+        <button type="button" class="btn-zoom" onclick="zoomGalleryImage(1.2)" aria-label="تكبير الصورة">
           <i data-lucide="zoom-in"></i>
         </button>
-        <button class="btn-zoom" onclick="zoomGalleryImage(1/1.2)" aria-label="تصغير الصورة">
+        <button type="button" class="btn-zoom" onclick="zoomGalleryImage(1/1.2)" aria-label="تصغير الصورة">
           <i data-lucide="zoom-out"></i>
         </button>
-        <button class="btn-zoom" onclick="resetGalleryZoom()" aria-label="إعادة ضبط الحجم">
+        <button type="button" class="btn-zoom" onclick="resetGalleryZoom()" aria-label="إعادة ضبط الحجم">
           <i data-lucide="maximize"></i>
         </button>
       </div>
@@ -2058,10 +2167,10 @@
         <div class="slider-main" id="modalSliderMain">
           <!-- Images/Video will be injected here -->
         </div>
-        <button class="slider-nav-btn prev" onclick="navigateGallery(-1)" aria-label="السابق">
+        <button type="button" class="slider-nav-btn prev" onclick="navigateGallery(-1)" aria-label="السابق">
           <i data-lucide="chevron-right" class="premium-icon md"></i>
         </button>
-        <button class="slider-nav-btn next" onclick="navigateGallery(1)" aria-label="التالي">
+        <button type="button" class="slider-nav-btn next" onclick="navigateGallery(1)" aria-label="التالي">
           <i data-lucide="chevron-left" class="premium-icon md"></i>
         </button>
 
@@ -2085,20 +2194,22 @@
 
 
   <!-- GSAP & ScrollTrigger for Scrollytelling -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script defer src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
 
   <!-- Scripts -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script defer src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
   <script>
-    // Initialize Lucide Icons
-    lucide.createIcons();
+    // Initialize Lucide Icons (deferred: lucide loads with defer, so wait for DOMContentLoaded)
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.lucide) lucide.createIcons();
+    });
   </script>
   <!-- Popover Bubble Details Container -->
   <div id="materialBubble" class="material-bubble" role="tooltip">
     <div class="bubble-arrow"></div>
-    <button id="closeBubbleBtn" class="close-bubble-btn">
+    <button type="button" id="closeBubbleBtn" class="close-bubble-btn">
       <i data-lucide="x"></i>
     </button>
 
@@ -2120,14 +2231,14 @@
     </div>
   </div>
 
-  <script src="dist/bundle.js"></script>
+  <!-- Custom Scripts / Now handled by Vite in the HEAD tag -->
 
 
   <!-- Register Service Worker -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function () {
-        navigator.serviceWorker.register('/sw.js')
+        navigator.serviceWorker.register('sw.js')
           .then(function (registration) {
             console.log('ServiceWorker registration successful');
           })
@@ -2139,12 +2250,12 @@
   </script>
 
   <!-- ===== Premium Custom Modals ===== -->
-  <div id="premiumModal" class="premium-modal" aria-hidden="true">
+  <div id="premiumModal" class="premium-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="premium-modal-overlay" onclick="closePremiumModal()"></div>
     <div class="premium-modal-container">
       <div class="premium-modal-header">
         <h3 id="modalTitle">تنبيه</h3>
-        <button class="premium-modal-close" onclick="closePremiumModal()" aria-label="إغلاق">
+        <button type="button" class="premium-modal-close" onclick="closePremiumModal()" aria-label="إغلاق">
           <i data-lucide="x"></i>
         </button>
       </div>

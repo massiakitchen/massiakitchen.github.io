@@ -5,6 +5,22 @@
  */
 
 function initScrollytelling() {
+    // Respect users who prefer reduced motion: skip smooth scroll + animation.
+    if (typeof window !== 'undefined'
+        && typeof window.matchMedia === 'function'
+        && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        return;
+    }
+    // Guard: CDN libraries load as window globals; fail silently if blocked
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+        console.warn('Scrollytelling disabled: GSAP/ScrollTrigger CDN failed to load.');
+        return;
+    }
+    if (typeof Lenis === 'undefined') {
+        console.warn('Scrollytelling disabled: Lenis CDN failed to load.');
+        return;
+    }
+
     gsap.registerPlugin(ScrollTrigger);
 
     // 1. Initialize Lenis Smooth Scroll
@@ -20,11 +36,7 @@ function initScrollytelling() {
         infinite: false,
     });
 
-    function raf(time) {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
+    // Single drive loop via gsap.ticker (no separate requestAnimationFrame loop)
 
     // Connect Lenis to ScrollTrigger
     lenis.on('scroll', ScrollTrigger.update);
@@ -132,6 +144,7 @@ function initScrollytelling() {
         }, 0.5);
 
     // Mouse movement parallax (Subtle)
+    if (!sticky) return;
     sticky.addEventListener('mousemove', (e) => {
         const { clientX, clientY } = e;
         const xPos = (clientX / window.innerWidth) - 0.5;
@@ -159,7 +172,9 @@ function initScrollytelling() {
 
 // Initialize on load
 window.addEventListener('load', () => {
-    if (window.gsap && window.ScrollTrigger) {
+    if (window.gsap && window.ScrollTrigger && window.Lenis) {
         initScrollytelling();
+    } else {
+        console.warn('Scrollytelling skipped: animation CDN libraries failed to load.');
     }
 });

@@ -24,7 +24,6 @@ textarea {
   box-sizing: border-box;
 }
 
-
 @media (max-width: 980px) {
   .hero-image img {
     height: 260px;
@@ -176,7 +175,6 @@ textarea {
   .container {
     padding: 0 16px;
     width: 100%;
-    overflow-x: hidden;
   }
 
   #faqSearch {
@@ -231,6 +229,58 @@ textarea {
   .rating-system {
     flex-direction: column;
     text-align: center;
+  }
+
+  /* Small-screen header: hamburger + brand must fit 360-480px */
+  .header-inner {
+    gap: 8px;
+  }
+
+  .brand {
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .logo {
+    height: 44px;
+  }
+
+  .brand-text {
+    min-width: 0;
+  }
+
+  .brand-text .logo-text {
+    font-size: 0.85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .brand-text .tagline {
+    display: none;
+  }
+
+  /* Mobile hero: beat .scrolly-card h1 (0,1,1) which overrides .gold-heading */
+  .scrolly-card h1.gold-heading {
+    font-size: 1.7rem;
+  }
+
+  .scrolly-card .white-heading {
+    font-size: 1.25rem;
+  }
+
+  /* Hero service pills: 2-column compact grid instead of a 7-row stack
+     (ID specificity beats .scrolly-card .trust-badges from scrollytelling.css) */
+  #scrollytelling .trust-badges {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .trust-badges .badge {
+    text-align: center;
+    padding: 0.45rem 0.5rem;
+    font-size: 0.85rem;
   }
 }
 

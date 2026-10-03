@@ -1,47 +1,17 @@
 // ==============================
-// Form Handling & Validation
+// Form Handling & Validation (ES module)
 // ==============================
+
+import { $, debounce, showNotification, trackEvent, normalizeEgyptPhone, isValidEgyptPhone } from './main.js';
 
 // Enhanced contact form handler
 
-
-// showNotification is now defined in js/main.js to be globally accessible
-
-// Form validation functions
-function validateEmail(email) {
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return re.test(email);
-}
-
+// Local alias kept for readability; single source of truth lives in main.js.
 function validatePhone(phone) {
-  const re = /^01[0-2|5]{1}[0-9]{8}$/;
-  return re.test(phone);
+  return isValidEgyptPhone(phone);
 }
 
-// Initialize form handlers
-function initFormHandlers() {
-  const contactForm = $('#leadForm');
-  if (contactForm) {
-    contactForm.addEventListener('submit', handleForm);
-  }
 
-  // Add real-time validation
-  const phoneInput = $('#phone');
-  if (phoneInput) {
-    phoneInput.addEventListener('blur', function () {
-      if (this.value && !validatePhone(this.value)) {
-        this.style.borderColor = '#f44336';
-      } else {
-        this.style.borderColor = '';
-      }
-    });
-  }
-}
-
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', function () {
-  initFormHandlers();
-});
 
 
 
@@ -63,79 +33,155 @@ function initFileUpload() {
   const fileInput = document.getElementById('attachment');
   const fileUploadLabel = document.querySelector('.file-upload-label');
 
-  if (fileInput) {
-    fileInput.addEventListener('change', handleFileSelect);
+  if (!fileInput) return;
 
-    // Drag and drop functionality
-    fileUploadLabel.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      fileUploadLabel.style.borderColor = 'var(--gold)';
-      fileUploadLabel.style.background = 'rgba(212,175,55,0.1)';
-    });
+  fileInput.addEventListener('change', handleFileSelect);
 
-    fileUploadLabel.addEventListener('dragleave', () => {
-      fileUploadLabel.style.borderColor = 'rgba(212,175,55,0.3)';
-      fileUploadLabel.style.background = 'rgba(212,175,55,0.05)';
-    });
+  // Drag and drop functionality (label may be absent on some pages)
+  if (!fileUploadLabel) return;
 
-    fileUploadLabel.addEventListener('drop', (e) => {
-      e.preventDefault();
-      fileUploadLabel.style.borderColor = 'rgba(212,175,55,0.3)';
-      fileUploadLabel.style.background = 'rgba(212,175,55,0.05)';
+  fileUploadLabel.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    fileUploadLabel.style.borderColor = 'var(--gold)';
+    fileUploadLabel.style.background = 'rgba(212,175,55,0.1)';
+  });
 
-      if (e.dataTransfer.files.length > 0) {
-        fileInput.files = e.dataTransfer.files;
-        handleFileSelect({ target: fileInput });
+  fileUploadLabel.addEventListener('dragleave', () => {
+    fileUploadLabel.style.borderColor = 'rgba(212,175,55,0.3)';
+    fileUploadLabel.style.background = 'rgba(212,175,55,0.05)';
+  });
+
+  fileUploadLabel.addEventListener('drop', (e) => {
+    e.preventDefault();
+    fileUploadLabel.style.borderColor = 'rgba(212,175,55,0.3)';
+    fileUploadLabel.style.background = 'rgba(212,175,55,0.05)';
+
+    const droppedFiles = e.dataTransfer ? e.dataTransfer.files : null;
+    if (droppedFiles && droppedFiles.length > 0) {
+      try {
+        if (typeof DataTransfer !== 'undefined') {
+          const dt = new DataTransfer();
+          Array.from(droppedFiles).forEach((file) => dt.items.add(file));
+          fileInput.files = dt.files;
+        } else {
+          fileInput.files = droppedFiles;
+        }
+      } catch (err) {
+        console.warn('Could not assign dropped files to input:', err);
       }
-    });
-  }
-}
-
-function handleFileSelect(event) {
-  const files = event.target.files;
-  const container = document.getElementById('imagePreviewContainer');
-
-  if (!container) {
-    const previewContainer = document.createElement('div');
-    previewContainer.id = 'imagePreviewContainer';
-    previewContainer.className = 'image-preview-container';
-    event.target.parentNode.appendChild(previewContainer);
-  }
-
-  Array.from(files).forEach(file => {
-    if (file.type.startsWith('image/')) {
-      const reader = new FileReader();
-
-      reader.onload = function (e) {
-        const imageData = {
-          name: file.name,
-          data: e.target.result,
-          type: file.type
-        };
-
-        uploadedImages.push(imageData);
-        createImagePreview(imageData);
-        updateFileUploadLabel();
-      };
-
-      reader.readAsDataURL(file);
+      handleFileSelect({ target: fileInput });
     }
   });
 }
 
+const MAX_UPLOAD_IMAGES = 3;
+const MAX_IMAGE_DIMENSION = 1280;
+
+// Downscale an image file in the browser to max 1280px (longest side),
+// returning a JPEG data URL (quality 0.8) for lightweight storage.
+function downscaleImage(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('تعذر قراءة الصورة'));
+    reader.onload = function (e) {
+      const img = new Image();
+      img.onerror = () => reject(new Error('تعذر قراءة الصورة'));
+      img.onload = function () {
+        let { width, height } = img;
+        const scale = Math.min(1, MAX_IMAGE_DIMENSION / Math.max(width, height));
+        width = Math.round(width * scale);
+        height = Math.round(height * scale);
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', 0.8));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function handleFileSelect(event) {
+  const files = event && event.target ? event.target.files : null;
+  if (!files || files.length === 0) return;
+
+  let container = document.getElementById('imagePreviewContainer');
+
+  if (!container) {
+    if (!event.target.parentNode) return;
+    const previewContainer = document.createElement('div');
+    previewContainer.id = 'imagePreviewContainer';
+    previewContainer.className = 'image-preview-container';
+    event.target.parentNode.appendChild(previewContainer);
+    container = previewContainer;
+  }
+
+  const remaining = MAX_UPLOAD_IMAGES - uploadedImages.length;
+  if (remaining <= 0) {
+    showNotification(`الحد الأقصى ${MAX_UPLOAD_IMAGES} صور فقط`, 'error');
+    event.target.value = '';
+    return;
+  }
+
+  const newFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
+  if (newFiles.length === 0) {
+    event.target.value = '';
+    return;
+  }
+
+  if (newFiles.length > remaining) {
+    showNotification(`الحد الأقصى ${MAX_UPLOAD_IMAGES} صور فقط — تم إضافة أول ${remaining} صور`, 'info');
+  }
+
+  newFiles.slice(0, remaining).forEach(file => {
+    downscaleImage(file).then(dataUrl => {
+      if (uploadedImages.length >= MAX_UPLOAD_IMAGES) return;
+      const imageData = {
+        name: file.name,
+        data: dataUrl,
+        type: 'image/jpeg'
+      };
+
+      uploadedImages.push(imageData);
+      createImagePreview(imageData);
+      updateFileUploadLabel();
+    }).catch(err => {
+      console.warn('Could not process image:', file.name, err);
+      showNotification(`تعذر معالجة الصورة: ${file.name}`, 'error');
+    });
+  });
+
+  event.target.value = '';
+}
+
 function createImagePreview(imageData) {
   const container = document.getElementById('imagePreviewContainer');
+  if (!container || !imageData) return;
   const preview = document.createElement('div');
   preview.className = 'image-preview';
 
-  preview.innerHTML = `
-    <img src="${imageData.data}" alt="${imageData.name}">
-    <button type="button" class="remove-image" onclick="removeImage('${imageData.name}')">
-      <i data-lucide="x"></i>
-    </button>
-  `;
+  const img = document.createElement('img');
+  img.src = imageData.data;
+  img.alt = imageData.name;
+  preview.appendChild(img);
+
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'remove-image';
+  button.setAttribute('aria-label', 'إزالة الصورة');
+  const icon = document.createElement('i');
+  icon.setAttribute('data-lucide', 'x');
+  button.appendChild(icon);
+  button.addEventListener('click', () => removeImage(imageData.name));
+  preview.appendChild(button);
 
   container.appendChild(preview);
+  if (window.lucide && typeof window.lucide.createIcons === 'function') {
+    window.lucide.createIcons();
+  }
 }
 
 function removeImage(fileName) {
@@ -162,21 +208,20 @@ function initFormValidation() {
   const phoneInput = document.getElementById('phone');
 
   if (phoneInput) {
+    // Format only on blur — never rewrite while typing so the caret stays put.
+    phoneInput.addEventListener('blur', function (e) {
+      const normalized = normalizeEgyptPhone(e.target.value.trim());
+      if (normalized) {
+        e.target.value = normalized;
+      }
+      e.target.style.borderColor = e.target.value && !isValidEgyptPhone(e.target.value)
+        ? '#f44336'
+        : '';
+    });
+
     phoneInput.addEventListener('input', function (e) {
-      let value = e.target.value.replace(/\D/g, '');
-
-      if (value.startsWith('0')) {
-        value = '+20' + value.substring(1);
-      }
-
-      if (value.startsWith('20')) {
-        value = '+' + value;
-      }
-
-      e.target.value = value;
-
-      // Real-time validation
-      if (value.length > 0 && !validatePhone(value)) {
+      // Real-time validation hint only; do not modify the value here.
+      if (e.target.value.length > 0 && !isValidEgyptPhone(e.target.value)) {
         e.target.style.borderColor = '#f44336';
       } else {
         e.target.style.borderColor = '';
@@ -188,6 +233,7 @@ function initFormValidation() {
 // Auto-save form data
 function initAutoSave() {
   const form = document.getElementById('leadForm');
+  if (!form) return;
   const inputs = form.querySelectorAll('input, select, textarea');
 
   inputs.forEach(input => {
@@ -199,22 +245,44 @@ function initAutoSave() {
   loadFormData();
 }
 
+function getInputValue(id) {
+  const el = document.getElementById(id);
+  return el ? el.value : '';
+}
+
 function saveFormData() {
   const formData = {
-    name: document.getElementById('name').value,
-    phone: document.getElementById('phone').value,
-    city: document.getElementById('city').value,
-    service: document.getElementById('service').value,
-    message: document.getElementById('message').value
+    name: getInputValue('name'),
+    phone: getInputValue('phone'),
+    city: getInputValue('city'),
+    service: getInputValue('service'),
+    message: getInputValue('message')
   };
 
-  localStorage.setItem('almassia_contact_form', JSON.stringify(formData));
+  try {
+    localStorage.setItem('almassia_contact_form', JSON.stringify(formData));
+  } catch (err) {
+    console.warn('Could not auto-save form data:', err);
+  }
 }
 
 function loadFormData() {
-  const saved = localStorage.getItem('almassia_contact_form');
+  let saved = null;
+  try {
+    saved = localStorage.getItem('almassia_contact_form');
+  } catch (err) {
+    console.warn('Could not read saved form data:', err);
+    return;
+  }
   if (saved) {
-    const formData = JSON.parse(saved);
+    let formData = null;
+    try {
+      formData = JSON.parse(saved);
+    } catch (err) {
+      console.warn('Could not parse saved form data:', err);
+      return;
+    }
+    if (!formData || typeof formData !== 'object') return;
 
     Object.keys(formData).forEach(key => {
       const element = document.getElementById(key);
@@ -237,17 +305,18 @@ function clearSavedFormData() {
 
 // Enhanced form handler with image support
 async function handleForm(e) {
-  e.preventDefault();
-  const form = e.target;
-  const submitBtn = form.querySelector('.btn-submit');
-  const btnText = submitBtn.querySelector('.btn-text');
-  const btnLoading = submitBtn.querySelector('.btn-loading');
+  if (e && typeof e.preventDefault === 'function') e.preventDefault();
+  const form = (e && e.target) || document.getElementById('leadForm');
+  if (!form) return false;
+  const submitBtn = form.querySelector ? form.querySelector('.btn-submit') : null;
+  const btnText = submitBtn ? submitBtn.querySelector('.btn-text') : null;
+  const btnLoading = submitBtn ? submitBtn.querySelector('.btn-loading') : null;
 
   try {
     // Show loading state
-    btnText.style.display = 'none';
-    btnLoading.style.display = 'block';
-    submitBtn.disabled = true;
+    if (btnText) btnText.style.display = 'none';
+    if (btnLoading) btnLoading.style.display = 'block';
+    if (submitBtn) submitBtn.disabled = true;
 
     const formData = new FormData(form);
     const name = (formData.get('name') || '').trim();
@@ -261,9 +330,9 @@ async function handleForm(e) {
       throw new Error('الرجاء إدخال جميع الحقول المطلوبة');
     }
 
-    /*if (!validatePhone(phone)) {
+    if (!validatePhone(phone)) {
       throw new Error('يرجى إدخال رقم هاتف مصري صحيح');
-    }*/
+    }
 
     // Create WhatsApp message with images
     let whatsappMessage = `طلب جديد من موقع الماسية للمطابخ:\n\n`;
@@ -290,12 +359,8 @@ async function handleForm(e) {
     const newWindow = window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
     if (newWindow) newWindow.opener = null;
 
-    // If there are images, show instructions
-    if (uploadedImages.length > 0) {
-      setTimeout(() => {
-        showNotification(`تم إرسال النص! يرجى إرسال ${uploadedImages.length} صورة يدويًا على واتساب`, 'info', 8000);
-      }, 1000);
-    }
+    // NOTE: the manual-attach reminder is shown BEFORE submit under the
+    // upload field (WhatsApp links cannot carry images), so no toast here.
 
     // Reset form
     form.reset();
@@ -312,9 +377,9 @@ async function handleForm(e) {
     trackEvent('contact', 'form_submit_error', error.message);
   } finally {
     // Reset button state
-    btnText.style.display = 'block';
-    btnLoading.style.display = 'none';
-    submitBtn.disabled = false;
+    if (btnText) btnText.style.display = 'block';
+    if (btnLoading) btnLoading.style.display = 'none';
+    if (submitBtn) submitBtn.disabled = false;
   }
 
   return false;
@@ -324,12 +389,17 @@ async function handleForm(e) {
 function initFormHandlers() {
   const contactForm = $('#leadForm');
   if (contactForm) {
-    contactForm.addEventListener('submit', handleForm);
+    // Single submission path: inline onsubmit="return handleForm(event)" (see window.handleForm below).
+    // No programmatic 'submit' listener here to avoid double submission.
     contactForm.addEventListener('reset', clearSavedFormData);
   }
 
   initEnhancedForm();
 }
+
+// Inline handlers need globals (ES modules are not global by default)
+window.handleForm = handleForm;
+window.removeImage = removeImage;
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function () {
