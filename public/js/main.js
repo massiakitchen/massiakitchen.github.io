@@ -124,12 +124,14 @@ export function showNotification(message, type = 'info', duration = 5000) {
   notification.className = `notification notification-${type}`;
   notification.innerHTML = `
     <div class="notification-content">
-      <span class="notification-message">${message}</span>
+      <span class="notification-message"></span>
       <button class="notification-close" onclick="this.parentElement.parentElement.remove()">
         <i data-lucide="x"></i>
       </button>
     </div>
   `;
+  // Set as text, never HTML: messages can contain user input (e.g. uploaded file names).
+  notification.querySelector('.notification-message').textContent = message;
 
   // Add styles
   notification.style.cssText = `
