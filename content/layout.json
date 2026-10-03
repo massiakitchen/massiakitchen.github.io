@@ -1,0 +1,12 @@
+[
+  { "id": "scrollytelling", "visible": true },
+  { "id": "materials", "visible": true },
+  { "id": "calculator", "visible": true },
+  { "id": "why-us", "visible": true },
+  { "id": "works", "visible": true },
+  { "id": "facebook-slider", "visible": true },
+  { "id": "branches", "visible": true },
+  { "id": "reviews", "visible": true },
+  { "id": "faq", "visible": true },
+  { "id": "contact", "visible": true }
+]
