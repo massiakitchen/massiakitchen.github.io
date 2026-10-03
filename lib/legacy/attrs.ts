@@ -5,7 +5,7 @@ const RENAME: Record<string, string> = {
   frameborder: 'frameBorder', allowfullscreen: 'allowFullScreen', referrerpolicy: 'referrerPolicy',
   enctype: 'encType', novalidate: 'noValidate', colspan: 'colSpan', rowspan: 'rowSpan', 'accept-charset': 'acceptCharset',
   'http-equiv': 'httpEquiv', contenteditable: 'contentEditable', spellcheck: 'spellCheck', inputmode: 'inputMode',
-  enterkeyhint: 'enterKeyHint', 'xlink:href': 'xlinkHref', 'xml:space': 'xmlSpace',
+  enterkeyhint: 'enterKeyHint', 'xlink:href': 'xlinkHref', 'xml:space': 'xmlSpace', charset: 'charSet',
 };
 const BOOLEAN = new Set(['hidden', 'defer', 'async', 'disabled', 'checked', 'selected', 'required', 'multiple',
   'readonly', 'autoplay', 'muted', 'loop', 'playsinline', 'controls', 'novalidate', 'allowfullscreen', 'open', 'nomodule']);

@@ -10,6 +10,17 @@ const logoSchema = z
 export const settingsSchema = z
   .object({
     companyName: z.string(),
+    seo: z
+      .object({
+        title: z.string(),
+        description: z.string(),
+        keywords: z.string(),
+        ogImage: z.string(),
+        ogImageWidth: z.number(),
+        ogImageHeight: z.number(),
+        url: z.string(),
+      })
+      .strict(),
     brand: z
       .object({
         title: z.string(),
