@@ -1,6 +1,23 @@
 // Static page shells with no editable content: reproduced verbatim from legacy/index.html.
 // Inline onclick handlers appear in their converted data-action/data-args form.
 
+// SVG gradient defs for gold icons (legacy body child #0, before the skip link).
+// `.premium-icon.gold` paints `stroke: url(#gold-gradient)`; without this block
+// every gold icon renders invisible, so it must stay even though it has no text.
+export function SvgGradients() {
+  return (
+    <svg width="0" height="0" style={{ position: 'absolute' }}>
+      <defs>
+        <linearGradient id="gold-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style={{ stopColor: '#b8860b', stopOpacity: 1 }} />
+          <stop offset="50%" style={{ stopColor: '#ffd700', stopOpacity: 1 }} />
+          <stop offset="100%" style={{ stopColor: '#b8860b', stopOpacity: 1 }} />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
+
 export function Preloader() {
   return (
     <div id="preloader" aria-hidden="true">

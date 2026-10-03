@@ -41,6 +41,36 @@ function loadScript(src) {
 // import('/js/<name>.js'). This file is served as-is from /public, never bundled.
 const legacy = (name) => import(`/js/${name}.js`);
 
+// Lucide swaps <i data-lucide> placeholders for <svg>. If that runs while
+// React is still hydrating, hydration reverts the converted tail nodes back
+// to <i> and they stay broken (visitors see missing icons; the legacy page
+// has no hydration so it never hits this). Convert only once the main thread
+// has gone idle past hydration, then once more after window load to catch
+// any straggler. Re-running createIcons is safe: converted nodes are skipped.
+export function applyIcons() {
+  if (window.lucide) window.lucide.createIcons();
+}
+
+// requestIdleCallback fires once hydration work has drained off the main
+// thread; setTimeout fallback where rIC is unavailable.
+export function afterHydration(callback) {
+  if (typeof window.requestIdleCallback === 'function') {
+    window.requestIdleCallback(() => callback(), { timeout: 2500 });
+  } else {
+    setTimeout(callback, 500);
+  }
+}
+
+// Runs callback once after window load (idle-scheduled); heals any icon
+// that was converted and reverted before hydration finished.
+export function onceAfterWindowLoad(callback) {
+  if (document.readyState === 'complete') {
+    afterHydration(callback);
+    return;
+  }
+  window.addEventListener('load', () => afterHydration(callback), { once: true });
+}
+
 export async function boot() {
   installLifecycleReplay();
   for (const src of LIBS) await loadScript(src);
@@ -49,7 +79,8 @@ export async function boot() {
   await legacy('calculator');
   await legacy('form-handler');
   await legacy('scrollytelling');
-  if (window.lucide) window.lucide.createIcons();
+  afterHydration(applyIcons);
+  onceAfterWindowLoad(applyIcons);
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
   }

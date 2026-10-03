@@ -2,14 +2,16 @@ import settingsContent from '@/content/settings.json';
 import { settingsSchema } from '@/lib/content/settings';
 import { Header, SkipLink, ThemeToggle } from './Header';
 import { Footer, WhatsappButton } from './Footer';
-import { GalleryModal, Lightbox, MaterialBubble, PremiumModal, Preloader } from './Overlays';
+import { GalleryModal, Lightbox, MaterialBubble, PremiumModal, Preloader, SvgGradients } from './Overlays';
 
 const settings = settingsSchema.parse(settingsContent);
 
-// Everything before <main>, in legacy order: skip link, preloader, header, theme toggle.
+// Everything before <main>, in legacy order: SVG gradient defs, skip link,
+// preloader, header, theme toggle.
 export function Before() {
   return (
     <>
+      <SvgGradients />
       <SkipLink href={settings.chrome.skipLink.href} label={settings.chrome.skipLink.label} />
       <Preloader />
       <Header settings={settings} />

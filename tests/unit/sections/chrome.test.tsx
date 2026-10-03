@@ -11,12 +11,18 @@ import {
   MaterialBubble,
   PremiumModal,
   Preloader,
+  SvgGradients,
 } from '@/components/site/Overlays';
 import { expectSameHtml, legacyOuterHtml, normalizeHtml } from '../dom-equal';
 
 const settings = settingsSchema.parse(settingsContent);
 
 describe('chrome', () => {
+  test('SVG gradient defs render exactly the legacy markup', () => {
+    // Anonymous first body child (key svg-0): gold-gradient paint server for icons.
+    expectSameHtml(renderToStaticMarkup(<SvgGradients />), 'svg-0');
+  });
+
   test('skip link renders exactly the legacy markup', () => {
     expectSameHtml(
       renderToStaticMarkup(

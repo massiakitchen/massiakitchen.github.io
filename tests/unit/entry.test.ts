@@ -32,3 +32,73 @@ describe('installLifecycleReplay', () => {
     expect(original).toHaveBeenCalledWith('DOMContentLoaded', onReady, undefined);
   });
 });
+
+describe('post-hydration icon application', () => {
+  test('applyIcons converts when lucide is present, no-ops when absent', async () => {
+    const { applyIcons } = await import('../../public/js/entry.js');
+    const createIcons = vi.fn();
+    (window as any).lucide = { createIcons };
+    applyIcons();
+    expect(createIcons).toHaveBeenCalledTimes(1);
+    delete (window as any).lucide;
+    expect(() => applyIcons()).not.toThrow();
+  });
+
+  test('afterHydration uses requestIdleCallback when available', async () => {
+    const { afterHydration } = await import('../../public/js/entry.js');
+    const cb = vi.fn();
+    const ric = vi.fn((_fn: Function) => 1);
+    (window as any).requestIdleCallback = ric;
+    afterHydration(cb);
+    expect(ric).toHaveBeenCalledTimes(1);
+    expect(cb).not.toHaveBeenCalled();
+    delete (window as any).requestIdleCallback;
+  });
+
+  test('afterHydration falls back to setTimeout without requestIdleCallback', async () => {
+    const { afterHydration } = await import('../../public/js/entry.js');
+    expect((window as any).requestIdleCallback).toBeUndefined();
+    vi.useFakeTimers();
+    try {
+      const cb = vi.fn();
+      afterHydration(cb);
+      expect(cb).not.toHaveBeenCalled();
+      vi.advanceTimersByTime(1000);
+      expect(cb).toHaveBeenCalledTimes(1);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  test('onceAfterWindowLoad runs via idle scheduling when already complete', async () => {
+    const { onceAfterWindowLoad } = await import('../../public/js/entry.js');
+    Object.defineProperty(document, 'readyState', { value: 'complete', configurable: true });
+    vi.useFakeTimers();
+    try {
+      const cb = vi.fn();
+      onceAfterWindowLoad(cb);
+      vi.advanceTimersByTime(1000);
+      expect(cb).toHaveBeenCalledTimes(1);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  test('onceAfterWindowLoad waits for the load event when still loading', async () => {
+    const { onceAfterWindowLoad } = await import('../../public/js/entry.js');
+    Object.defineProperty(document, 'readyState', { value: 'loading', configurable: true });
+    vi.useFakeTimers();
+    try {
+      const cb = vi.fn();
+      onceAfterWindowLoad(cb);
+      vi.advanceTimersByTime(1000);
+      expect(cb).not.toHaveBeenCalled();
+      window.dispatchEvent(new Event('load'));
+      vi.advanceTimersByTime(1000);
+      expect(cb).toHaveBeenCalledTimes(1);
+    } finally {
+      vi.useRealTimers();
+      Object.defineProperty(document, 'readyState', { value: 'complete', configurable: true });
+    }
+  });
+});
