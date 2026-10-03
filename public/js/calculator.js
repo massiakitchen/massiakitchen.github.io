@@ -4,8 +4,8 @@
 
 import { $, $$, appState, formatNumber, trackEvent } from './main.js';
 
-// Price configurations - تم التحديث حسب متطلباتك
-const PRICE_CONFIG = {
+// Prices come from the page (editable content); fall back to the built-in defaults.
+const DEFAULT_PRICE_CONFIG = {
   base: {
     economy: 3000,  // MDF
     standard: 4000, // ألومنيوم
@@ -34,6 +34,14 @@ const PRICE_CONFIG = {
     base: 1200
   }
 };
+const PRICE_CONFIG = (() => {
+  try {
+    const el = document.getElementById('price-config');
+    return el ? JSON.parse(el.textContent) : DEFAULT_PRICE_CONFIG;
+  } catch {
+    return DEFAULT_PRICE_CONFIG;
+  }
+})();
 
 // Cost Calculator Functions - تم التحديث
 function updateCalculator() {
