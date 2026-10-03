@@ -37,7 +37,7 @@
 - Modify: `package.json` (devDependencies + scripts), `.gitignore`
 
 **Interfaces:**
-- Produces: `npm run parity -- --candidate=<url>` (defaults to `http://127.0.0.1:3100`), baseline served at `http://127.0.0.1:4300` from `.parity/baseline/` (git-ignored), report in `.parity/report/`.
+- Produces: `CANDIDATE_URL=<url> npm run parity` (candidate defaults to `http://127.0.0.1:3100/`), baseline served at `http://127.0.0.1:4300` from `.parity/baseline/` (git-ignored), report in `.parity/report/`.
 
 - [ ] **Step 1: Pin the baseline**
 
